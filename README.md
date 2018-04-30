@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 4ccreations
 
 >  A community webapp
@@ -20,3 +21,6 @@ $ npm run generate
 ```
 
 For detailed explanation on how things work, check out the [Nuxt.js](https://github.com/nuxt/nuxt.js) and [Vuetify.js](https://vuetifyjs.com/) documentation.
+=======
+# 4ccreations.
+>>>>>>> 41ff0631ac86eff2df95e831d0630c89f7d358b3
