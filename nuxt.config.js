@@ -22,7 +22,7 @@ module.exports = {
       }
     ]
   },
-  plugins: ['~/plugins/vuetify.js'],
+  plugins: ['~/plugins/vuetify.js', {src: '~/plugins/vue-particles.js', ssr: false}],
   css: [
     // 'font-awesome/css/font-awesome.css',
     '@mdi/font/css/materialdesignicons.css',
@@ -37,7 +37,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    vendor: ['~/plugins/vuetify.js'],
+    vendor: ['~/plugins/vuetify.js', '~/plugins/vue-particles.js'],
     extractCSS: true,
     /*
     ** Run ESLint on save

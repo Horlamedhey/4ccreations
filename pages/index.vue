@@ -3,7 +3,7 @@
     <v-flex xs12 sm8 md6>
       <v-card>
         <v-card-media
-                src="/static/doc-images/cards/sunshine.jpg"
+                src="/assets/images/web.jpg"
                 height="200px"
         >
         </v-card-media>
@@ -34,23 +34,6 @@
 <script>
 export default {
   data: () => ({
-    cards: [
-      {
-        title: 'Pre-fab homes',
-        src: '/static/doc-images/cards/house.jpg',
-        flex: 12
-      },
-      {
-        title: 'Favorite road trips',
-        src: '/static/doc-images/cards/road.jpg',
-        flex: 6
-      },
-      {
-        title: 'Best airlines',
-        src: '/static/doc-images/cards/plane.jpg',
-        flex: 6
-      }
-    ]
   })
 }
 </script>
