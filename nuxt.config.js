@@ -1,4 +1,3 @@
-
 module.exports = {
   /*
   ** Headers of the page
@@ -8,16 +7,27 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: ' A community webapp' }
+      {
+        hid: 'description',
+        name: 'description',
+        content: ' A community webapp'
+      }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' }
+      {
+        rel: 'stylesheet',
+        href:
+          'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
+      }
     ]
   },
   plugins: ['~/plugins/vuetify.js'],
   css: [
-    '~/assets/style/app.styl'
+    // 'font-awesome/css/font-awesome.css',
+    '@mdi/font/css/materialdesignicons.css',
+    '~/assets/style/app.styl',
+    '~/assets/style/main.css'
   ],
   /*
   ** Customize the progress bar color
@@ -27,9 +37,7 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    vendor: [
-      '~/plugins/vuetify.js'
-    ],
+    vendor: ['~/plugins/vuetify.js'],
     extractCSS: true,
     /*
     ** Run ESLint on save
