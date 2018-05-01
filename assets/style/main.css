@@ -1,0 +1,10 @@
+::-webkit-scrollbar {
+  display: none;
+}
+.application--wrap{
+  font-family: "Abyssinica SIL" ;
+}
+
+main{
+  padding-left: 0!important;
+}

@@ -1,30 +1,56 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
-      <div class="text-xs-center">
-        <img src="/v.png" alt="Vuetify.js" class="mb-5" />
-      </div>
       <v-card>
-        <v-card-title class="headline">Welcome to the Vuetify + Nuxt.js template</v-card-title>
-        <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>For more information on Vuetify, check out the <a href="https://vuetifyjs.com" target="_blank">documentation</a>.</p>
-          <p>If you have questions, please join the official <a href="https://chat.vuetifyjs.com/" target="_blank" title="chat">discord</a>.</p>
-          <p>Find a bug? Report it on the github <a href="https://github.com/vuetifyjs/vuetify/issues" target="_blank" title="contribute">issue board</a>.</p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
+        <v-card-media
+                src="/static/doc-images/cards/sunshine.jpg"
+                height="200px"
+        >
+        </v-card-media>
+        <v-card-title primary-title>
+          <div>
+            <div class="headline">Top western road trips</div>
+            <span class="grey--text">1,000 miles of wonder</span>
           </div>
-          <hr class="my-3">
-          <a href="https://nuxtjs.org/" target="_blank">Nuxt Documentation</a>
-          <br>
-          <a href="https://github.com/nuxt/nuxt.js" target="_blank">Nuxt GitHub</a>
-        </v-card-text>
+        </v-card-title>
         <v-card-actions>
+          <v-btn flat>Share</v-btn>
+          <v-btn flat color="purple">Explore</v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="primary" flat nuxt to="/inspire">Continue</v-btn>
+          <v-btn icon @click.native="show = !show">
+            <v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
+          </v-btn>
         </v-card-actions>
+        <v-slide-y-transition>
+          <v-card-text v-show="show">
+            I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
+          </v-card-text>
+        </v-slide-y-transition>
       </v-card>
     </v-flex>
   </v-layout>
 </template>
+
+<script>
+export default {
+  data: () => ({
+    cards: [
+      {
+        title: 'Pre-fab homes',
+        src: '/static/doc-images/cards/house.jpg',
+        flex: 12
+      },
+      {
+        title: 'Favorite road trips',
+        src: '/static/doc-images/cards/road.jpg',
+        flex: 6
+      },
+      {
+        title: 'Best airlines',
+        src: '/static/doc-images/cards/plane.jpg',
+        flex: 6
+      }
+    ]
+  })
+}
+</script>
