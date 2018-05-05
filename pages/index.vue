@@ -1,39 +1,29 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-flex xs12 sm8 md6>
-      <v-card>
-        <v-card-media
-                src="/assets/images/web.jpg"
-                height="200px"
-        >
-        </v-card-media>
-        <v-card-title primary-title>
-          <div>
-            <div class="headline">Top western road trips</div>
-            <span class="grey--text">1,000 miles of wonder</span>
-          </div>
-        </v-card-title>
-        <v-card-actions>
-          <v-btn flat>Share</v-btn>
-          <v-btn flat color="purple">Explore</v-btn>
-          <v-spacer></v-spacer>
-          <v-btn icon @click.native="show = !show">
-            <v-icon>{{ show ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
-          </v-btn>
-        </v-card-actions>
-        <v-slide-y-transition>
-          <v-card-text v-show="show">
-            I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
-          </v-card-text>
-        </v-slide-y-transition>
-      </v-card>
-    </v-flex>
-  </v-layout>
+	<keep-alive>
+		<component :is="component"></component>
+	</keep-alive>
 </template>
 
 <script>
+import Home from '~/components/index/Home'
+import Register from '~/components/index/Register'
+import Login from '~/components/index/Login'
 export default {
-  data: () => ({
-  })
+  name: 'index',
+  components: {
+    Home,
+    Register,
+    Login
+  },
+  computed: {
+    component: {
+      get () {
+        return this.$store.state.index
+      }
+    }
+  }
 }
 </script>
+
+<style scoped>
+</style>

@@ -9,4 +9,6 @@ npm-debug.log
 
 # Nuxt generate
 dist
-!/layouts/default.vue
+
+# Backpack build
+build

@@ -1,9 +1,14 @@
 export const state = () => ({
-  sidebar: false
+  sidebar: false,
+  index: 'Home',
+  trends: []
 })
 
 export const mutations = {
-  toggleSidebar (state) {
-    state.sidebar = !state.sidebar
+  populateTrends (state, data) {
+    state.trends = data
+  },
+  index (state, component) {
+    state.index = component
   }
 }

@@ -1,7 +1,6 @@
-<<<<<<< HEAD
-# 4ccreations
+# 4c-creations
 
->  A community webapp
+> A community webapp
 
 ## Build Setup
 
@@ -13,14 +12,11 @@ $ npm install # Or yarn install
 $ npm run dev
 
 # build for production and launch server
-$ npm run build
 $ npm start
-
-# generate static project
-$ npm run generate
 ```
 
-For detailed explanation on how things work, check out the [Nuxt.js](https://github.com/nuxt/nuxt.js) and [Vuetify.js](https://vuetifyjs.com/) documentation.
-=======
-# 4ccreations.
->>>>>>> 41ff0631ac86eff2df95e831d0630c89f7d358b3
+For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
+
+## Backpack
+
+We use [backpack](https://github.com/palmerhq/backpack) to watch and build the application, so you can use the latest ES6 features (module syntax, async/await, etc.).

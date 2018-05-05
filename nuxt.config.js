@@ -1,17 +1,13 @@
 module.exports = {
   /*
-  ** Headers of the page
-  */
+     ** Headers of the page
+     */
   head: {
-    title: '4ccreations',
+    title: '4c-creations',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      {
-        hid: 'description',
-        name: 'description',
-        content: ' A community webapp'
-      }
+      { hid: 'description', name: 'description', content: 'Nuxt.js project' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -20,30 +16,48 @@ module.exports = {
         href:
           'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
       }
-    ]
+    ],
+    script: []
   },
-  plugins: ['~/plugins/vuetify.js', {src: '~/plugins/vue-particles.js', ssr: false}],
+  /*
+     ** Global CSS
+     */
   css: [
-    // 'font-awesome/css/font-awesome.css',
     '@mdi/font/css/materialdesignicons.css',
-    '~/assets/style/app.styl',
-    '~/assets/style/main.css'
+    '~/assets/css/app.styl',
+    '~/assets/css/main.css'
+  ],
+  plugins: [
+    '~/plugins/vuetify.js',
+    {
+      src: '~/plugins/vue-particles.js',
+      ssr: false
+    },
+    {
+      src: '~/plugins/vue-typer.js',
+      ssr: false
+    },
+    {
+      src: '~/plugins/emoji-mart-vue.js',
+      ssr: false
+    }
   ],
   /*
-  ** Customize the progress bar color
-  */
-  loading: { color: '#3B8070' },
-  /*
-  ** Build configuration
-  */
+     ** Add axios globally
+     */
   build: {
-    vendor: ['~/plugins/vuetify.js', '~/plugins/vue-particles.js'],
-    extractCSS: true,
+    vendor: [
+      'axios',
+      'vuetify',
+      'vue-particles',
+      'vue-typer',
+      'emoji-mart-vue'
+    ],
     /*
-    ** Run ESLint on save
-    */
+         ** Run ESLINT on save
+         */
     extend (config, ctx) {
-      if (ctx.isDev && ctx.isClient) {
+      if (ctx.isClient) {
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,

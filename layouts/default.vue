@@ -54,7 +54,7 @@
 	    </vue-particles>
 	    </div>
       <v-btn @click="drawer = !drawer" class="hidden-md-and-up" icon><v-icon class="white--text">mdi-menu</v-icon></v-btn>
-      <v-toolbar-title class="ml-5 logo" @click="$router.push('/')">{{ title }}</v-toolbar-title>
+      <v-toolbar-title class="ml-5 logo" @click="homeFn(Home)">{{ title }}</v-toolbar-title>
 	    <span class="searchCont ml-3 mr-2 hidden-sm-and-down">
 	<form class="search-input" action="/static/search.html" method="GET" @click="search1">
 		<svg class="search-input__icon" width="42" height="42" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -94,39 +94,61 @@
 		<button class="input-group-button" href="/static/search.html" type="submit" title="Search"></button>
 	</form>
 </span>
-	    <v-btn flat class="white--text log hidden-sm-and-down">
+	    <v-btn @click="registerFn(Register)" flat class="white--text log hidden-sm-and-down">
 		    REGISTER
 	    </v-btn>
-	    <v-btn flat class="white--text mr-5 log hidden-sm-and-down">
+	    <v-btn @click="loginFn(Login)" flat class="white--text mr-5 log hidden-sm-and-down">
 		    LOGIN
 	    </v-btn>
-	    <v-btn icon flat class="white--text hidden-md-and-up">
+	    <v-btn @click="registerFn(Register)" icon flat class="white--text hidden-md-and-up">
 		    <v-icon>
 				mdi-account-plus
 		    </v-icon>
 	    </v-btn>
-	    <v-btn icon flat class="white--text hidden-md-and-up">
+	    <v-btn @click="loginFn(Login)" icon flat class="white--text hidden-md-and-up">
 		    <v-icon>
 			    mdi-login
 		    </v-icon>
 	    </v-btn>
     </v-toolbar>
     <v-content>
-      <v-container>
-        <nuxt />
+      <div style="position:relative; height:90vh;" id="slider" v-if="component === 'Home'">
+        <slider/>
+        <v-layout justify-center wrap style="position: absolute; top:0; width:100%; height:100%; background:rgba(0,0,0,0.7)">
+            <v-flex xs12 md10 class="display-4 mt-5">
+	            <vue-typer class="white--text" :text='["Build IT!","Build your career!"]' :repeat='Infinity' :shuffle='false' initial-action='typing'
+	                       :pre-type-delay='70' :type-delay='70' :pre-erase-delay='2000' :erase-delay='250'
+	                       erase-style='backspace' :erase-on-complete='false' caret-animation='expand'>
+	            </vue-typer>
+            </v-flex>
+            <v-flex align-content-center xs12 md10 style="text-align:center" class="display-1 white--text">Welcome to the largest community where dreams come true!!!<div class="mt-3"><v-btn color="secondary" @click="slide">Get Started</v-btn></div></v-flex>
+        </v-layout>
+      </div>
+      <v-container id="cont" fluid :fill-height="component !== 'Home'">
+        <nuxt/>
       </v-container>
     </v-content>
     <v-footer fixed app class="primary white--text" style="z-index: 999999">
-      <span style="display: block; margin: auto;" class="align-center">4C-CREATIONS &copy; 2017</span>
+      <span style="display: block; margin: auto; cursor:pointer;" class="align-center" @click="homeFn(Home)">4C-CREATIONS &copy; 2017</span>
     </v-footer>
   </v-app>
 </template>
 
 <script>
+import axios from '~/plugins/axios.js'
+import Slider from '~/components/index/Slider'
 export default {
+  components: {
+    Slider
+  },
   data () {
     return {
+      fillHeight: true,
+      Register: 'Register',
+      Login: 'Login',
+      Home: 'Home',
       drawer: false,
+      slider: true,
       navItems: [
         {
           icon: 'mdi-apps',
@@ -164,11 +186,53 @@ export default {
     }
   },
   methods: {
+    registerFn (Register) {
+      this.$store.commit('index', Register)
+    },
+    loginFn (Login) {
+      this.$store.commit('index', Login)
+    },
+    homeFn (Home) {
+      this.$store.commit('index', Home)
+    },
     search1 () {
       document.getElementById('search1').focus()
     },
     search2 () {
       document.getElementById('search2').focus()
+    },
+    slide () {
+      let element = document.querySelector('#cont')
+      window.scrollTo({
+        behavior: 'smooth',
+        left: 0,
+        top: element.offsetTop
+      })
+      let elem = document.querySelector('#slider')
+      elem.style.opacity = '0'
+      elem.style.height = '0vh'
+    },
+    async fetchTrends () {
+      await axios
+        .get('http://localhost:3002/trends')
+        .then(result => {
+          let data = result.data
+          this.$store.commit('populateTrends', data)
+          console.log('Fetch ok')
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+  },
+  mounted () {
+    this.fetchTrends()
+  },
+  computed: {
+    component: {
+      get () {
+        return this.$store.state.index
+      }
     }
   }
 }
@@ -178,7 +242,7 @@ export default {
 .searchCont {
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
-	z-index: 99;
+  z-index: 99;
 }
 form {
   height: 42px;
@@ -197,6 +261,7 @@ g {
   stroke-width: 1.2;
   fill: none;
 }
+
 input {
   border: 1px solid rgba(202, 202, 202, 0.6);
   outline: none;
@@ -214,6 +279,7 @@ input {
   display: block;
   overflow: visible;
 }
+
 input:focus {
   width: 180px;
 }
@@ -245,7 +311,7 @@ input:focus {
 .logo {
   font-size: 1.7rem;
   cursor: pointer;
-	z-index: 99;
+  z-index: 99;
 }
 .logo:hover {
   text-shadow: #ddd 2px 2px 4px;
