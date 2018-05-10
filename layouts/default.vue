@@ -55,7 +55,8 @@
 	    </div>
       <v-btn @click="drawer = !drawer" class="hidden-md-and-up" icon><v-icon class="white--text">mdi-menu</v-icon></v-btn>
       <v-toolbar-title class="ml-5 logo" @click="homeFn(Home)">{{ title }}</v-toolbar-title>
-	    <span class="searchCont ml-3 mr-2 hidden-sm-and-down">
+	    <v-tooltip bottom class="ml-3 mr-2 hidden-sm-and-down">
+	    <span slot="activator" class="searchCont">
 	<form class="search-input" action="/static/search.html" method="GET" @click="search1">
 		<svg class="search-input__icon" width="42" height="42" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
 				<g><path class="search-input__path"
@@ -68,6 +69,8 @@
 		<button class="input-group-button" href="/static/search.html" type="submit" title="Search"></button>
 	</form>
 </span>
+		    <span>Search</span>
+	    </v-tooltip>
     <v-toolbar-items class="hidden-sm-and-down">
 	    <v-menu transition="slide-x-transition" open-on-hover offset-y v-for="navItem in navItems" :key="navItem.id">
 		    <v-btn flat slot="activator" class="white--text navItems">{{ navItem.name }}</v-btn>
@@ -81,7 +84,8 @@
 	    </v-menu>
     </v-toolbar-items>
       <v-spacer class="ml-5"></v-spacer>
-	    <span class="searchCont mr-1 hidden-md-and-up">
+	    <v-tooltip bottom class="mr-1 hidden-md-and-up">
+	    <span class="searchCont" slot="activator">
 	<form class="search-input" action="/static/search.html" method="GET" @click="search2">
 		<svg class="search-input__icon" width="42" height="42" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
 				<g><path class="search-input__path"
@@ -94,24 +98,33 @@
 		<button class="input-group-button" href="/static/search.html" type="submit" title="Search"></button>
 	</form>
 </span>
+		    <span>Search</span>
+	    </v-tooltip>
 	    <v-btn @click="registerFn(Register)" flat class="white--text log hidden-sm-and-down">
 		    REGISTER
 	    </v-btn>
 	    <v-btn @click="loginFn(Login)" flat class="white--text mr-5 log hidden-sm-and-down">
 		    LOGIN
 	    </v-btn>
-	    <v-btn @click="registerFn(Register)" icon flat class="white--text hidden-md-and-up">
-		    <v-icon>
-				mdi-account-plus
-		    </v-icon>
-	    </v-btn>
-	    <v-btn @click="loginFn(Login)" icon flat class="white--text hidden-md-and-up">
-		    <v-icon>
-			    mdi-login
-		    </v-icon>
-	    </v-btn>
+	    <v-tooltip bottom>
+		    <v-btn slot="activator" @click="registerFn(Register)" icon flat class="white--text hidden-md-and-up">
+			    <v-icon>
+					mdi-account-plus
+			    </v-icon>
+		    </v-btn>
+		    <span>Register</span>
+	    </v-tooltip>
+	    <v-tooltip bottom>
+		    <v-btn slot="activator" @click="loginFn(Login)" icon flat class="white--text hidden-md-and-up">
+			    <v-icon>
+				    mdi-login
+			    </v-icon>
+		    </v-btn>
+		    <span>Login</span>
+	    </v-tooltip>
     </v-toolbar>
     <v-content>
+	    <loader/>
       <div style="position:relative; height:90vh;" id="slider" v-if="component === 'Home'">
         <slider/>
         <v-layout justify-center wrap style="position: absolute; top:0; width:100%; height:100%; background:rgba(0,0,0,0.7)">
@@ -135,11 +148,13 @@
 </template>
 
 <script>
-import axios from '~/plugins/axios.js'
+// import axios from '~/plugins/axios.js'
+import Loader from '~/components/Loader'
 import Slider from '~/components/index/Slider'
 export default {
   components: {
-    Slider
+    Slider,
+    Loader
   },
   data () {
     return {
@@ -211,22 +226,11 @@ export default {
       let elem = document.querySelector('#slider')
       elem.style.opacity = '0'
       elem.style.height = '0vh'
-    },
-    async fetchTrends () {
-      await axios
-        .get('http://localhost:3002/trends')
-        .then(result => {
-          let data = result.data
-          this.$store.commit('populateTrends', data)
-          console.log('Fetch ok')
-        })
-        .catch(err => {
-          console.log(err)
-        })
     }
   },
-  mounted () {
-    this.fetchTrends()
+  beforeCreate () {
+    this.$store.dispatch('fetchTrends')
+    this.$store.dispatch('fetchLocation')
   },
   computed: {
     component: {

@@ -54,8 +54,8 @@ module.exports = {
       'emoji-mart-vue'
     ],
     /*
-         ** Run ESLINT on save
-         */
+		   ** Run ESLINT on save
+		   */
     extend (config, ctx) {
       if (ctx.isClient) {
         config.module.rules.push({
