@@ -21,14 +21,6 @@ export default {
         return this.$store.state.index
       }
     }
-  },
-  mounted () {
-    let t = setInterval(() => {
-      if (document.readyState === 'complete') {
-        this.$store.commit('loader')
-        clearInterval(t)
-      }
-    }, 3000)
   }
 }
 </script>

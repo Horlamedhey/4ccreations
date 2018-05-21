@@ -24,15 +24,15 @@
           <v-list-tile slot="activator">
             <v-list-tile-title class="black--text drawNavItem">{{ navItem.name }}</v-list-tile-title>
           </v-list-tile>
-            <v-list-tile ripple @click="" v-for="item in navItem.navSubItems" :key="item.id" class="items">
+            <v-list-tile @click="$store.commit('populatePostsCat', item.link)" ripple v-for="item in navItem.navSubItems" :key="item.id" class="items">
 	            <v-list-tile-content>
-		            <v-list-tile-title>{{ item}}</v-list-tile-title>
+		            <v-list-tile-title>{{ item.name }}</v-list-tile-title>
 	            </v-list-tile-content>
             </v-list-tile>
         </v-list-group>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar fixed app clipped-left class="primary white--text">
+    <v-toolbar id="top" fixed app clipped-left class="primary white--text">
 	    <div>
 	    <vue-particles style=" width: 100%; height: 100%; position: absolute; top:0;left: 0;"
 			    color="#ffffff"
@@ -75,9 +75,9 @@
 	    <v-menu transition="slide-x-transition" open-on-hover offset-y v-for="navItem in navItems" :key="navItem.id">
 		    <v-btn flat slot="activator" class="white--text navItems">{{ navItem.name }}</v-btn>
 		    <v-list>
-			    <v-list-tile ripple @click="" v-for="item in navItem.navSubItems" :key="item.id" class="items">
+			    <v-list-tile @click="$store.commit('populatePostsCat',item.link)" ripple v-for="item in navItem.navSubItems" :key="item.id" class="items">
 				    <v-list-tile-content>
-					    <v-list-tile-title>{{ item}}</v-list-tile-title>
+					    <v-list-tile-title>{{ item.name }}</v-list-tile-title>
 				    </v-list-tile-content>
 			    </v-list-tile>
 		    </v-list>
@@ -124,8 +124,7 @@
 	    </v-tooltip>
     </v-toolbar>
     <v-content>
-	    <loader/>
-      <div style="position:relative; height:90vh;" id="slider" v-if="component === 'Home'">
+      <div style="position:relative; height:90vh;" id="slider" v-if="component === 'Home' && sliderHeight === 90">
         <slider/>
         <v-layout justify-center wrap style="position: absolute; top:0; width:100%; height:100%; background:rgba(0,0,0,0.7)">
             <v-flex xs12 md10 class="display-4 mt-5">
@@ -134,14 +133,17 @@
 	                       erase-style='backspace' :erase-on-complete='false' caret-animation='expand'>
 	            </vue-typer>
             </v-flex>
-            <v-flex align-content-center xs12 md10 style="text-align:center" class="display-1 white--text">Welcome to the largest community where dreams come true!!!<div class="mt-3"><v-btn color="secondary" @click="slide">Get Started</v-btn></div></v-flex>
+            <v-flex align-content-center xs12 md10 style="text-align:center" class="display-1 white--text">
+	            Welcome to the largest community where dreams come true!!!
+	            <div class="mt-3"><v-btn color="secondary" @click="slide">Get Started</v-btn></div>
+            </v-flex>
         </v-layout>
       </div>
       <v-container id="cont" fluid :fill-height="component !== 'Home'">
         <nuxt/>
       </v-container>
     </v-content>
-    <v-footer fixed app class="primary white--text" style="z-index: 999999">
+    <v-footer fixed app class="primary white--text" style="z-index: 9">
       <span style="display: block; margin: auto; cursor:pointer;" class="align-center" @click="homeFn(Home)">4C-CREATIONS &copy; 2017</span>
     </v-footer>
   </v-app>
@@ -163,38 +165,54 @@ export default {
       Login: 'Login',
       Home: 'Home',
       drawer: false,
-      slider: true,
       navItems: [
         {
           icon: 'mdi-apps',
           active: false,
           name: 'Collections',
           navSubItems: [
-            'Urban Design',
-            'Interior Design',
-            'Building Design',
-            'Landscape Design',
-            'Building Visulization',
-            'Green/Sustainable Design'
+            { name: 'Urban Design', link: 'URBAN' },
+            { name: 'Interior Design', link: 'INTERIOR' },
+            { name: 'Building Design', link: 'BUILDING' },
+            { name: 'Landscape Design', link: 'LANDSCAPE' },
+            {
+              name: 'Building Visulization',
+              link: 'VISUALIZATION'
+            },
+            { name: 'Green/Sustainable Design', link: 'GREEN' }
           ]
         },
         {
           icon: 'mdi-account-group',
           active: false,
           name: 'Community',
-          navSubItems: ['General', 'Scholars', 'Professionals']
+          navSubItems: [
+            { name: 'General' },
+            { name: 'Scholars' },
+            { name: 'Professionals' }
+          ]
         },
         {
           icon: 'mdi-lightbulb-on',
           active: false,
           name: 'Challenges',
-          navSubItems: ['Quiz', 'Tests', 'Exams', 'Games']
+          navSubItems: [
+            { name: 'Quiz' },
+            { name: 'Tests' },
+            { name: 'Exams' },
+            { name: 'Games' }
+          ]
         },
         {
           icon: 'mdi-briefcase',
           active: false,
           name: 'Chances',
-          navSubItems: ['IT', 'Jobs', 'Placements', 'Freelancing']
+          navSubItems: [
+            { name: 'IT' },
+            { name: 'Jobs' },
+            { name: 'Placements' },
+            { name: 'Freelancing' }
+          ]
         }
       ],
       title: '4C-CREATIONS'
@@ -202,13 +220,17 @@ export default {
   },
   methods: {
     registerFn (Register) {
+      this.$router.push('/')
       this.$store.commit('index', Register)
     },
     loginFn (Login) {
+      this.$router.push('/')
       this.$store.commit('index', Login)
     },
     homeFn (Home) {
+      this.$router.push('/')
       this.$store.commit('index', Home)
+      this.$store.commit('populatePostsCat', 'TRENDS')
     },
     search1 () {
       document.getElementById('search1').focus()
@@ -217,25 +239,29 @@ export default {
       document.getElementById('search2').focus()
     },
     slide () {
-      let element = document.querySelector('#cont')
-      window.scrollTo({
-        behavior: 'smooth',
-        left: 0,
-        top: element.offsetTop
-      })
       let elem = document.querySelector('#slider')
       elem.style.opacity = '0'
       elem.style.height = '0vh'
+      this.$store.commit('content')
+      setTimeout(() => {
+        this.$store.commit('sliderHeight')
+        elem.style.display = 'none'
+      }, 2005)
     }
   },
   beforeCreate () {
-    this.$store.dispatch('fetchTrends')
+    this.$store.dispatch('fetchPosts')
     this.$store.dispatch('fetchLocation')
   },
   computed: {
     component: {
       get () {
         return this.$store.state.index
+      }
+    },
+    sliderHeight: {
+      get () {
+        return this.$store.state.sliderHeight
       }
     }
   }

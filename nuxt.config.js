@@ -53,6 +53,20 @@ module.exports = {
       'vue-typer',
       'emoji-mart-vue'
     ],
+    modules: [
+      '@nuxtjs/pwa'
+    ],
+    workbox: {
+      dev: true
+    },
+    meta: {
+      author: 'AbdulGafar Olamide Ajao',
+      description: 'A community webApp for professionals and scholars'
+    },
+    manifest: {
+      name: '4C-CREATIONS',
+      lang: 'en'
+    },
     /*
 		   ** Run ESLINT on save
 		   */

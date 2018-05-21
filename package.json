@@ -13,6 +13,7 @@
     },
     "dependencies": {
         "@mdi/font": "^2.3.54",
+        "@nuxtjs/pwa": "^2.0.8",
         "axios": "^0.16.2",
         "cross-env": "^5.0.1",
         "emoji-mart-vue": "^2.5.3",
