@@ -1,0 +1,66 @@
+::-webkit-scrollbar {
+    display: none;
+}
+
+.application--wrap {
+    font-family: "Abyssinica SIL";
+}
+
+main {
+    padding-left: 0 !important;
+}
+
+.emojToggle {
+    position: absolute;
+    right: 17%;
+    top: 60%;
+}
+
+.emoji-mart{
+    z-index: 999;
+    position: absolute;
+}
+
+#cont {
+    transition: 2s ease-in-out all;
+}
+
+#slider {
+    transition: 2s ease-in-out all;
+}
+
+.loader {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100vw;
+    height: 90vh;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.7);
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 100%;
+    flex: 1 1 100%;
+}
+.scrollUp, .newsletter, .newPost {
+    z-index: 99;
+    position: fixed;
+    right: 15px;
+    top: 45pc;
+}
+
+.newsletter {
+    top: 30pc;
+}
+
+.newPost{
+    top: 15pc;
+}
+.dialog{
+    z-index: auto;
+}
