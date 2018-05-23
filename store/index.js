@@ -8,13 +8,13 @@ export const state = () => ({
   postBox: false,
   newsletterSubscribers: [],
   posts: [],
-  bigPost: {image: null, title: null, desc: null, comments: null, category: null, uploader: null, uploaderImg: null, time: null},
+  bigPost: {image: null, title: null, desc: null, comments: null, likes: null, category: null, uploader: null, uploaderImg: null, time: null},
   postsCat: { posts: [], category: 'TRENDS' },
   postCategory: null,
   newPost: {
     title: '',
     description: '',
-    img: '',
+    img: [],
     category: [],
     uploader: null,
     uploaderImg: null
@@ -51,13 +51,15 @@ export const mutations = {
       description,
       img,
       category,
-      comments
+      comments,
+      likes
     } = payload
     state.bigPost.time = time
     state.bigPost.image = img
     state.bigPost.title = title
     state.bigPost.desc = description
     state.bigPost.comments = comments
+    state.bigPost.likes = likes
     state.bigPost.category = category
     state.bigPost.uploader = uploader
     state.bigPost.uploaderImg = uploaderImg
@@ -86,7 +88,7 @@ export const mutations = {
     state.newPost.description = payload
   },
   image (state, payload) {
-    state.newPost.img = payload
+    state.newPost.img.push(payload)
   },
   category (state, payload) {
     state.newPost.category = payload
@@ -114,7 +116,8 @@ export const mutations = {
       category,
       descriptionStatus: false,
       commentStatus: false,
-      comments: []
+      comments: [],
+      likes: []
     }
     state.posts.unshift(state.post)
     state.postBox = false

@@ -52,16 +52,15 @@
         <v-card hover id="card">
           <post-comments/>
         <post-image/>
-          <v-card-media @click="bigImg(post)" :src="post.img" height="200px"/>
+          <v-card-media @click="bigImg(post)" :src="post.img[0]" height="200px"/>
           <v-card-title primary-title @click="comments(post)">
-            <div>
+            <span>
               <div class="headline pb-2">{{post.title}}</div>
               <v-avatar size="36px">
                   <img :src="post.uploaderImg">
               </v-avatar>
               <span class="grey--text ml-1">{{post.uploader}}</span>
-            </div>
-            <v-spacer/>
+            </span>
               <v-flex class="grey--text">{{post.time}}</v-flex>
           </v-card-title>
           <v-card-actions @click="comments(post)">

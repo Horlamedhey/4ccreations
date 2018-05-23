@@ -33,7 +33,7 @@
 										full-width
 										@blur="checkTitle()"
 										@input="checkTitle()"
-										counter="20"
+										counter="50"
 										clearable
 										:error-messages="titleErrors"
 								></v-text-field>
@@ -61,6 +61,8 @@
 										style="position:absolute; visibility: hidden"
 										:error-messages="imgErrors"
 										type="file"
+                    accept="image/*"
+                    multiple
 								></v-text-field>
 								<v-tooltip right color="primary">
 								<v-btn @click="pickPic()" slot="activator" style="margin-left: auto; margin-right: auto; display: block;" fab color="accent">
@@ -74,9 +76,9 @@
 							<v-flex xs12 v-if="img !== null">
 								<v-expansion-panel inset>
 									<v-expansion-panel-content>
-										<div slot="header">Preview: {{ imgName }}</div>
+										<div v-for="(imgNam, i) in imgName" :key="i" slot="header">Preview: {{ imgNam }}</div>
 										<v-card>
-											<v-card-media :src="img" height="200">
+											<v-card-media v-for="(im, i) in img" :key="i" :src="im" height="200">
 											</v-card-media>
 										</v-card>
 									</v-expansion-panel-content>
@@ -106,8 +108,8 @@ export default {
   name: 'New_Post',
   data () {
     return {
-      img: null,
-      imgName: null,
+      img: [],
+      imgName: [],
       categories: [
         'Urban Design',
         'Interior Design',
@@ -132,29 +134,48 @@ export default {
     },
     pickPic () {
       let imgPicker = document.getElementById('pickPic')
-      imgPicker.click()
-      imgPicker.addEventListener('change', () => {
-        let file = imgPicker.files[0]
-        this.imgName = file.name
-        let reader = new FileReader()
-        reader.onloadend = () => {
-          let img = reader.result
-          this.img = img
-          this.$store.commit('image', img)
-        }
-        if (file) {
-          this.imgErrors = []
-          reader.readAsDataURL(file)
-        }
-      })
+      if (imgPicker.files.length === 0) {
+        imgPicker.click()
+        imgPicker.addEventListener('change', () => {
+          let file1 = imgPicker.files[0]
+          this.imgName.push(file1.name)
+          let reader = new FileReader()
+          reader.onloadend = () => {
+            let img1 = reader.result
+            this.img.push(img1)
+            this.$store.commit('image', img1)
+          }
+          if (file1) {
+            this.imgErrors = []
+            reader.readAsDataURL(file1)
+          }
+        })
+      }
+      if (imgPicker.files.length > 0) {
+        imgPicker.click()
+        imgPicker.addEventListener('change', () => {
+          let file2 = imgPicker.files[1]
+          this.imgName.push(file2.name)
+          let reader = new FileReader()
+          reader.onloadend = () => {
+            let img2 = reader.result
+            this.img.push(img2)
+            this.$store.commit('image', img2)
+          }
+          if (file2) {
+            this.imgErrors = []
+            reader.readAsDataURL(file2)
+          }
+        })
+      }
     },
     checkTitle () {
       if (this.title.length < 3) {
-        this.titleErrors.splice('Title cannot exceed 20 characters')
+        this.titleErrors.splice('Title cannot exceed 50 characters')
         this.titleErrors.push('Title must be minimum of 3 characters')
-      } else if (this.title.length > 20) {
+      } else if (this.title.length > 50) {
         this.titleErrors.splice('Title must be minimum of 3 characters')
-        this.titleErrors.push('Title cannot exceed 20 characters')
+        this.titleErrors.push('Title cannot exceed 50 characters')
       } else {
         this.titleErrors = []
       }

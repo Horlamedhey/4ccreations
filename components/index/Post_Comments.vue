@@ -4,44 +4,81 @@
       <v-btn id="comments" absolute style="opacity:0;" slot="activator" color="primary" dark/>
       <v-card>
         <v-toolbar dark color="primary">
+        <v-avatar>
+          <img :src="post.uploaderImg"/>
+        </v-avatar>
+          <v-toolbar-title>{{post.uploader}}</v-toolbar-title>
+          <v-spacer/>
           <v-toolbar-title>{{post.title}}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon dark @click.native="dialog = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
-        <v-card-media :src="post.image" height="400px" contain/>
-        <v-card-text>
-          <v-container absolute fill-height fluid>
-            <v-layout fill-height>
-              <v-flex xs12 align-end flexbox>
-                <div class="headline">{{post.title}}</div>
+        <v-layout row wrap justify-space-between>
+          <v-flex xs12 sm7 md6 lg4 xl3>
+            <v-card-media height="400px">
+              <img style="max-width:100%;height:auto;" :src="post.image" alt="postImage">
+            </v-card-media>
+          </v-flex>
+          <v-flex xs12 sm5 md6 lg7 wrap>
+            <v-flex xs12>
+              <v-card-text>{{post.desc}}</v-card-text>
+              <v-card-text>{{post.time}}</v-card-text>
+            </v-flex>
+            <v-layout wrap>
+              <v-flex xs12>
+                <span v-for="(category, i) in post.category" :key="i">
+                  <v-chip>
+                    <v-avatar class="secondary">{{category[0]}}</v-avatar>
+                    {{category}}
+                  </v-chip>
+                </span>
+              </v-flex>
+              <v-flex xs12>
+                <v-card-actions>
+                  <v-speed-dial
+                    direction="left"
+                    open-on-hover
+                    transition="slide-x-reverse-transition">
+                    <v-btn @click.stop slot="activator" color="secondary" flat icon hover>
+                      <v-icon>mdi-heart-pulse</v-icon>
+                    </v-btn>
+                    <v-btn icon flat color="error">
+                      <v-icon>mdi-heart</v-icon>
+                    </v-btn>
+                    <v-btn icon flat color="warning">
+                      <v-icon>mdi-heart-half-full</v-icon>
+                    </v-btn>
+                    <v-btn icon flat color="accent">
+                      <v-icon>mdi-heart-broken</v-icon>
+                    </v-btn>
+                  </v-speed-dial>
+                  <v-tooltip bottom color="accent" lazy>
+                    <v-btn slot="activator" icon color="secondary" flat>
+                      <v-icon>mdi-eye</v-icon>
+                    </v-btn>
+                    <span>view</span>
+                  </v-tooltip>
+                  <v-tooltip bottom color="accent" lazy>
+                    <v-btn slot="activator" icon color="secondary" flat>
+                      <v-icon>mdi-cloud-download</v-icon>
+                    </v-btn>
+                    <span>download</span>
+                  </v-tooltip>
+                </v-card-actions>
               </v-flex>
             </v-layout>
-          </v-container>
-          </v-card-text>
+          </v-flex>
+        </v-layout>
         <v-divider></v-divider>
-        <v-list three-line subheader>
-          <v-subheader>General</v-subheader>
-          <v-list-tile avatar>
-            <v-list-tile-content>
-              <v-list-tile-title>Notifications</v-list-tile-title>
-              <v-list-tile-sub-title>Notify me about updates to apps or games that I downloaded</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile avatar>
-            <v-list-tile-content>
-              <v-list-tile-title>Sound</v-list-tile-title>
-              <v-list-tile-sub-title>Auto-update apps at any time. Data charges may apply</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile avatar>
-            <v-list-tile-content>
-              <v-list-tile-title>Auto-add widgets</v-list-tile-title>
-              <v-list-tile-sub-title>Automatically add home screen widgets</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
+          <v-toolbar>
+            <v-toolbar-title>Comments</v-toolbar-title>
+          </v-toolbar>
+          <v-card v-for="(comment, i) in post.comments" :key="i">
+            <v-card-text>{{comment}}</v-card-text>
+            <!-- <v-card-actions></v-card-actions> -->
+          </v-card>
       </v-card>
     </v-dialog>
   </v-layout>

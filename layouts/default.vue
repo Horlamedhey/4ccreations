@@ -34,6 +34,7 @@
     </v-navigation-drawer>
     <v-toolbar id="top" fixed app clipped-left class="primary white--text">
 	    <div>
+        <no-ssr>
 	    <vue-particles style=" width: 100%; height: 100%; position: absolute; top:0;left: 0;"
 			    color="#ffffff"
 			    :particleOpacity="1"
@@ -52,6 +53,7 @@
 			    clickMode="bubble"
 	    >
 	    </vue-particles>
+      </no-ssr>
 	    </div>
       <v-btn @click="drawer = !drawer" class="hidden-md-and-up" icon><v-icon class="white--text">mdi-menu</v-icon></v-btn>
       <v-toolbar-title class="ml-5 logo" @click="homeFn(Home)">{{ title }}</v-toolbar-title>
@@ -128,10 +130,12 @@
         <slider/>
         <v-layout justify-center wrap style="position: absolute; top:0; width:100%; height:100%; background:rgba(0,0,0,0.7)">
             <v-flex xs12 md10 class="display-4 mt-5">
+              <no-ssr>
 	            <vue-typer class="white--text" :text='["Build IT!","Build your career!"]' :repeat='Infinity' :shuffle='false' initial-action='typing'
 	                       :pre-type-delay='70' :type-delay='70' :pre-erase-delay='2000' :erase-delay='250'
 	                       erase-style='backspace' :erase-on-complete='false' caret-animation='expand'>
 	            </vue-typer>
+              </no-ssr>
             </v-flex>
             <v-flex align-content-center xs12 md10 style="text-align:center" class="display-1 white--text">
 	            Welcome to the largest community where dreams come true!!!

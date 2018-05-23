@@ -15,6 +15,11 @@ module.exports = {
         rel: 'stylesheet',
         href:
           'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
+      },
+      {
+        rel: 'stylesheet',
+        href:
+          'https://cdn.materialdesignicons.com/2.3.54/css/materialdesignicons.min.css'
       }
     ],
     script: []
@@ -23,7 +28,7 @@ module.exports = {
      ** Global CSS
      */
   css: [
-    '@mdi/font/css/materialdesignicons.css',
+    // '@mdi/font/css/materialdesignicons.min.css',
     '~/assets/css/app.styl',
     '~/assets/css/main.css'
   ],
@@ -47,25 +52,13 @@ module.exports = {
      */
   build: {
     vendor: [
-      'axios',
-      'vuetify',
-      'vue-particles',
-      'vue-typer',
-      'emoji-mart-vue'
+      'axios'
     ],
     modules: [
       '@nuxtjs/pwa'
     ],
-    workbox: {
-      dev: true
-    },
-    meta: {
-      author: 'AbdulGafar Olamide Ajao',
-      description: 'A community webApp for professionals and scholars'
-    },
-    manifest: {
-      name: '4C-CREATIONS',
-      lang: 'en'
+    performance: {
+      hints: process.env.NODE_ENV === 'production' ? 'warning' : false
     },
     /*
 		   ** Run ESLINT on save

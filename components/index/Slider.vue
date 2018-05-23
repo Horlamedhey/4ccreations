@@ -15,7 +15,6 @@ export default {
       images: [
         '/images/download.jpeg',
         '/images/High-Quality-Website2.jpg',
-        '/images/high-quality.jpg',
         '/images/Night.jpg',
         '/images/web-design-glasgow-lanarkshire-edinburgh-cj-designs.jpg',
         '/images/webi.jpg',
