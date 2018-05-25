@@ -18,7 +18,11 @@
         <v-layout row wrap justify-space-between>
           <v-flex xs12 sm7 md6 lg4 xl3>
             <v-card-media height="400px">
-              <img style="max-width:100%;height:auto;" :src="post.image" alt="postImage">
+              <v-layout style="position:absolute;top:45%;width:100%;" justify-space-between align-center v-if="post.image.length > 1">
+              <v-btn @click.stop="$store.commit('prevBigImg')" icon color="accent"><v-icon>mdi-chevron-left</v-icon></v-btn>
+              <v-btn @click.stop="$store.commit('nextBigImg')" icon color="accent"><v-icon>mdi-chevron-right</v-icon></v-btn>
+            </v-layout>
+              <img style="max-width:100%;height:auto;" :src="post.image[post.activeImg]" alt="postImage">
             </v-card-media>
           </v-flex>
           <v-flex xs12 sm5 md6 lg7 wrap>

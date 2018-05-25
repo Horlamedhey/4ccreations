@@ -24,7 +24,7 @@
           <v-list-tile slot="activator">
             <v-list-tile-title class="black--text drawNavItem">{{ navItem.name }}</v-list-tile-title>
           </v-list-tile>
-            <v-list-tile @click="$store.commit('populatePostsCat', item.link)" ripple v-for="item in navItem.navSubItems" :key="item.id" class="items">
+            <v-list-tile @click="link(item)" ripple v-for="item in navItem.navSubItems" :key="item.id" class="items">
 	            <v-list-tile-content>
 		            <v-list-tile-title>{{ item.name }}</v-list-tile-title>
 	            </v-list-tile-content>
@@ -77,7 +77,7 @@
 	    <v-menu transition="slide-x-transition" open-on-hover offset-y v-for="navItem in navItems" :key="navItem.id">
 		    <v-btn flat slot="activator" class="white--text navItems">{{ navItem.name }}</v-btn>
 		    <v-list>
-			    <v-list-tile @click="$store.commit('populatePostsCat',item.link)" ripple v-for="item in navItem.navSubItems" :key="item.id" class="items">
+			    <v-list-tile @click="link(item)" ripple v-for="item in navItem.navSubItems" :key="item.id" class="items">
 				    <v-list-tile-content>
 					    <v-list-tile-title>{{ item.name }}</v-list-tile-title>
 				    </v-list-tile-content>
@@ -175,15 +175,15 @@ export default {
           active: false,
           name: 'Collections',
           navSubItems: [
-            { name: 'Urban Design', link: 'URBAN' },
-            { name: 'Interior Design', link: 'INTERIOR' },
-            { name: 'Building Design', link: 'BUILDING' },
-            { name: 'Landscape Design', link: 'LANDSCAPE' },
+            { name: 'Urban Design', link: 'URBAN DESIGN' },
+            { name: 'Interior Design', link: 'INTERIOR DESIGN' },
+            { name: 'Building Design', link: 'BUILDING DESIGN' },
+            { name: 'Landscape Design', link: 'LANDSCAPE DESIGN' },
             {
               name: 'Building Visulization',
-              link: 'VISUALIZATION'
+              link: 'BUILDING VISUALIZATION'
             },
-            { name: 'Green/Sustainable Design', link: 'GREEN' }
+            { name: 'Green/Sustainable Design', link: 'GREEN/SUSTAINABLE' }
           ]
         },
         {
@@ -223,6 +223,13 @@ export default {
     }
   },
   methods: {
+    link (item) {
+      if (item.link) {
+        this.$store.commit('populatePostsCat', {link: item.link, cat: item.name})
+      } else {
+        return false
+      }
+    },
     registerFn (Register) {
       this.$router.push('/')
       this.$store.commit('index', Register)
@@ -234,7 +241,7 @@ export default {
     homeFn (Home) {
       this.$router.push('/')
       this.$store.commit('index', Home)
-      this.$store.commit('populatePostsCat', 'TRENDS')
+      this.$store.commit('populatePostsCat', {link: 'TRENDS', cat: 'TRENDS'})
     },
     search1 () {
       document.getElementById('search1').focus()
@@ -243,6 +250,7 @@ export default {
       document.getElementById('search2').focus()
     },
     slide () {
+      this.$store.commit('populatePostsCat', {link: 'TRENDS', cat: 'TRENDS'})
       let elem = document.querySelector('#slider')
       elem.style.opacity = '0'
       elem.style.height = '0vh'
@@ -256,6 +264,8 @@ export default {
   beforeCreate () {
     this.$store.dispatch('fetchPosts')
     this.$store.dispatch('fetchLocation')
+  },
+  mounted () {
   },
   computed: {
     component: {

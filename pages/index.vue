@@ -21,7 +21,8 @@ export default {
         return this.$store.state.index
       }
     }
-  }
+  },
+  beforeMount () {}
 }
 </script>
 

@@ -3,12 +3,16 @@
     <v-dialog v-model="dialog" persistent max-width="900">
       <v-btn absolute style="opacity:0;" id="postImage" slot="activator" color="primary" dark/>
       <v-card>
-        <v-card-media class="grey--text" :src="bigImage.image" height="600px" contain>
+        <v-card-media class="grey--text" :src="bigImage.image[bigImage.activeImg]" height="600px" contain>
           <v-container fill-height fluid>
-            <v-layout fill-height>
+            <v-layout fill-height wrap>
               <v-flex xs12 align-end flexbox>
                 <span class="headline">{{bigImage.title}}</span>
               </v-flex>
+            <v-layout justify-space-between align-center v-if="bigImage.image.length > 1">
+              <v-btn @click.stop="$store.commit('prevBigImg')" icon color="accent"><v-icon>mdi-chevron-left</v-icon></v-btn>
+              <v-btn @click.stop="$store.commit('nextBigImg')" icon color="accent"><v-icon>mdi-chevron-right</v-icon></v-btn>
+            </v-layout>
             </v-layout>
           </v-container>
         </v-card-media>

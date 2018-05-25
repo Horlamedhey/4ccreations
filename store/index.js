@@ -8,9 +8,10 @@ export const state = () => ({
   postBox: false,
   newsletterSubscribers: [],
   posts: [],
-  bigPost: {image: null, title: null, desc: null, comments: null, likes: null, category: null, uploader: null, uploaderImg: null, time: null},
-  postsCat: { posts: [], category: 'TRENDS' },
-  postCategory: null,
+  bigPost: { image: [], title: null, desc: null, comments: null, likes: null, category: null, uploader: null, uploaderImg: null, time: null, activeImg: null },
+  enlargeImg: false,
+  enlargePost: false,
+  postsCat: { posts: [], category: '' },
   newPost: {
     title: '',
     description: '',
@@ -42,6 +43,34 @@ export const mutations = {
   sliderHeight (state) {
     state.sliderHeight = 0
   },
+  prevImg (state, i) {
+    if (state.posts[i].activeImg > 0) {
+      state.posts[i].activeImg -= 1
+    } else if (state.posts[i].activeImg === 0) {
+      state.posts[i].activeImg = state.posts[i].img.length - 1
+    }
+  },
+  nextImg (state, i) {
+    if (state.posts[i].activeImg < state.posts[i].img.length - 1) {
+      state.posts[i].activeImg += 1
+    } else if (state.posts[i].activeImg === state.posts[i].img.length - 1) {
+      state.posts[i].activeImg = 0
+    }
+  },
+  prevBigImg (state, i) {
+    if (state.bigPost.activeImg > 0) {
+      state.bigPost.activeImg -= 1
+    } else if (state.bigPost.activeImg === 0) {
+      state.bigPost.activeImg = state.bigPost.image.length - 1
+    }
+  },
+  nextBigImg (state, i) {
+    if (state.bigPost.activeImg < state.bigPost.image.length - 1) {
+      state.bigPost.activeImg += 1
+    } else if (state.bigPost.activeImg === state.bigPost.image.length - 1) {
+      state.bigPost.activeImg = 0
+    }
+  },
   bigPost (state, payload) {
     let {
       uploaderImg,
@@ -52,7 +81,8 @@ export const mutations = {
       img,
       category,
       comments,
-      likes
+      likes,
+      activeImg
     } = payload
     state.bigPost.time = time
     state.bigPost.image = img
@@ -63,6 +93,13 @@ export const mutations = {
     state.bigPost.category = category
     state.bigPost.uploader = uploader
     state.bigPost.uploaderImg = uploaderImg
+    state.bigPost.activeImg = activeImg
+  },
+  hover (state, i) {
+    state.posts[i].hover = !state.posts[i].hover
+  },
+  emptyPic (state) {
+    state.newPost.img = []
   },
   submitEmail (state, payload) {
     state.newsletterSubscribers.push(payload)
@@ -76,7 +113,7 @@ export const mutations = {
     state.postBox = payload
     state.newPost.title = ''
     state.newPost.description = ''
-    state.newPost.img = ''
+    state.newPost.img = []
     state.newPost.category = []
     state.newPost.uploader = 'AbdulGafar Olamide Ajao'
     state.newPost.uploaderImg = '/images/webi.jpg'
@@ -88,7 +125,7 @@ export const mutations = {
     state.newPost.description = payload
   },
   image (state, payload) {
-    state.newPost.img.push(payload)
+    state.newPost.img = payload
   },
   category (state, payload) {
     state.newPost.category = payload
@@ -114,17 +151,24 @@ export const mutations = {
       description,
       img,
       category,
-      descriptionStatus: false,
-      commentStatus: false,
       comments: [],
       likes: []
     }
     state.posts.unshift(state.post)
+    if (state.post.category.includes(state.postsCat.category)) {
+      state.postsCat.posts.unshift(state.post)
+    }
     state.postBox = false
     state.postsLoading = false
   },
   populatePostsCat (state, payload) {
-    state.postsCat.category = payload
+    state.postsCat.posts = []
+    state.postsCat.category = payload.cat
+    state.posts.forEach(v => {
+      if (v.category.includes(payload.cat) || payload.cat === 'TRENDS') {
+        state.postsCat.posts.push(v)
+      }
+    })
   },
   populatePosts (state, data) {
     state.postsLoading = false
@@ -137,6 +181,12 @@ export const mutations = {
       }
       return 0
     }
+    data.forEach(v => {
+      v.descriptionStatus = false
+      v.commentStatus = false
+      v.hover = false
+      v.activeImg = 0
+    })
     state.posts = data.sort(compare)
   },
   comment (state, i) {

@@ -68,7 +68,7 @@
 								<v-btn @click="pickPic()" slot="activator" style="margin-left: auto; margin-right: auto; display: block;" fab color="accent">
 									<v-icon>mdi-camera-enhance</v-icon>
 								</v-btn>
-									<span>Upload Image</span>
+									<span>{{uploadTip}}</span>
 								</v-tooltip>
 								<v-flex v-if="imgErrors.length !== 0" class="caption ml-3" style="color:red;">{{ imgErrors[0] }}</v-flex>
 								<v-divider></v-divider>
@@ -79,6 +79,9 @@
 										<div v-for="(imgNam, i) in imgName" :key="i" slot="header">Preview: {{ imgNam }}</div>
 										<v-card>
 											<v-card-media v-for="(im, i) in img" :key="i" :src="im" height="200">
+                        <v-btn @click.native="rmvPic(i)" icon color="accent">
+                          <v-icon>mdi-close</v-icon>
+                        </v-btn>
 											</v-card-media>
 										</v-card>
 									</v-expansion-panel-content>
@@ -108,6 +111,7 @@ export default {
   name: 'New_Post',
   data () {
     return {
+      uploadTip: 'Upload Image',
       img: [],
       imgName: [],
       categories: [
@@ -126,7 +130,8 @@ export default {
   },
   methods: {
     isPost (value) {
-      this.img = null
+      this.img = []
+      this.imgName = []
       this.imgErrors = []
       this.titleErrors = []
       this.descErrors = []
@@ -134,40 +139,53 @@ export default {
     },
     pickPic () {
       let imgPicker = document.getElementById('pickPic')
-      if (imgPicker.files.length === 0) {
-        imgPicker.click()
-        imgPicker.addEventListener('change', () => {
-          let file1 = imgPicker.files[0]
-          this.imgName.push(file1.name)
-          let reader = new FileReader()
-          reader.onloadend = () => {
-            let img1 = reader.result
-            this.img.push(img1)
-            this.$store.commit('image', img1)
-          }
-          if (file1) {
-            this.imgErrors = []
-            reader.readAsDataURL(file1)
-          }
-        })
+      if (this.img.length < 2) {
+        if (imgPicker.files.length === 0) {
+          imgPicker.click()
+          imgPicker.addEventListener('change', () => {
+            let file1 = imgPicker.files[0]
+            if (file1) {
+              this.imgName.push(file1.name)
+            }
+            let reader = new FileReader()
+            reader.onloadend = () => {
+              let img1 = reader.result
+              this.img.push(img1)
+            }
+            if (file1) {
+              this.imgErrors = []
+              reader.readAsDataURL(file1)
+            }
+          })
+        }
+        if (imgPicker.files.length > 0) {
+          imgPicker.click()
+          imgPicker.addEventListener('change', () => {
+            let file2 = imgPicker.files[1]
+            if (file2) {
+              this.imgName.push(file2.name)
+            }
+            let reader = new FileReader()
+            reader.onloadend = () => {
+              let img2 = reader.result
+              this.img.push(img2)
+            }
+            if (file2) {
+              this.imgErrors = []
+              reader.readAsDataURL(file2)
+            }
+          })
+        }
+      } if (this.img.length === 2) {
+        this.uploadTip = 'Max exceeded!'
+        setTimeout(() => {
+          this.uploadTip = 'Upload Image'
+        }, 1000)
       }
-      if (imgPicker.files.length > 0) {
-        imgPicker.click()
-        imgPicker.addEventListener('change', () => {
-          let file2 = imgPicker.files[1]
-          this.imgName.push(file2.name)
-          let reader = new FileReader()
-          reader.onloadend = () => {
-            let img2 = reader.result
-            this.img.push(img2)
-            this.$store.commit('image', img2)
-          }
-          if (file2) {
-            this.imgErrors = []
-            reader.readAsDataURL(file2)
-          }
-        })
-      }
+    },
+    rmvPic (i) {
+      this.img.splice(i, 1)
+      this.imgName.splice(i, 1)
     },
     checkTitle () {
       if (this.title.length < 3) {
@@ -192,9 +210,9 @@ export default {
       }
     },
     checkImg () {
-      if (document.getElementById('pickPic').files.length === 0) {
+      if (this.img.length === 0) {
         this.imgErrors.push('Please upload an image!')
-      } else if (document.getElementById('pickPic').files.length !== 0) {
+      } else if (this.img.length !== 0) {
         this.imgErrors = []
       }
     },
@@ -206,6 +224,7 @@ export default {
       }
     },
     submit () {
+      this.$store.commit('image', this.img)
       this.checkTitle()
       this.checkDesc()
       this.checkImg()
@@ -217,6 +236,8 @@ export default {
         this.catErrors.length === 0
       ) {
         this.$store.dispatch('pushPost')
+        this.img = []
+        this.imgName = []
       }
     }
   },

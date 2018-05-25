@@ -51,16 +51,17 @@ main {
     z-index: 99;
     position: fixed;
     right: 15px;
-    top: 45pc;
+    top: 75%;
 }
 
 .newsletter {
-    top: 30pc;
+    top: 50%;
 }
 
 .newPost{
-    top: 15pc;
+    top: 25%;
 }
 .dialog{
     z-index: auto;
+    margin-top: -2%;
 }

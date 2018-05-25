@@ -52,7 +52,14 @@
         <v-card hover id="card">
           <post-comments/>
         <post-image/>
-          <v-card-media @click="bigImg(post)" :src="post.img[0]" height="200px"/>
+          <v-card-media @mouseover="$store.commit('hover', i)" @mouseout="$store.commit('hover', i)" @click="bigImg(post)" :src="post.img[post.activeImg]" height="200px">
+            <v-layout v-if="post.hover && post.img.length > 1" justify-space-between align-center>
+              <v-btn @click.stop="prevImg(i)" icon color="accent">
+                <v-icon>mdi-chevron-left</v-icon>
+                </v-btn>
+              <v-btn @click.stop="nextImg(i)" icon color="accent"><v-icon>mdi-chevron-right</v-icon></v-btn>
+            </v-layout>
+          </v-card-media>
           <v-card-title primary-title @click="comments(post)">
             <span>
               <div class="headline pb-2">{{post.title}}</div>
@@ -103,7 +110,7 @@
                 </v-tooltip>
                   <v-tooltip bottom color="accent" lazy>
             <v-btn slot="activator" icon color="secondary" flat>
-              <v-icon>mdi-cloud-download</v-icon>
+              <v-icon>mdi-arrow-down-bold-hexagon-outline</v-icon>
             </v-btn>
                     <span>download</span>
                   </v-tooltip>
@@ -175,6 +182,7 @@ export default {
     },
     newPost () {
       document.getElementById('newPost').click()
+      this.$store.commit('emptyPic')
     },
     insert (emoji) {
       this.comment += emoji.native
@@ -198,6 +206,12 @@ export default {
       this.$store.commit('unComment', i)
       this.comment = ''
       this.isEmoji = false
+    },
+    prevImg (i) {
+      this.$store.commit('prevImg', i)
+    },
+    nextImg (i) {
+      this.$store.commit('nextImg', i)
     },
     bigImg (post) {
       if (window.screen.width >= 600) {
@@ -233,7 +247,12 @@ export default {
     },
     posts: {
       get () {
-        return this.$store.state.posts
+        return this.$store.state.postsCat.posts
+      }
+    },
+    num: {
+      get () {
+        return this.$store.state.activeImg
       }
     },
     sliderHeight: {
