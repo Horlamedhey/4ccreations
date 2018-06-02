@@ -2,6 +2,7 @@ import axios from '~/plugins/axios'
 export const state = () => ({
   loader: true,
   content: false,
+  mobileProf: false,
   postsLoading: true,
   sliderHeight: 90,
   index: 'Home',
@@ -34,6 +35,14 @@ export const state = () => ({
 })
 
 export const mutations = {
+  mobileProf (state, payload) {
+    if (payload === false) {
+      state.mobileProf = payload
+    }
+    if (payload === true) {
+      state.mobileProf = !state.mobileProf
+    }
+  },
   loader (state) {
     state.loader = false
   },
@@ -116,7 +125,7 @@ export const mutations = {
     state.newPost.img = []
     state.newPost.category = []
     state.newPost.uploader = 'AbdulGafar Olamide Ajao'
-    state.newPost.uploaderImg = '/images/webi.jpg'
+    state.newPost.uploaderImg = require('~/assets/webi.png')
   },
   title (state, payload) {
     state.newPost.title = payload
@@ -287,6 +296,9 @@ export const mutations = {
 }
 
 export const actions = {
+  async login (context, {payload}) {
+    alert(payload)
+  },
   async pushPost (context) {
     context.commit('pushPost')
     await axios

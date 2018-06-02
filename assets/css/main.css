@@ -6,23 +6,20 @@
     font-family: "Abyssinica SIL";
 }
 
-main {
-    padding-left: 0 !important;
-}
-
 .emojToggle {
     position: absolute;
     right: 17%;
     top: 60%;
 }
 
-.emoji-mart{
+.emoji-mart {
     z-index: 999;
     position: absolute;
 }
 
 #cont {
     transition: 2s ease-in-out all;
+    padding: 0;
 }
 
 #slider {
@@ -47,6 +44,7 @@ main {
     -ms-flex: 1 1 100%;
     flex: 1 1 100%;
 }
+
 .scrollUp, .newsletter, .newPost {
     z-index: 99;
     position: fixed;
@@ -58,10 +56,37 @@ main {
     top: 50%;
 }
 
-.newPost{
+.newPost {
     top: 25%;
 }
-.dialog{
+
+.dialog {
     z-index: auto;
+}
+
+.newPost {
     margin-top: -2%;
+}
+
+.tabCont {
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+}
+
+.drawNavItems:hover {
+    background: #4e008c;
+    color: white!important;
+}
+
+.drawNavItem {
+    font-size: 1.25rem;
+}
+
+.navItems {
+    font-size: 16px;
+}
+
+.drawNavItems:hover .drawNavIcons{
+    color: white;
 }

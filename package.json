@@ -17,8 +17,15 @@
         "axios": "^0.16.2",
         "cross-env": "^5.0.1",
         "emoji-mart-vue": "^2.5.3",
+        "esm": "^3.0.39",
         "express": "^4.15.3",
+        "fs": "0.0.1-security",
+        "imagemin-webp": "^4.1.0",
+        "net": "^1.0.2",
         "nuxt": "^1.0.0-rc3",
+        "nuxt-babel": "^0.1.2",
+        "nuxt-imagemin": "^0.1.2",
+        "redirect-ssl": "^1.3.0",
         "source-map-support": "^0.4.15",
         "vue-particles": "^1.0.9",
         "vue-typer": "^1.2.0",
@@ -26,7 +33,11 @@
         "vuetify": "^1.0.17"
     },
     "devDependencies": {
+        "babel-cli": "^6.26.0",
         "babel-eslint": "^7.2.3",
+        "babel-loader": "^7.1.4",
+        "babel-preset-env": "^1.7.0",
+        "babel-register": "^6.26.0",
         "backpack-core": "^0.4.1",
         "eslint": "^4.3.0",
         "eslint-config-standard": "^10.2.1",
@@ -36,8 +47,14 @@
         "eslint-plugin-node": "^5.1.1",
         "eslint-plugin-promise": "^3.5.0",
         "eslint-plugin-standard": "^3.0.1",
+        "file-loader": "^1.1.11",
+        "image-webpack-loader": "^4.2.0",
+        "multi-loader": "^0.1.0",
         "stylus": "^0.54.5",
         "stylus-loader": "^3.0.2",
-        "template-compiler": "^1.2.1"
+        "template-compiler": "^1.2.1",
+        "vue-lazyload": "^1.2.3",
+        "webp-loader": "^0.4.0",
+        "webp-webpack-plugin": "^1.2.6"
     }
 }

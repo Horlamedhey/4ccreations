@@ -26,6 +26,7 @@ if (config.dev) {
 }
 
 // Give nuxt middleware to express
+
 app.use(nuxt.render)
 
 // Listen the server

@@ -1,6 +1,6 @@
 <template>
 	<v-layout row justify-center>
-		<v-dialog v-model="postBox" persistent max-width="500px">
+		<v-dialog class="newPost" v-model="postBox" persistent max-width="500px">
 			<v-btn id="newPost" style="opacity: 0;" class="newPost" fab slot="activator"/>
 			<v-card>
 				<v-card-actions style="position: absolute;z-index: 99;right: 0;">

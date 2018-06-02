@@ -1,5 +1,5 @@
 <template>
-	<v-layout align-center justify-center wrap>
+	<v-layout style="height: unset;" align-center justify-center wrap class="pb-3">
 		<v-flex xs12 sm8>
 			<v-alert transition="scale-transition" v-model="alert" color="info" icon="mdi-information">
 				All fields are compulsory!
@@ -16,7 +16,7 @@
 			</v-alert>
 		</v-flex>
 		<v-flex class="primary white--text" xs12 sm10>
-			<v-card dark class="elevation-12" img="/images/welcome.jpg">
+			<v-card dark class="elevation-12" :img="require('~/assets/welcome.png')">
 				<v-toolbar color="primary">
 					<v-toolbar-title class="white--text headline">REGISTERATION FORM</v-toolbar-title>
 				</v-toolbar>
@@ -106,7 +106,7 @@
 						</v-layout>
 						<v-layout>
 							<v-flex xs12 md6>
-								<v-checkbox color="secondary" prepend-icon="mdi-email-open-outline"
+								<v-checkbox style="font-size:200px;" color="secondary" prepend-icon="mdi-email-open-outline"
 								            label="Subscribe to newsletters?" v-model="user.newsletter"
 								/>
 							</v-flex>
@@ -241,7 +241,7 @@ export default {
           newsletter
         }
         await axios
-          .post('http://localhost:3002/users', user)
+          .post('http://localhost:3003/users', user)
           .then(() => {
             this.registerAlert = true
             setTimeout(() => {

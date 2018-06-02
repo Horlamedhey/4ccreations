@@ -1,17 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2c98e6cd-0479-4d3e-876d-bbbb22a09d3a" name="Default" comment="">
+    <list default="true" id="2c98e6cd-0479-4d3e-876d-bbbb22a09d3a" name="Default" comment="made changes to home">
+      <change afterPath="$PROJECT_DIR$/plugins/vue-lazyload.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.eslintrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintrc.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/4c-creations.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/4c-creations.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/css/main.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/index/Home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/index/Home.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/img/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/img/logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/backpack.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/CardSkeleton.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/CardSkeleton.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/CardSkeletonActions/CardSkeletonActions.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/CardSkeletonActions/CardSkeletonActions.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/CardSkeletonHeader/CardSkeletonHeader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/CardSkeletonHeader/CardSkeletonHeader.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/CardSkeletonMedia/CardSkeletonMedia.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/CardSkeletonMedia/CardSkeletonMedia.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/CardSkeletonText/CardSkeletonText.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/CardSkeletonText/CardSkeletonText.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Loader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/Loader.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/NuxtLogo.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/NuxtLogo.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/components/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/VuetifyLogo.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/VuetifyLogo.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/index/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/index/Login.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/index/New_Post.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/index/New_Post.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/index/Newsletter.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/index/Newsletter.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/index/Post_Comments.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/index/Post_Comments.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/index/Post_Image.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/index/Post_Image.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/index/Register.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/index/Register.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/index/Slider.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/index/Slider.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/countries.json" beforeDir="false" afterPath="$PROJECT_DIR$/countries.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/layouts/default.vue" beforeDir="false" afterPath="$PROJECT_DIR$/layouts/default.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/layouts/error.vue" beforeDir="false" afterPath="$PROJECT_DIR$/layouts/error.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newsletter.json" beforeDir="false" afterPath="$PROJECT_DIR$/newsletter.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nuxt.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/nuxt.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/profile.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/profile.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/axios.js" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/axios.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/emoji-mart-vue.js" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/emoji-mart-vue.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/vue-particles.js" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/vue-particles.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/vue-typer.js" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/vue-typer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/vuetify.js" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/vuetify.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/posts.json" beforeDir="false" afterPath="$PROJECT_DIR$/posts.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/registration.json" beforeDir="false" afterPath="$PROJECT_DIR$/registration.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/api/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/api/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/api/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/api/users.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/css/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/favicon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/static/favicon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/High-Quality-Website2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/Night.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/Woo.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/download.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/login.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/web-design-glasgow-lanarkshire-edinburgh-cj-designs.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/webi.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/welcome.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/store/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/store/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -28,16 +82,16 @@
       <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/store/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1095">
-              <caret line="73" column="4" selection-start-line="73" selection-start-column="4" selection-end-line="73" selection-end-column="4" />
+            <state>
+              <caret line="82" column="4" selection-start-line="82" selection-start-column="4" selection-end-line="82" selection-end-column="4" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Home.vue" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Home.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/components/index/Home.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3315">
+            <state relative-caret-position="15">
               <caret line="225" column="41" selection-start-line="225" selection-start-column="41" selection-end-line="225" selection-end-column="41" />
               <folding>
                 <element signature="n#style#0;n#span#0;n#v-flex#0;n#v-layout#1;n#v-container#0;n#template#0;n#!!top" expanded="true" />
@@ -64,11 +118,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.css" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/assets/css/main.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="19" column="17" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
+            <state relative-caret-position="120">
+              <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -237,83 +291,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <expand>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
-            </path>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
-              <item name="assets" type="cbb8eebc:String" user="assets" />
-            </path>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
-              <item name="assets" type="cbb8eebc:String" user="assets" />
-              <item name="css" type="cbb8eebc:String" user="css" />
-            </path>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
-              <item name="components" type="cbb8eebc:String" user="components" />
-            </path>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
-              <item name="components" type="cbb8eebc:String" user="components" />
-              <item name="CardSkeletonActions" type="cbb8eebc:String" user="CardSkeletonActions" />
-            </path>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
-              <item name="components" type="cbb8eebc:String" user="components" />
-              <item name="CardSkeletonHeader" type="cbb8eebc:String" user="CardSkeletonHeader" />
-            </path>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
-              <item name="components" type="cbb8eebc:String" user="components" />
-              <item name="CardSkeletonMedia" type="cbb8eebc:String" user="CardSkeletonMedia" />
-            </path>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
-              <item name="components" type="cbb8eebc:String" user="components" />
-              <item name="CardSkeletonText" type="cbb8eebc:String" user="CardSkeletonText" />
-            </path>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
-              <item name="components" type="cbb8eebc:String" user="components" />
-              <item name="index" type="cbb8eebc:String" user="index" />
-            </path>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
-              <item name="layouts" type="cbb8eebc:String" user="layouts" />
-            </path>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
-              <item name="pages" type="cbb8eebc:String" user="pages" />
-            </path>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
-              <item name="plugins" type="cbb8eebc:String" user="plugins" />
-            </path>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
-              <item name="static" type="cbb8eebc:String" user="static" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -398,6 +375,83 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <expand>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
+              <item name="assets" type="cbb8eebc:String" user="assets" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
+              <item name="assets" type="cbb8eebc:String" user="assets" />
+              <item name="css" type="cbb8eebc:String" user="css" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
+              <item name="components" type="cbb8eebc:String" user="components" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
+              <item name="components" type="cbb8eebc:String" user="components" />
+              <item name="CardSkeletonActions" type="cbb8eebc:String" user="CardSkeletonActions" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
+              <item name="components" type="cbb8eebc:String" user="components" />
+              <item name="CardSkeletonHeader" type="cbb8eebc:String" user="CardSkeletonHeader" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
+              <item name="components" type="cbb8eebc:String" user="components" />
+              <item name="CardSkeletonMedia" type="cbb8eebc:String" user="CardSkeletonMedia" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
+              <item name="components" type="cbb8eebc:String" user="components" />
+              <item name="CardSkeletonText" type="cbb8eebc:String" user="CardSkeletonText" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
+              <item name="components" type="cbb8eebc:String" user="components" />
+              <item name="index" type="cbb8eebc:String" user="index" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
+              <item name="layouts" type="cbb8eebc:String" user="layouts" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
+              <item name="pages" type="cbb8eebc:String" user="pages" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
+              <item name="plugins" type="cbb8eebc:String" user="plugins" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="4c-creations" type="cbb8eebc:String" user="4c-creations" />
+              <item name="static" type="cbb8eebc:String" user="static" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -413,9 +467,9 @@
     <property name="node.js.detected.package.jscs" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.stylelint" value="true" />
-    <property name="node.js.path.for.package.eslint" value="$USER_HOME$/.nvm/versions/node/v10.1.0/bin/node" />
+    <property name="node.js.path.for.package.eslint" value="$USER_HOME$/.nvm/versions/node/v8.11.2/bin/node" />
     <property name="node.js.path.for.package.jscs" value="project" />
-    <property name="node.js.path.for.package.standard" value="$USER_HOME$/.nvm/versions/node/v10.1.0/bin/node" />
+    <property name="node.js.path.for.package.standard" value="$USER_HOME$/.nvm/versions/node/v8.11.2/bin/node" />
     <property name="node.js.path.for.package.stylelint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="$PROJECT_DIR$/node_modules/eslint" />
@@ -430,7 +484,7 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="prettierjs.PrettierConfiguration.NodeInterpreter" value="$USER_HOME$/.nvm/versions/node/v10.1.0/bin/node" />
     <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.ide.settings.file-colors" />
     <property name="typescript.add.unambiguous.imports.on.the.fly" value="true" />
   </component>
   <component name="RecentsManager">
@@ -547,7 +601,13 @@
       <workItem from="1526871361854" duration="1665000" />
       <workItem from="1526873378639" duration="246000" />
       <workItem from="1527095751363" duration="397000" />
-      <workItem from="1527283333444" duration="74000" />
+      <workItem from="1527283333444" duration="322000" />
+      <workItem from="1527934959412" duration="15000" />
+      <workItem from="1527945336122" duration="17000" />
+      <workItem from="1527945413573" duration="155000" />
+      <workItem from="1527945587458" duration="5000" />
+      <workItem from="1527945633186" duration="2000" />
+      <workItem from="1527946392196" duration="73000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1525060203226</created>
@@ -605,11 +665,18 @@
       <option name="project" value="LOCAL" />
       <updated>1527095891113</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="made changes to home">
+      <created>1527283486110</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1527283486110</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="349348000" />
+    <option name="totallyTimeSpent" value="349863000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -623,13 +690,14 @@
   <component name="ToolWindowManager">
     <frame x="-3" y="21" width="1372" height="723" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.74671054" visible="true" weight="0.19180088" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.73615634" visible="true" weight="0.19180088" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.32972974" />
+      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5005952" side_tool="true" weight="0.32936078" />
       <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49940476" weight="0.32936078" />
       <window_info id="npm" order="2" sideWeight="0.5016129" side_tool="true" weight="0.2077381" />
       <window_info anchor="bottom" id="Run" order="3" weight="0.32936078" />
-      <window_info id="Structure" order="1" sideWeight="0.25328946" side_tool="true" visible="true" weight="0.19180088" />
+      <window_info id="Structure" order="1" sideWeight="0.26384366" side_tool="true" visible="true" weight="0.19180088" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.31852654" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.3997833" />
@@ -637,7 +705,6 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="NativeScript" order="9" />
-      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32827735" />
@@ -709,13 +776,6 @@
     <select />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/assets/css/main.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="5" column="33" selection-start-line="5" selection-start-column="33" selection-end-line="5" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/axios/lib/defaults.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="223">
@@ -956,18 +1016,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/store/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1095">
-          <caret line="73" column="4" selection-start-line="73" selection-start-column="4" selection-end-line="73" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/components/index/Home.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3315">
-          <caret line="225" column="41" selection-start-line="225" selection-start-column="41" selection-end-line="225" selection-end-column="41" />
-          <folding>
-            <element signature="n#style#0;n#span#0;n#v-flex#0;n#v-layout#1;n#v-container#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
+        <state>
+          <caret line="82" column="4" selection-start-line="82" selection-start-column="4" selection-end-line="82" selection-end-column="4" />
         </state>
       </provider>
     </entry>
@@ -978,10 +1028,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/components/index/Slider.vue">
+    <entry file="file://$PROJECT_DIR$/assets/css/main.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="55" selection-start-line="1" selection-start-column="55" selection-end-line="1" selection-end-column="55" />
+        <state relative-caret-position="120">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -992,10 +1042,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/assets/css/main.css">
+    <entry file="file://$PROJECT_DIR$/components/index/Slider.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="17" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
+        <state relative-caret-position="15">
+          <caret line="1" column="55" selection-start-line="1" selection-start-column="55" selection-end-line="1" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/components/index/Home.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="225" column="41" selection-start-line="225" selection-start-column="41" selection-end-line="225" selection-end-column="41" />
+          <folding>
+            <element signature="n#style#0;n#span#0;n#v-flex#0;n#v-layout#1;n#v-container#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

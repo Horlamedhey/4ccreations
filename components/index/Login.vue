@@ -1,13 +1,22 @@
 <template>
-	<v-layout align-center justify-center wrap>
-		<v-flex xs12 sm7>
-			<v-alert transition="scale-transition" v-model="alert" type="info" dismissible>
+<v-layout style="height: unset;" align-center justify-center wrap class="pb-3">
+	<v-flex xs12 sm8>
+			<v-alert transition="scale-transition" v-model="alert" color="info" icon="mdi-information">
 				All fields are compulsory!
-				<div>Not yet a member? click on the <strong>REGISTER</strong> button above.</div>
+				<v-btn @click="alert = !alert" icon class="right">
+					<v-icon>mdi-close</v-icon>
+				</v-btn>
+				<div>Already a member? click on the <strong>LOGIN</strong> button above.</div>
+			</v-alert>
+			<v-alert transition="scale-transition" v-model="registerAlert" color="success" icon="mdi-success">
+				Voila! Successfully registered!!!
+				<v-btn @click="registerAlert = !registerAlert" icon class="right">
+				<v-icon>mdi-close</v-icon>
+			</v-btn>
 			</v-alert>
 		</v-flex>
 		<v-flex class="primary white--text" xs12 sm6>
-			<v-card dark class="elevation-12" img="/images/login.jpg">
+			<v-card dark class="elevation-12" :img="require('~/assets/login.png')">
 				<v-toolbar color="primary">
 					<v-toolbar-title class="white--text headline">LOGIN FORM</v-toolbar-title>
 				</v-toolbar>
@@ -15,15 +24,15 @@
 					<v-card-text>
 						<v-form ref="form" class="pa-4">
 							<v-layout row justify-space-around>
-								<v-flex xs12 md6>
+								<v-flex>
 									<v-text-field hint="HINT: Variable1" color="secondary" prepend-icon="mdi-account-key" clearable
-									              label="Username" v-model="login"/>
+									              label="Username" v-model="user.login"/>
 								</v-flex>
 							</v-layout>
 							<v-layout wrap justify-space-around>
-								<v-flex xs12 md6>
+								<v-flex>
 									<v-text-field hint="HINT: Variable1@" color="secondary" type="password" prepend-icon="mdi-key" clearable
-									              label="Password" v-model="password"/>
+									              label="Password" v-model="user.password"/>
 								</v-flex>
 							</v-layout>
 						</v-form>
@@ -36,7 +45,7 @@
 				</div>
 			</v-card>
 		</v-flex>
-	</v-layout>
+		</v-layout>
 </template>
 
 <script>
@@ -45,13 +54,16 @@ export default {
   data () {
     return {
       alert: false,
-      login: null,
-      password: null
+      user: {
+        login: null,
+        password: null
+      }
     }
   },
   methods: {
     submit () {
       this.$v.$touch()
+      this.$store.dispatch('login', this.user)
     }
   },
   computed: {},

@@ -9,7 +9,7 @@
       class="hidden-md-and-up"
     >
       <v-list>
-        <v-list-tile>
+        <v-list-tile @click="homeFn(Home)">
           <v-list-tile-action>
             <v-icon>mdi-home</v-icon>
           </v-list-tile-action>
@@ -55,7 +55,7 @@
 	    </vue-particles>
       </no-ssr>
 	    </div>
-      <v-btn @click="drawer = !drawer" class="hidden-md-and-up" icon><v-icon class="white--text">mdi-menu</v-icon></v-btn>
+      <v-btn @click="draw()" class="hidden-md-and-up" icon><v-icon class="white--text">mdi-menu</v-icon></v-btn>
       <v-toolbar-title class="ml-5 logo" @click="homeFn(Home)">{{ title }}</v-toolbar-title>
 	    <v-tooltip bottom class="ml-3 mr-2 hidden-sm-and-down">
 	    <span slot="activator" class="searchCont">
@@ -124,28 +124,18 @@
 		    </v-btn>
 		    <span>Login</span>
 	    </v-tooltip>
+	    <v-tooltip bottom>
+		    <v-btn nuxt to="/profile" slot="activator" @click="$router.push('/profile')" icon flat class="white--text">
+			    <v-icon>
+				    mdi-account-circle
+			    </v-icon>
+		    </v-btn>
+		    <span>profile</span>
+	    </v-tooltip>
+      <v-btn v-if="$route.path === '/profile'" @click="$store.commit('mobileProf', true)" class="hidden-md-and-up" icon><v-icon class="white--text">mdi-menu</v-icon></v-btn>
     </v-toolbar>
     <v-content>
-      <div style="position:relative; height:90vh;" id="slider" v-if="component === 'Home' && sliderHeight === 90">
-        <slider/>
-        <v-layout justify-center wrap style="position: absolute; top:0; width:100%; height:100%; background:rgba(0,0,0,0.7)">
-            <v-flex xs12 md10 class="display-4 mt-5">
-              <no-ssr>
-	            <vue-typer class="white--text" :text='["Build IT!","Build your career!"]' :repeat='Infinity' :shuffle='false' initial-action='typing'
-	                       :pre-type-delay='70' :type-delay='70' :pre-erase-delay='2000' :erase-delay='250'
-	                       erase-style='backspace' :erase-on-complete='false' caret-animation='expand'>
-	            </vue-typer>
-              </no-ssr>
-            </v-flex>
-            <v-flex align-content-center xs12 md10 style="text-align:center" class="display-1 white--text">
-	            Welcome to the largest community where dreams come true!!!
-	            <div class="mt-3"><v-btn color="secondary" @click="slide">Get Started</v-btn></div>
-            </v-flex>
-        </v-layout>
-      </div>
-      <v-container id="cont" fluid :fill-height="component !== 'Home'">
         <nuxt/>
-      </v-container>
     </v-content>
     <v-footer fixed app class="primary white--text" style="z-index: 9">
       <span style="display: block; margin: auto; cursor:pointer;" class="align-center" @click="homeFn(Home)">4C-CREATIONS &copy; 2017</span>
@@ -156,10 +146,8 @@
 <script>
 // import axios from '~/plugins/axios.js'
 import Loader from '~/components/Loader'
-import Slider from '~/components/index/Slider'
 export default {
   components: {
-    Slider,
     Loader
   },
   data () {
@@ -223,12 +211,17 @@ export default {
     }
   },
   methods: {
+    draw () {
+      this.drawer = !this.drawer
+      this.$store.commit('mobileProf', false)
+    },
     link (item) {
       if (item.link) {
         this.$store.commit('populatePostsCat', {link: item.link, cat: item.name})
       } else {
         return false
       }
+      this.drawer = false
     },
     registerFn (Register) {
       this.$router.push('/')
@@ -248,36 +241,11 @@ export default {
     },
     search2 () {
       document.getElementById('search2').focus()
-    },
-    slide () {
-      this.$store.commit('populatePostsCat', {link: 'TRENDS', cat: 'TRENDS'})
-      let elem = document.querySelector('#slider')
-      elem.style.opacity = '0'
-      elem.style.height = '0vh'
-      this.$store.commit('content')
-      setTimeout(() => {
-        this.$store.commit('sliderHeight')
-        elem.style.display = 'none'
-      }, 2005)
     }
   },
   beforeCreate () {
     this.$store.dispatch('fetchPosts')
     this.$store.dispatch('fetchLocation')
-  },
-  mounted () {
-  },
-  computed: {
-    component: {
-      get () {
-        return this.$store.state.index
-      }
-    },
-    sliderHeight: {
-      get () {
-        return this.$store.state.sliderHeight
-      }
-    }
   }
 }
 </script>
@@ -327,21 +295,12 @@ input {
 input:focus {
   width: 180px;
 }
-.navItems {
-  font-size: 16px;
-}
 .log {
   font-size: 0.93rem;
 }
 .navItems:hover {
   border-bottom: 2px #fff solid;
   margin-top: -5px;
-}
-.drawNavItems:hover {
-  background: #4e008c;
-}
-.drawNavItem {
-  font-size: 1.25rem;
 }
 .drawNavItems:hover :first-child {
   color: #fff !important;
