@@ -8,12 +8,6 @@
 				</v-btn>
 				<div>Already a member? click on the <strong>LOGIN</strong> button above.</div>
 			</v-alert>
-			<v-alert transition="scale-transition" v-model="registerAlert" color="success" icon="mdi-success">
-				Voila! Successfully registered!!!
-				<v-btn @click="registerAlert = !registerAlert" icon class="right">
-				<v-icon>mdi-close</v-icon>
-			</v-btn>
-			</v-alert>
 		</v-flex>
 		<v-flex class="primary white--text" xs12 sm10>
 			<v-card dark class="elevation-12" :img="require('~/assets/welcome.png')">
@@ -33,7 +27,7 @@
 							</v-flex>
 							<v-flex xs12 md8>
 								<v-text-field autocomplete hint="HINT: Gafar Olamide Ajao" color="secondary" prepend-icon="mdi-account" clearable
-								               label="Name" v-model="user.name" :error-messages="nameErrors"
+								               label="Name" v-model.trim="user.name" :error-messages="nameErrors"
 								               @input="$v.user.name.$touch()"
 								              @blur="$v.user.name.$touch()"
 								             />
@@ -41,26 +35,26 @@
 						</v-layout>
 						<v-layout wrap row justify-space-between>
 							<v-flex xs12 md6>
-								<v-text-field autocomplete hint="HINT: Variable1" color="secondary" prepend-icon="mdi-account-key" clearable label="Username" v-model="user.username" :error-messages="usernameErrors"
+								<v-text-field autocomplete hint="HINT: Variable1" color="secondary" prepend-icon="mdi-account-key" clearable label="Username" v-model.trim="user.username" :error-messages="usernameErrors"
 								               :counter="10" @input="$v.user.username.$touch()"
 								              @blur="$v.user.username.$touch()"
 								             />
 							</v-flex>
 							<v-flex xs12 md5>
 								<v-text-field autocomplete hint="HINT: 08134549552, +2348134549552" color="secondary" type="tel" prepend-icon="mdi-phone" clearable
-                              label="Phone" v-model="user.phone" :error-messages="phoneErrors"
+                              label="Phone" v-model.trim="user.phone" :error-messages="phoneErrors"
                               :counter="14" @blur="$v.user.phone.$touch()"/>
 							</v-flex>
 						</v-layout>
             <v-layout row wrap justify-space-between>
               <v-flex xs12 md7>
 						<v-text-field autocomplete hint="HINT: Horlasco34@gmail.com" prepend-icon="mdi-email" color="secondary" 
-                          clearable label="E-mail" v-model="user.email"
+                          clearable label="E-mail" v-model.trim="user.email"
 						              :error-messages="emailErrors" @blur="$v.user.email.$touch()"
 						             />
               </v-flex>
 	            <v-flex xs12 md4>
-		            <v-radio-group  :error-messages="statusErrors" label="Status" prepend-icon="mdi-briefcase-check" v-model="user.status" row>
+		            <v-radio-group  :error-messages="statusErrors" label="Status" prepend-icon="mdi-briefcase-check" v-model.trim="user.status" row>
 			            <v-radio color="secondary" label="Professional" value="Professional" ></v-radio>
 			            <v-radio color="secondary" label="Student" value="Student"></v-radio>
 		            </v-radio-group>
@@ -68,13 +62,13 @@
             </v-layout>
             <v-layout wrap row justify-space-between>
 							<v-flex xs12 md6>
-								<v-text-field autocomplete hint="HINT: Variable1@" color="secondary" type="password" prepend-icon="mdi-lock" label="Password" v-model="user.password" :error-messages="passwordErrors"
+								<v-text-field autocomplete hint="HINT: Variable1@" color="secondary" type="password" prepend-icon="mdi-lock" label="Password" v-model.trim="user.password" :error-messages="passwordErrors"
 								              :counter="8" @blur="$v.user.password.$touch()" @input="$v.user.password.$touch()"
                                :append-icon="passIcon ? 'mdi-eye' : 'mdi-eye-off'" :append-icon-cb="() => {if (user.password !== ''){passIcon = !passIcon}}" :type="passIcon ? 'password' : 'text'"/>
 							</v-flex>
 							<v-flex xs12 md5>
 								<v-text-field autocomplete prepend-icon="mdi-lock-question" color="secondary" type="password"
-                              label="Confirm password" v-model="user.confirmPassword" :error-messages="confirmPasswordErrors"
+                              label="Confirm password" v-model.trim="user.confirmPassword" :error-messages="confirmPasswordErrors"
                                @input="$v.user.confirmPassword.$touch()" @blur="$v.user.confirmPassword.$touch()"
                               :append-icon="cpassIcon ? 'mdi-eye' : 'mdi-eye-off'"
                               :append-icon-cb="() => {if (user.confirmPassword !== ''){cpassIcon = !cpassIcon}}" :type="cpassIcon ? 'password' : 'text'"/>
@@ -84,7 +78,7 @@
 							<v-flex xs12 md3 class="pt-3 pb-4">
 								<v-select prepend-icon="mdi-flag-variant" color="secondary" solo-inverted open-on-clear autocomplete dense clearable
 								          no-data-text="Invalid selection"
-								          label="Nationality" v-model="user.nationality" :items="countries"
+								          label="Nationality" v-model.trim="user.nationality" :items="countries"
 								          :error-messages="nationalityErrors" @change="reactivity"
 								          @blur="$v.user.nationality.$touch()" append-icon="mdi-chevron-down"
 								          @input="$store.commit('nationalit', user.nationality)"/>
@@ -92,14 +86,14 @@
 							<v-flex xs12 md3 class="pt-3 pb-4">
 								<v-select solo-inverted prepend-icon="mdi-map" color="secondary" open-on-clear autocomplete dense clearable
 								          no-data-text="Invalid selection" @input="$store.commit('stat', user.state)"
-								          label="State" v-model="user.state" :items="states" item-text="StateName"
+								          label="State" v-model.trim="user.state" :items="states" item-text="StateName"
 								          :error-messages="stateErrors" @change="$v.user.state.$touch()"
 								          @blur="$v.user.state.$touch()" append-icon="mdi-chevron-down"/>
 							</v-flex>
 							<v-flex xs12 md3 class="pt-3 pb-4">
 								<v-select solo-inverted prepend-icon="mdi-map-marker" color="secondary" open-on-clear autocomplete 
 								          dense clearable editable chips deletable-chips combobox no-data-text="Invalid selection"
-								          label="City" v-model="user.city" :items="cities" @focus="deboun()"
+								          label="City" v-model.trim="user.city" :items="cities" @focus="deboun()"
 								          :error-messages="cityErrors" @input="$store.commit('cit', user.city)"
 								          @blur="$v.user.city.$touch()" append-icon="mdi-chevron-down"/>
 							</v-flex>
@@ -116,6 +110,7 @@
 				<v-card-actions>
 					<v-spacer></v-spacer>
 					<v-btn color="secondary" @click="submit">submit</v-btn>
+					<v-btn color="secondary" @click="fill">fill</v-btn>
 					<v-btn color="secondary" @click="clear">clear</v-btn>
 				</v-card-actions>
 				</div>
@@ -169,10 +164,9 @@ export default {
       passIcon: true,
       cpassIcon: true,
       alert: false,
-      registerAlert: false,
+      // alert: {status: false, icon: 'mdi-information', color: 'info', content: ''},
       titles: ['Mr', 'Mrs', 'Miss', 'Dr', 'Engr'],
       user: {
-        id: null,
         title: [],
         name: '',
         username: '',
@@ -213,7 +207,6 @@ export default {
         console.log('error')
       } else {
         let {
-          id,
           title,
           name,
           username,
@@ -226,8 +219,9 @@ export default {
           city,
           newsletter
         } = this.user
+        let date = new Date()
+        let created = date.toDateString() + ' - ' + date.toLocaleTimeString()
         let user = {
-          id,
           title,
           name,
           username,
@@ -238,42 +232,56 @@ export default {
           nationality,
           state,
           city,
-          newsletter
+          newsletter,
+          createdOn: created
         }
         await axios
-          .post('http://localhost:3003/users', user)
-          .then(() => {
-            this.registerAlert = true
-            setTimeout(() => {
-              this.registerAlert = false
-            }, 5000)
+          .post('/api/createUser', user)
+          .then((result) => {
+            this.alert.content = result.data
+            this.alert.status = true
+            this.alert.icon = 'mdi-account-check'
+            this.alert.color = 'success'
+            // this.alert.status ? this.alert.status = false : this.alert.status = true
+            // this.alert.icon = 'mdi-alert-octagram'
+            // this.alert.color = 'error'
           })
-          .then(() => {
-            setTimeout(() => {
-              this.$store.commit('index', 'Login')
-            }, 5000)
-          })
-          .then(() => {
-            this.$v.$reset()
-            this.user.name = ''
-            this.user.email = ''
-            this.user.title = []
-            this.user.username = ''
-            this.user.password = ''
-            this.user.confirmPassword = ''
-            this.user.phone = ''
-            this.user.status = null
-            this.user.nationality = null
-            this.user.state = null
-            this.user.city = null
-            this.user.newsletter = false
-            this.passIcon = true
-            this.cpassIcon = true
-          })
+          // .then(() => {
+          //   setTimeout(() => {
+          //     this.$store.commit('index', 'Login')
+          //   }, 5000)
+          // })
+          // .then(() => {
+          //   this.$v.$reset()
+          //   this.user.name = ''
+          //   this.user.email = ''
+          //   this.user.title = []
+          //   this.user.username = ''
+          //   this.user.password = ''
+          //   this.user.confirmPassword = ''
+          //   this.user.phone = ''
+          //   this.user.status = null
+          //   this.user.nationality = null
+          //   this.user.state = null
+          //   this.user.city = null
+          //   this.user.newsletter = false
+          //   this.passIcon = true
+          //   this.cpassIcon = true
+          // })
           .catch(err => {
             console.log(err)
           })
       }
+    },
+    fill () {
+      this.user.title = ['Mr', 'Dr', 'Engr']
+      this.user.name = 'AbdulGafar Olamide Ajao'
+      this.user.username = 'variable'
+      this.user.phone = '08134549552'
+      this.user.email = 'Horlasco34@gmail.com'
+      this.user.status = 'Professional'
+      this.user.password = 'Horlasco34@yahoo.com'
+      this.user.confirmPassword = 'Horlasco34@yahoo.com'
     },
     clear () {
       this.$v.$reset()
@@ -399,7 +407,7 @@ export default {
   },
   mounted () {
     setTimeout(() => {
-      this.alert = true
+      this.alert.status = true
     }, 500)
   }
 }

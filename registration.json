@@ -1,3 +1,20 @@
 {
-    "users": []
+  "users": [
+    {
+      "id": 1,
+      "title": [
+        "Mr"
+      ],
+      "name": "AbdulGafar Olamide Ajao",
+      "username": "variable",
+      "phone": "08134549552",
+      "email": "Horlasco34@gmail.com",
+      "status": "Professional",
+      "password": "46b3220967ee08027d09d5f27d9ebc90",
+      "nationality": "Nigeria",
+      "state": "Kwara",
+      "city": "Tanke",
+      "newsletter": true
+    }
+  ]
 }

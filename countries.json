@@ -1156,7 +1156,9 @@
           "StateName": "Manu'a"
         },
         {
-          "Cities": [],
+          "Cities": [
+            "Swains Island"
+          ],
           "StateName": "Swains Island"
         },
         {
@@ -1349,7 +1351,9 @@
     {
       "States": [
         {
-          "Cities": [],
+          "Cities": [
+            "Others"
+          ],
           "StateName": "Other Provinces"
         }
       ],
@@ -2725,7 +2729,9 @@
           "StateName": "Andros"
         },
         {
-          "Cities": [],
+          "Cities": [
+            "Berry Islands"
+          ],
           "StateName": "Berry Islands"
         },
         {
@@ -3332,7 +3338,9 @@
           "StateName": "Saint Andrew"
         },
         {
-          "Cities": [],
+          "Cities": [
+            "Saint George"
+          ],
           "StateName": "Saint George"
         },
         {
@@ -4590,7 +4598,9 @@
           "StateName": "Central Mahalapye"
         },
         {
-          "Cities": [],
+          "Cities": [
+            "Central Serowe-Palapye"
+          ],
           "StateName": "Central Serowe-Palapye"
         },
         {
@@ -36431,7 +36441,9 @@
           "StateName": "Kogi"
         },
         {
-          "Cities": [],
+          "Cities": [
+            "Tanke"
+          ],
           "StateName": "Kwara"
         },
         {
