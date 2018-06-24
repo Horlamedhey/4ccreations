@@ -1,6 +1,8 @@
 import express from 'express'
 import { Nuxt, Builder } from 'nuxt'
-import user from './routes/userRoutes'
+import routes from './routes/userRoutes'
+import Users from './models/user'
+import jwt from 'jsonwebtoken'
 
 const app = express()
 const bodyParser = require('body-parser')
@@ -8,17 +10,29 @@ const cors = require('cors')
 const morgan = require('morgan')
 const host = process.env.HOST || '127.0.0.1'
 const port = process.env.PORT || 3000
+const mongodb = require('./mongodb')
 
 app.use(cors())
 app.use(morgan('combined'))
 app.use(bodyParser.json())
-// app.use(user.users)
-const mongodb = require('./mongodb')
-
+// connecting to database
 mongodb.connect()
-
+// checking for login with token
+// app.use(function (req, res, next) {
+//   if (req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'JWT') {
+//     jwt.verify(req.headers.authorization.split(' ')[1], 'SECRET', function (err, decode) {
+//       if (err) {
+//         req.user = undefined
+//       } req.user = decode
+//       next()
+//     })
+//   } else {
+//     req.user = undefined
+//     next()
+//   }
+// })
 // Import API Routes
-app.use('/api', user.users)
+app.use('/', routes)
 
 // Import and Set Nuxt.js options
 let config = require('../nuxt.config.js')

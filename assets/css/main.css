@@ -90,3 +90,12 @@
 .drawNavItems:hover .drawNavIcons{
     color: white;
 }
+
+.pencil{
+    margin: 0%;
+    height: unset;
+}
+
+.infos{
+    padding: 10px;
+}

@@ -21,8 +21,8 @@
       </v-list>
     </v-navigation-drawer>
 	<v-flex class="tabCont hidden-sm-and-down">
-		<v-tabs value="tab-1" grow icons-and-text dark color="accent">
-    <v-tabs-slider color="warning"></v-tabs-slider>
+		<v-tabs value="tab-1" grow icons-and-text dark color="primary">
+    <v-tabs-slider color="accent"></v-tabs-slider>
     <v-tab v-for="item in profileItems" :key="item.href" :href="item.href">
       {{item.name}}
       <v-icon>{{item.icon}}</v-icon>
@@ -39,7 +39,7 @@
     </v-tab-item>
   </v-tabs>
 	</v-flex>
-  <v-flex class="hidden-md-and-up">
+  <v-flex class="hidden-md-and-up pt-5">
   <keep-alive>
     <component :is="active"></component>
   </keep-alive>
@@ -104,6 +104,8 @@ export default {
       })
       this.$store.commit('mobileProf', true)
     }
+  },
+  mounted () {
   },
   computed: {
     drawer: {

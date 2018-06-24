@@ -1204,11 +1204,15 @@
           "StateName": "Encamp"
         },
         {
-          "Cities": [],
+          "Cities": [
+            "Others"
+          ],
           "StateName": "La Massana"
         },
         {
-          "Cities": [],
+          "Cities": [
+            "Others"
+          ],
           "StateName": "Les Escaldes"
         },
         {
@@ -36373,7 +36377,9 @@
           "StateName": "Bauchi"
         },
         {
-          "Cities": [],
+          "Cities": [
+            "Bayelsa"
+          ],
           "StateName": "Bayelsa"
         },
         {
@@ -36487,7 +36493,9 @@
           "StateName": "Osun"
         },
         {
-          "Cities": [],
+          "Cities": [
+            "Ibarapa west"
+          ],
           "StateName": "Oyo"
         },
         {

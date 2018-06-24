@@ -125,7 +125,7 @@
 		    <span>Login</span>
 	    </v-tooltip>
 	    <v-tooltip bottom>
-		    <v-btn nuxt to="/profile" slot="activator" @click="$router.push('/profile')" icon flat class="white--text">
+		    <v-btn slot="activator" @click="getProfile()" icon flat class="white--text">
 			    <v-icon>
 				    mdi-account-circle
 			    </v-icon>
@@ -235,6 +235,9 @@ export default {
       this.$router.push('/')
       this.$store.commit('index', Home)
       this.$store.commit('populatePostsCat', {link: 'TRENDS', cat: 'TRENDS'})
+    },
+    getProfile () {
+      this.$router.push('/profile')
     },
     search1 () {
       document.getElementById('search1').focus()

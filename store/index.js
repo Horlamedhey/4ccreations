@@ -296,9 +296,6 @@ export const mutations = {
 }
 
 export const actions = {
-  async login (context, {payload}) {
-    alert(payload)
-  },
   async pushPost (context) {
     context.commit('pushPost')
     await axios

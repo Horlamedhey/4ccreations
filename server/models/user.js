@@ -1,44 +1,47 @@
 var mongoose = require('mongoose')
+var timestamps = require('mongoose-timestamp')
 var bcrypt = require('bcrypt')
 var Schema = mongoose.Schema
 
 var UserSchema = new Schema({
-  title: [String],
-  name: String,
-  username: {
-    type: String,
-    max: 10,
-    unique: true,
-    index: true
+  personalInfo: {
+    title: [String],
+    name: String,
+    username: {
+      type: String,
+      max: 10,
+      unique: true,
+      index: true
+    },
+    phone: String,
+    email: {
+      index: true,
+      type: String,
+      unique: true,
+      lowercase: true
+    },
+    status: String,
+    password: {
+      type: String
+    },
+    nationality: String,
+    state: String,
+    city: String,
+    dob: String,
+    gender: String,
+    company: String,
+    institution: String,
+    level: String,
+    position: String,
+    newsletter: Boolean
   },
-  phone: String,
-  email: {
-    index: true,
-    type: String,
-    unique: true,
-    lowercase: true
-  },
-  status: String,
-  password: {
-    type: String
-  },
-  nationality: String,
-  state: String,
-  city: String,
-  newsletter: Boolean,
-  createdOn: {type: String, index: true}
+  portfolio: [{}],
+  dashboard: {},
+  settings: {}
 })
-
-UserSchema.pre('save', function (next) {
-  let user = this
-  bcrypt.hash(user.password, 10, function (err, hash) {
-    if (err) {
-      return next(err)
-    }
-    user.password = hash
-    next()
-  })
-})
-
+UserSchema.plugin(timestamps)
+UserSchema.methods.comparePassword = function (password) {
+  return bcrypt.compareSync(password, this.personalInfo.password)
+}
 var User = mongoose.model('User', UserSchema)
 module.exports = User

@@ -1,5 +1,21 @@
 <template>
 	<v-layout style="height: unset;" align-center justify-center wrap class="pb-3">
+    <v-dialog persistent v-model="dialog" max-width="300">
+      <v-card>
+        <v-icon class="pa-3" color="success" style="font-size:80px;margin-left:35%;">mdi-account-check</v-icon>
+        <v-btn @click="dialog = false" icon flat class="right">
+          <v-icon color="black">mdi-close</v-icon>
+        </v-btn>
+        <v-card-text class="headline text-xs-center">YOU'RE SUCCESSFULLY REGISTERED!!!</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" flat @click="$store.commit('index', 'Home')">BACK TO HOME</v-btn>
+          <!-- <nuxt-link :to="newUser ? { name: 'profile-profile', params: { profile: newUser.username }} : ''">
+          <v-btn color="green darken-1" flat>PROCEED TO PROFILE</v-btn>
+          </nuxt-link> -->
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 		<v-flex xs12 sm8>
 			<v-alert transition="scale-transition" v-model="alert" color="info" icon="mdi-information">
 				All fields are compulsory!
@@ -164,7 +180,7 @@ export default {
       passIcon: true,
       cpassIcon: true,
       alert: false,
-      // alert: {status: false, icon: 'mdi-information', color: 'info', content: ''},
+      dialog: false,
       titles: ['Mr', 'Mrs', 'Miss', 'Dr', 'Engr'],
       user: {
         title: [],
@@ -219,8 +235,6 @@ export default {
           city,
           newsletter
         } = this.user
-        let date = new Date()
-        let created = date.toDateString() + ' - ' + date.toLocaleTimeString()
         let user = {
           title,
           name,
@@ -232,46 +246,45 @@ export default {
           nationality,
           state,
           city,
-          newsletter,
-          createdOn: created
+          dob: '',
+          gender: '',
+          company: '',
+          institution: '',
+          level: '',
+          position: '',
+          newsletter
         }
         await axios
-          .post('/api/createUser', user)
+          .post('/register', user)
           .then((result) => {
-            this.alert.content = result.data
-            this.alert.status = true
-            this.alert.icon = 'mdi-account-check'
-            this.alert.color = 'success'
-            // this.alert.status ? this.alert.status = false : this.alert.status = true
-            // this.alert.icon = 'mdi-alert-octagram'
-            // this.alert.color = 'error'
+            if (result) {
+              this.dialog = true
+            }
           })
-          // .then(() => {
-          //   setTimeout(() => {
-          //     this.$store.commit('index', 'Login')
-          //   }, 5000)
-          // })
-          // .then(() => {
-          //   this.$v.$reset()
-          //   this.user.name = ''
-          //   this.user.email = ''
-          //   this.user.title = []
-          //   this.user.username = ''
-          //   this.user.password = ''
-          //   this.user.confirmPassword = ''
-          //   this.user.phone = ''
-          //   this.user.status = null
-          //   this.user.nationality = null
-          //   this.user.state = null
-          //   this.user.city = null
-          //   this.user.newsletter = false
-          //   this.passIcon = true
-          //   this.cpassIcon = true
-          // })
+          .then(() => {
+            this.$v.$reset()
+            this.user.name = ''
+            this.user.email = ''
+            this.user.title = []
+            this.user.username = ''
+            this.user.password = ''
+            this.user.confirmPassword = ''
+            this.user.phone = ''
+            this.user.status = null
+            this.user.nationality = null
+            this.user.state = null
+            this.user.city = null
+            this.user.newsletter = false
+            this.passIcon = true
+            this.cpassIcon = true
+          })
           .catch(err => {
             console.log(err)
           })
       }
+    },
+    redirectProfile (username) {
+      this.$router.push({name: 'profile-profile', params: {profile: 2}})
     },
     fill () {
       this.user.title = ['Mr', 'Dr', 'Engr']
@@ -407,7 +420,7 @@ export default {
   },
   mounted () {
     setTimeout(() => {
-      this.alert.status = true
+      this.alert = true
     }, 500)
   }
 }

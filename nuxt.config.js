@@ -1,10 +1,10 @@
 const imagemin = require('imagemin')
 const imageminWebp = require('imagemin-webp')
 module.exports = {
-  serverMiddleware: [
-    // Will register redirect-ssl npm package
-    'redirect-ssl'
-  ],
+  // serverMiddleware: [
+  //   // Will register redirect-ssl npm package
+  //   'redirect-ssl'
+  // ],
   modules: [
     '@nuxtjs/pwa',
     'nuxt-imagemin'
