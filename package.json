@@ -17,6 +17,7 @@
         "axios": "^0.16.2",
         "bcrypt": "^2.0.1",
         "body-parser": "^1.18.3",
+        "cookie-universal-nuxt": "^2.0.5",
         "cookies": "^0.7.1",
         "cors": "^2.8.4",
         "cross-env": "^5.0.1",

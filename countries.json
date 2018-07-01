@@ -532,11 +532,15 @@
     {
       "States": [
         {
-          "Cities": [],
+          "Cities": [
+            "Others"
+          ],
           "StateName": "'Ayn Daflah"
         },
         {
-          "Cities": [],
+          "Cities": [
+            "Others"
+          ],
           "StateName": "'Ayn Tamushanat"
         },
         {

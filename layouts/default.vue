@@ -237,7 +237,12 @@ export default {
       this.$store.commit('populatePostsCat', {link: 'TRENDS', cat: 'TRENDS'})
     },
     getProfile () {
-      this.$router.push('/profile')
+      if (this.$cookie.get('token')) {
+        this.$router.push('/profile')
+      } else {
+        this.$router.push('/')
+        this.$store.commit('index', 'Login')
+      }
     },
     search1 () {
       document.getElementById('search1').focus()

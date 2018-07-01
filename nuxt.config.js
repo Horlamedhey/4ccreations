@@ -7,7 +7,8 @@ module.exports = {
   // ],
   modules: [
     '@nuxtjs/pwa',
-    'nuxt-imagemin'
+    'nuxt-imagemin',
+    ['cookie-universal-nuxt', {alias: 'cookie'}]
     // 'nuxt-babel'
   ],
   /*

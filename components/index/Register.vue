@@ -1,18 +1,16 @@
 <template>
 	<v-layout style="height: unset;" align-center justify-center wrap class="pb-3">
-    <v-dialog persistent v-model="dialog" max-width="300">
+    <v-dialog persistent v-model="dialog.status" max-width="300">
       <v-card>
-        <v-icon class="pa-3" color="success" style="font-size:80px;margin-left:35%;">mdi-account-check</v-icon>
-        <v-btn @click="dialog = false" icon flat class="right">
+        <v-icon class="pa-3" :color="dialog.color" style="font-size:80px;margin-left:35%;">{{dialog.icon}}</v-icon>
+        <v-btn @click="dialog.status = false" icon flat class="right">
           <v-icon color="black">mdi-close</v-icon>
         </v-btn>
-        <v-card-text class="headline text-xs-center">YOU'RE SUCCESSFULLY REGISTERED!!!</v-card-text>
-        <v-card-actions>
+        <v-card-text class="headline text-xs-center">{{dialog.message}}</v-card-text>
+        <v-card-actions v-if="dialog.color === 'success'">
           <v-spacer></v-spacer>
           <v-btn color="green darken-1" flat @click="$store.commit('index', 'Home')">BACK TO HOME</v-btn>
-          <!-- <nuxt-link :to="newUser ? { name: 'profile-profile', params: { profile: newUser.username }} : ''">
-          <v-btn color="green darken-1" flat>PROCEED TO PROFILE</v-btn>
-          </nuxt-link> -->
+          <v-btn color="green darken-1" flat @click="directLogin()">PROCEED TO PROFILE</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -180,7 +178,7 @@ export default {
       passIcon: true,
       cpassIcon: true,
       alert: false,
-      dialog: false,
+      dialog: {status: false, icon: 'mdi-account-check', color: 'success', message: 'YOU\'RE SUCCESSFULLY REGISTERED!!!'},
       titles: ['Mr', 'Mrs', 'Miss', 'Dr', 'Engr'],
       user: {
         title: [],
@@ -257,9 +255,8 @@ export default {
         await axios
           .post('/register', user)
           .then((result) => {
-            if (result) {
-              this.dialog = true
-            }
+            this.$cookie.set('user', {username: this.user.username, password: this.user.password})
+            this.dialog.status = true
           })
           .then(() => {
             this.$v.$reset()
@@ -280,11 +277,32 @@ export default {
           })
           .catch(err => {
             console.log(err)
+            this.dialog.icon = 'mdi-account-alert'
+            this.dialog.color = 'error'
+            this.dialog.message = 'Username already exists'
+            this.dialog.status = true
           })
       }
     },
-    redirectProfile (username) {
-      this.$router.push({name: 'profile-profile', params: {profile: 2}})
+    async directLogin () {
+      let user = this.$cookie.get('user')
+      user = JSON.stringify(user)
+      user = JSON.parse(user)
+      await axios.post('/login', user)
+        .then((res) => {
+          console.log(res)
+          if (res.data.token) {
+            let data = JSON.stringify(res.data.token)
+            this.$cookie.set('token', data, {path: '/', maxAge: 60 * 60 * 24})
+            console.log(data)
+          }
+        })
+        .then(() => {
+          this.$router.push('/profile')
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     fill () {
       this.user.title = ['Mr', 'Dr', 'Engr']

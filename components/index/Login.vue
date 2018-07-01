@@ -53,7 +53,6 @@
 
 <script>
 import axios from '~/plugins/axios'
-import Cookies from 'cookies'
 export default {
   name: 'Login',
   data () {
@@ -79,18 +78,18 @@ export default {
             this.dialog.color = 'error'
             this.dialog.icon = 'mdi-account-alert'
           } else if (res.data.token) {
-            let data = res.data
-            new Cookies().set('token', data, {secure: true})
-            localStorage.setItem('token', JSON.stringify(res.data))
-            console.log(JSON.stringify(res.data))
+            let data = JSON.stringify(res.data.token)
+            this.$cookie.set('token', data, {path: '/', maxAge: 60 * 60 * 24})
+            console.log(data)
             this.content = 'User Successfully Authenticated. Logging In...'
             this.dialog.color = 'success'
             this.dialog.icon = 'mdi-account-check'
+            this.dialog.status = true
             setTimeout(() => {
               this.dialog.status = false
+              this.$router.push('/profile')
             }, 2000)
           }
-          this.dialog.status = true
         })
         .catch(err => {
           console.log(err)

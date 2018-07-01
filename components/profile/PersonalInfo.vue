@@ -59,7 +59,7 @@
 </template>
 
 <script>
-    import axios from '~/plugins/axios'
+    // axios.defaults.headers.common['rt'] = 6
 export default {
       name: 'PersonalInfo',
       data () {
@@ -84,23 +84,8 @@ export default {
         }
       },
       mounted () {
-        this.profileAuth()
       },
       methods: {
-        async profileAuth () {
-          await axios.get('/profileAuth')
-            .then(res => {
-              this.infos.forEach((u, i) => {
-                res.data.forEach((v, j) => {
-                  if (i === j) {
-                    u.content = v
-                  }
-                })
-              })
-              console.log(res)
-            })
-        }
-
       }
 }
 </script>

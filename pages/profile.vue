@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import axios from '~/plugins/axios'
 import PersonalInfo from '~/components/profile/PersonalInfo'
 export default {
   name: 'profile',
@@ -103,9 +104,28 @@ export default {
         }
       })
       this.$store.commit('mobileProf', true)
+    },
+    async profileAuth () {
+      await axios.get('/profileAuth', { headers: { Authorization: 'Bearer' + ' ' + this.$cookie.get('token') } })
+        .then(res => {
+          let data = JSON.stringify(res.data)
+          console.log(data)
+        // this.infos.forEach((u, i) => {
+        //   res.data.forEach((v, j) => {
+        //     if (i === j) {
+        //       u.content = v
+        //     }
+        //   })
+        })
     }
   },
   mounted () {
+    this.profileAuth()
+  },
+  beforeCreate () {
+    if (!this.$cookie.get('token')) {
+      this.$router.push('/unauthorized')
+    }
   },
   computed: {
     drawer: {

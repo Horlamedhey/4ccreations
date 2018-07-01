@@ -1,8 +1,6 @@
 import express from 'express'
 import { Nuxt, Builder } from 'nuxt'
 import routes from './routes/userRoutes'
-import Users from './models/user'
-import jwt from 'jsonwebtoken'
 
 const app = express()
 const bodyParser = require('body-parser')
@@ -33,7 +31,6 @@ mongodb.connect()
 // })
 // Import API Routes
 app.use('/', routes)
-
 // Import and Set Nuxt.js options
 let config = require('../nuxt.config.js')
 config.dev = !(process.env.NODE_ENV === 'production')
