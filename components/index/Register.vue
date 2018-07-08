@@ -50,7 +50,7 @@
 						<v-layout wrap row justify-space-between>
 							<v-flex xs12 md6>
 								<v-text-field autocomplete hint="HINT: Variable1" color="secondary" prepend-icon="mdi-account-key" clearable label="Username" v-model.trim="user.username" :error-messages="usernameErrors"
-								               :counter="10" @input="$v.user.username.$touch()"
+								               :counter="12" @input="$v.user.username.$touch()"
 								              @blur="$v.user.username.$touch()"
 								             />
 							</v-flex>
@@ -107,7 +107,7 @@
 							<v-flex xs12 md3 class="pt-3 pb-4">
 								<v-select solo-inverted prepend-icon="mdi-map-marker" color="secondary" open-on-clear autocomplete 
 								          dense clearable editable chips deletable-chips combobox no-data-text="Invalid selection"
-								          label="City" v-model.trim="user.city" :items="cities" @focus="deboun()"
+								          label="City" v-model.trim="user.city" :items="cities" 
 								          :error-messages="cityErrors" @input="$store.commit('cit', user.city)"
 								          @blur="$v.user.city.$touch()" append-icon="mdi-chevron-down"/>
 							</v-flex>
@@ -152,7 +152,7 @@ export default {
     user: {
       title: { required },
       name: { required, alpha },
-      username: { required, maxLength: maxLength(10) },
+      username: { required, maxLength: maxLength(12) },
       phone: {
         required,
         maxLength: maxLength(14),
@@ -178,7 +178,7 @@ export default {
       passIcon: true,
       cpassIcon: true,
       alert: false,
-      dialog: {status: false, icon: 'mdi-account-check', color: 'success', message: 'YOU\'RE SUCCESSFULLY REGISTERED!!!'},
+      dialog: {status: false, icon: '', color: '', message: ''},
       titles: ['Mr', 'Mrs', 'Miss', 'Dr', 'Engr'],
       user: {
         title: [],
@@ -254,60 +254,45 @@ export default {
         }
         await axios
           .post('/register', user)
-          .then((result) => {
-            this.$cookie.set('user', {username: this.user.username, password: this.user.password})
+          .then((res) => {
+            if (res.data.color === 'success') {
+              this.$v.$reset()
+              this.user.name = ''
+              this.user.email = ''
+              this.user.title = []
+              this.user.username = ''
+              this.user.password = ''
+              this.user.confirmPassword = ''
+              this.user.phone = ''
+              this.user.status = null
+              this.user.nationality = null
+              this.user.state = null
+              this.user.city = null
+              this.user.newsletter = false
+              this.passIcon = true
+              this.cpassIcon = true
+            }
+            this.dialog.message = res.data.message
+            this.dialog.icon = res.data.icon
+            this.dialog.color = res.data.color
             this.dialog.status = true
-          })
-          .then(() => {
-            this.$v.$reset()
-            this.user.name = ''
-            this.user.email = ''
-            this.user.title = []
-            this.user.username = ''
-            this.user.password = ''
-            this.user.confirmPassword = ''
-            this.user.phone = ''
-            this.user.status = null
-            this.user.nationality = null
-            this.user.state = null
-            this.user.city = null
-            this.user.newsletter = false
-            this.passIcon = true
-            this.cpassIcon = true
           })
           .catch(err => {
             console.log(err)
             this.dialog.icon = 'mdi-account-alert'
             this.dialog.color = 'error'
-            this.dialog.message = 'Username already exists'
+            this.dialog.message = 'Unable to register new User, please try again.'
             this.dialog.status = true
           })
       }
     },
-    async directLogin () {
-      let user = this.$cookie.get('user')
-      user = JSON.stringify(user)
-      user = JSON.parse(user)
-      await axios.post('/login', user)
-        .then((res) => {
-          console.log(res)
-          if (res.data.token) {
-            let data = JSON.stringify(res.data.token)
-            this.$cookie.set('token', data, {path: '/', maxAge: 60 * 60 * 24})
-            console.log(data)
-          }
-        })
-        .then(() => {
-          this.$router.push('/profile')
-        })
-        .catch(err => {
-          console.log(err)
-        })
+    directLogin () {
+      this.$router.push('/profile')
     },
     fill () {
       this.user.title = ['Mr', 'Dr', 'Engr']
       this.user.name = 'AbdulGafar Olamide Ajao'
-      this.user.username = 'variable'
+      this.user.username = 'variabl'
       this.user.phone = '08134549552'
       this.user.email = 'Horlasco34@gmail.com'
       this.user.status = 'Professional'
@@ -350,7 +335,7 @@ export default {
       const errors = []
       if (!this.$v.user.username.$dirty) return errors
       !this.$v.user.username.maxLength &&
-        errors.push('Name must be at most 10 characters long')
+        errors.push('Username must be at most 12 characters long')
       !this.$v.user.username.required && errors.push('Username is required.')
       if (/\s/.test(this.user.username)) {
         errors.push('Space character is not allowed')

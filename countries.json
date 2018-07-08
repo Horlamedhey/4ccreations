@@ -561,6 +561,7 @@
         },
         {
           "Cities": [
+            "Al-Buni",
             "Annabah",
             "Birrahhal",
             "Saraydih",
@@ -2749,7 +2750,9 @@
           "StateName": "Biminis"
         },
         {
-          "Cities": [],
+          "Cities": [
+            "Others"
+          ],
           "StateName": "Cat Island"
         },
         {
@@ -36485,7 +36488,9 @@
           "StateName": "Niger"
         },
         {
-          "Cities": [],
+          "Cities": [
+            "Abeokuta"
+          ],
           "StateName": "Ogun"
         },
         {

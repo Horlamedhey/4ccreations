@@ -99,3 +99,7 @@
 .infos{
     padding: 10px;
 }
+
+.grey--texts{
+    color: rgba(0, 0, 0, 0.5)
+}

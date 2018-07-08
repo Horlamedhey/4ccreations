@@ -9,37 +9,49 @@ var UserSchema = new Schema({
     name: String,
     username: {
       type: String,
-      max: 10,
       unique: true,
-      index: true
+      required: true,
+      trim: true
     },
     phone: String,
     email: {
-      index: true,
       type: String,
       unique: true,
-      lowercase: true
+      required: true,
+      trim: true
     },
     status: String,
     password: {
-      type: String
+      type: String,
+      required: true
     },
+    picture: {type: String, default: 'http://byronbayphotographer.com/wp-content/uploads/2017/11/pleasing-mystery-clipart-person-pencil-and-in-color.jpg'},
     nationality: String,
     state: String,
     city: String,
-    dob: String,
-    gender: String,
-    company: String,
-    institution: String,
-    level: String,
-    position: String,
+    dob: {type: String, default: ''},
+    gender: {type: String, default: ''},
+    company: {type: String, default: ''},
+    institution: {type: String, default: ''},
+    level: {type: String, default: ''},
+    position: {type: String, default: ''},
     newsletter: Boolean
   },
-  portfolio: [{}],
+  portfolio: [],
   dashboard: {},
   settings: {}
 })
 UserSchema.plugin(timestamps)
+UserSchema.pre('save', function (next) {
+  let user = this
+  bcrypt.hash(user.personalInfo.password, 10, function (err, hash) {
+    if (err) {
+      return next(err)
+    }
+    user.personalInfo.password = hash
+    next()
+  })
+})
 UserSchema.methods.comparePassword = function (password) {
   return bcrypt.compareSync(password, this.personalInfo.password)
 }

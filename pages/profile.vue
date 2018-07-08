@@ -20,8 +20,17 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
+	<v-dialog persistent v-model="dialog.status" max-width="300">
+      <v-card>
+        <v-icon class="pa-3" :color="dialog.color" style="font-size:80px;margin-left:35%;">{{dialog.icon}}</v-icon>
+        <v-btn v-if="dialog.color === 'error'" @click="gotoLogIn()" icon flat class="right">
+          <v-icon color="black">mdi-close</v-icon>
+        </v-btn>
+        <v-card-text class="headline text-xs-center">{{dialog.content}}</v-card-text>
+      </v-card>
+    </v-dialog>
 	<v-flex class="tabCont hidden-sm-and-down">
-		<v-tabs value="tab-1" grow icons-and-text dark color="primary">
+		<v-tabs fixed-tabs value="tab-1" grow icons-and-text dark color="primary">
     <v-tabs-slider color="accent"></v-tabs-slider>
     <v-tab v-for="item in profileItems" :key="item.href" :href="item.href">
       {{item.name}}
@@ -57,6 +66,7 @@ export default {
   },
   data () {
     return {
+      dialog: {status: false, color: 'error', icon: 'mdi-account-alert', content: 'User not logged in.'},
       active: 'PersonalInfo',
       profileItems: [
         {
@@ -106,10 +116,14 @@ export default {
       this.$store.commit('mobileProf', true)
     },
     async profileAuth () {
-      await axios.get('/profileAuth', { headers: { Authorization: 'Bearer' + ' ' + this.$cookie.get('token') } })
+      await axios.get('/profileAuth')
         .then(res => {
-          let data = JSON.stringify(res.data)
-          console.log(data)
+          if (res.data.auth === false) {
+            this.dialog.content = res.data.message
+            this.dialog.status = true
+          } else {
+            this.$store.commit('userIn', res.data)
+          }
         // this.infos.forEach((u, i) => {
         //   res.data.forEach((v, j) => {
         //     if (i === j) {
@@ -117,15 +131,21 @@ export default {
         //     }
         //   })
         })
+    },
+    gotoLogIn () {
+      this.dialog.status = false
+      if (this.dialog.content === 'User not found, please register.') {
+        this.$store.commit('index', 'Register')
+      } else {
+        this.$store.commit('index', 'Login')
+      }
+      this.$router.push('/')
     }
   },
   mounted () {
-    this.profileAuth()
   },
-  beforeCreate () {
-    if (!this.$cookie.get('token')) {
-      this.$router.push('/unauthorized')
-    }
+  beforeMount () {
+    this.profileAuth()
   },
   computed: {
     drawer: {

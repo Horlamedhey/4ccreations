@@ -3,10 +3,10 @@
 	<v-dialog persistent v-model="dialog.status" max-width="300">
       <v-card>
         <v-icon class="pa-3" :color="dialog.color" style="font-size:80px;margin-left:35%;">{{dialog.icon}}</v-icon>
-        <v-btn v-if="dialog.color === 'error'" @click="dialog.status = false" icon flat class="right">
+        <v-btn v-if="dialog.color === 'error'" @click="closeDialog()" icon flat class="right">
           <v-icon color="black">mdi-close</v-icon>
         </v-btn>
-        <v-card-text class="headline text-xs-center">{{content}}</v-card-text>
+        <v-card-text class="headline text-xs-center">{{dialog.content}}</v-card-text>
       </v-card>
     </v-dialog>
 	<v-flex xs12 sm8>
@@ -57,8 +57,7 @@ export default {
   name: 'Login',
   data () {
     return {
-      dialog: {status: false, color: 'error', icon: 'mdi-account-alert'},
-      content: '',
+      dialog: {status: false, color: 'error', icon: 'mdi-account-alert', content: ''},
       alert: false,
       user: {
         username: '',
@@ -71,17 +70,14 @@ export default {
       let {username, password} = this.user
       let user = {username, password}
       await axios.post('/login', user)
-        .then((res) => {
-          console.log(res)
+        .then(res => {
           if (res.data.status === 'error') {
-            this.content = res.data.message
+            this.dialog.content = res.data.message
             this.dialog.color = 'error'
             this.dialog.icon = 'mdi-account-alert'
-          } else if (res.data.token) {
-            let data = JSON.stringify(res.data.token)
-            this.$cookie.set('token', data, {path: '/', maxAge: 60 * 60 * 24})
-            console.log(data)
-            this.content = 'User Successfully Authenticated. Logging In...'
+            this.dialog.status = true
+          } else {
+            this.dialog.content = 'User Successfully Authenticated. Logging In...'
             this.dialog.color = 'success'
             this.dialog.icon = 'mdi-account-check'
             this.dialog.status = true
@@ -94,6 +90,12 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    closeDialog () {
+      this.dialog.status = false
+      if (this.dialog.content === 'Login failed. User not found.') {
+        this.$store.commit('index', 'Register')
+      }
     }
   },
   computed: {},

@@ -105,8 +105,11 @@
 	    <v-btn @click="registerFn(Register)" flat class="white--text log hidden-sm-and-down">
 		    REGISTER
 	    </v-btn>
-	    <v-btn @click="loginFn(Login)" flat class="white--text mr-5 log hidden-sm-and-down">
+	    <v-btn v-if="$route.path !== '/profile'" @click="loginFn(Login)" flat class="white--text mr-5 log hidden-sm-and-down">
 		    LOGIN
+	    </v-btn>
+	    <v-btn v-if="$route.path === '/profile'" @click="logoutFn(Login)" flat class="white--text mr-5 log hidden-sm-and-down">
+		    LOGOUT
 	    </v-btn>
 	    <v-tooltip bottom>
 		    <v-btn slot="activator" @click="registerFn(Register)" icon flat class="white--text hidden-md-and-up">
@@ -116,13 +119,21 @@
 		    </v-btn>
 		    <span>Register</span>
 	    </v-tooltip>
-	    <v-tooltip bottom>
+	    <v-tooltip v-show="$route.path !== '/profile'" bottom>
 		    <v-btn slot="activator" @click="loginFn(Login)" icon flat class="white--text hidden-md-and-up">
 			    <v-icon>
 				    mdi-login
 			    </v-icon>
 		    </v-btn>
 		    <span>Login</span>
+	    </v-tooltip>
+	    <v-tooltip v-show="$route.path === '/profile'" bottom>
+		    <v-btn slot="activator" @click="logoutFn(Login)" icon flat class="white--text hidden-md-and-up">
+			    <v-icon>
+				    mdi-logout
+			    </v-icon>
+		    </v-btn>
+		    <span>Logout</span>
 	    </v-tooltip>
 	    <v-tooltip bottom>
 		    <v-btn slot="activator" @click="getProfile()" icon flat class="white--text">
@@ -144,7 +155,7 @@
 </template>
 
 <script>
-// import axios from '~/plugins/axios.js'
+import axios from '~/plugins/axios.js'
 import Loader from '~/components/Loader'
 export default {
   components: {
@@ -224,25 +235,31 @@ export default {
       this.drawer = false
     },
     registerFn (Register) {
-      this.$router.push('/')
       this.$store.commit('index', Register)
+      this.$router.push('/')
     },
     loginFn (Login) {
-      this.$router.push('/')
       this.$store.commit('index', Login)
+      if (this.$route.path !== '/') {
+        this.$router.push('/')
+      }
+    },
+    async logoutFn (Login) {
+      await axios.get('/logout')
+        .then(res => {
+          this.$store.commit('index', Login)
+          if (this.$route.path !== '/') {
+            this.$router.push('/')
+          }
+        })
     },
     homeFn (Home) {
-      this.$router.push('/')
       this.$store.commit('index', Home)
+      this.$router.push('/')
       this.$store.commit('populatePostsCat', {link: 'TRENDS', cat: 'TRENDS'})
     },
     getProfile () {
-      if (this.$cookie.get('token')) {
-        this.$router.push('/profile')
-      } else {
-        this.$router.push('/')
-        this.$store.commit('index', 'Login')
-      }
+      this.$router.push('/profile')
     },
     search1 () {
       document.getElementById('search1').focus()
@@ -250,10 +267,6 @@ export default {
     search2 () {
       document.getElementById('search2').focus()
     }
-  },
-  beforeCreate () {
-    this.$store.dispatch('fetchPosts')
-    this.$store.dispatch('fetchLocation')
   }
 }
 </script>

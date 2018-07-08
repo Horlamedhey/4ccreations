@@ -1,14 +1,17 @@
 import axios from '~/plugins/axios'
 export const state = () => ({
+  // userData
+  userIn: {},
+  // page loader
   loader: true,
-  content: false,
-  mobileProf: false,
-  postsLoading: true,
+  // slider
   sliderHeight: 90,
+  // HOME PAGE
+  content: false,
   index: 'Home',
+  // post
+  postsLoading: true,
   postBox: false,
-  newsletterSubscribers: [],
-  posts: [],
   bigPost: { image: [], title: null, desc: null, comments: null, likes: null, category: null, uploader: null, uploaderImg: null, time: null, activeImg: null },
   enlargeImg: false,
   enlargePost: false,
@@ -22,6 +25,13 @@ export const state = () => ({
     uploaderImg: null
   },
   post: null,
+  id: null,
+  // profile page
+  mobileProf: false,
+  // DATABASE
+  newsletterSubscribers: [],
+  posts: [],
+  // location
   locations: null,
   countries: [],
   nationality: null,
@@ -31,10 +41,17 @@ export const state = () => ({
   cities: [],
   city: null,
   addCity: null,
-  id: null
+  // misc
+  dump: ''
 })
 
 export const mutations = {
+  dump (state, payload) {
+    state.dump = payload
+  },
+  userIn (state, payload) {
+    state.userIn = payload
+  },
   mobileProf (state, payload) {
     if (payload === false) {
       state.mobileProf = payload

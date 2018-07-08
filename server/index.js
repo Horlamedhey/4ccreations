@@ -9,26 +9,22 @@ const morgan = require('morgan')
 const host = process.env.HOST || '127.0.0.1'
 const port = process.env.PORT || 3000
 const mongodb = require('./mongodb')
+var session = require('express-session')
+var confi = require('./conf')
 
 app.use(cors())
 app.use(morgan('combined'))
 app.use(bodyParser.json())
 // connecting to database
 mongodb.connect()
-// checking for login with token
-// app.use(function (req, res, next) {
-//   if (req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'JWT') {
-//     jwt.verify(req.headers.authorization.split(' ')[1], 'SECRET', function (err, decode) {
-//       if (err) {
-//         req.user = undefined
-//       } req.user = decode
-//       next()
-//     })
-//   } else {
-//     req.user = undefined
-//     next()
-//   }
-// })
+app.use(session({
+  name: 'userId',
+  secret: confi.secret,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 14400000 }
+})
+)
 // Import API Routes
 app.use('/', routes)
 // Import and Set Nuxt.js options
