@@ -29,9 +29,8 @@ router.post('/register', (req, res) => {
     } else {
       let {username, picture} = user.personalInfo
       let data = {username, picture}
-      console.log(data)
-      // req.session.user = jwt.sign({id: user._id, info: data}, config.secret, {expiresIn: '4h'})
-      return res.send({message: 'Voila!!! Registered Successfully!!!', icon: 'mdi-account-check', color: 'success'})
+      req.session.user = jwt.sign({id: user._id}, config.secret, {expiresIn: '4h'})
+      return res.status(200).send({message: 'Voila!!! Registered Successfully!!!', icon: 'mdi-account-check', color: 'success', info: data})
     }
   })
 })
@@ -46,8 +45,8 @@ router.post('/login', (req, res) => {
       } else {
         let {username, picture} = user.personalInfo
         let data = {username, picture}
-        req.session.user = jwt.sign({id: user._id, info: data}, config.secret, {expiresIn: '4h'})
-        res.status(200).send('User Successfully Authenticated. Logging In...')
+        req.session.user = jwt.sign({id: user._id}, config.secret, {expiresIn: '4h'})
+        res.status(200).send({message: 'User Successfully Authenticated. Logging In...', info: data})
       }
     }
   })

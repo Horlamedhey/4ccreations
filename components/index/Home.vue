@@ -1,5 +1,20 @@
 <template>
   <v-container v-if="content" class="pb-5">
+    <v-dialog persistent v-model="dialog.status" max-width="400">
+      <v-card>
+        <v-icon class="pa-3" :color="dialog.color" style="font-size:80px;margin-left:35%;">{{dialog.icon}}</v-icon>
+        <v-btn @click="dialog.status = false" icon flat class="right">
+          <v-icon color="black">mdi-close</v-icon>
+        </v-btn>
+        <v-card-text class="headline text-xs-center">{{dialog.message}}</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" flat @click="dialog.status = false">STAY HERE</v-btn>
+          <v-btn color="green darken-1" flat @click="$store.commit('index', 'Login')">PROCEED TO LOGIN</v-btn>
+          <v-btn color="green darken-1" flat @click="$store.commit('index', 'Register')">REGISTER</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-snackbar
       :timeout="3000"
       color="info"
@@ -166,6 +181,7 @@ export default {
     PostComments
   },
   data: () => ({
+    dialog: {status: false, icon: '', color: '', message: ''},
     snackbar: false,
     isEmoji: false,
     comment: '',
@@ -180,9 +196,17 @@ export default {
     newslet () {
       document.getElementById('newsletter').click()
     },
+    //  Function triggered by clicking the create post pencil,
+    //  It trigers the dialog of the new post in the 'New_Post.vue' component if the user is logged in
     newPost () {
-      document.getElementById('newPost').click()
-      this.$store.commit('emptyPic')
+      if (this.$cookie.get('userInfo')) {
+        document.getElementById('newPost').click()
+      } else {
+        this.dialog.icon = 'mdi-account-alert'
+        this.dialog.color = 'error'
+        this.dialog.message = 'Please login to access this feature.'
+        this.dialog.status = true
+      }
     },
     insert (emoji) {
       this.comment += emoji.native
@@ -247,6 +271,7 @@ export default {
     },
     posts: {
       get () {
+        // return this.$store.state.posts
         return this.$store.state.postsCat.posts
       }
     },

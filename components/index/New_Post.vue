@@ -242,12 +242,13 @@ export default {
     }
   },
   computed: {
+    //  sets and gets the status of the post box and also sends the logged in user information with it
     postBox: {
       get () {
         return this.$store.state.postBox
       },
       set (value) {
-        this.$store.commit('postBox', value)
+        this.$store.commit('postBox', {status: value, user: this.$cookie.get('userInfo')})
       }
     },
     title: {

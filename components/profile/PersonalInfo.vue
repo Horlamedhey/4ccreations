@@ -1,12 +1,12 @@
 <template>
     <v-layout row>
     <v-flex xs12 sm6 offset-sm3>
-      <v-card>
+      <v-card v-if="user">
           <v-flex
           style="margin:0 auto;"
             xs12 sm8 lg6>
             <v-card-media
-            :src="require('~/assets/Night.png')"
+            :src="user.picture"
             height="200px"
             >
               <div style="height: 100%;width: 100%;background: rgba(0,0,0,0.2)">
@@ -31,7 +31,7 @@
           </v-flex>
           <v-slide-y-transition>
         <v-card-title primary-title class="pt-2">
-          <div v-if="user" :style="expand ? 'height: fit-content;width:100%;' : 'height: 180px; overflow: hidden; width:100%;'">
+          <div :style="expand ? 'height: fit-content;width:100%;' : 'height: 180px; overflow: hidden; width:100%;'">
             <!-- //Title -->
               <div class="title infos">
                   <v-layout class="justify-space-between">

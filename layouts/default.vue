@@ -228,7 +228,7 @@ export default {
     },
     link (item) {
       if (item.link) {
-        this.$store.commit('populatePostsCat', {link: item.link, cat: item.name})
+        this.$store.commit('populatePostsCat', item.name)
       } else {
         return false
       }
@@ -247,6 +247,8 @@ export default {
     async logoutFn (Login) {
       await axios.get('/logout')
         .then(res => {
+          this.$cookie.remove('userInfo')
+          this.$store.commit('userIn', {})
           this.$store.commit('index', Login)
           if (this.$route.path !== '/') {
             this.$router.push('/')
@@ -256,7 +258,7 @@ export default {
     homeFn (Home) {
       this.$store.commit('index', Home)
       this.$router.push('/')
-      this.$store.commit('populatePostsCat', {link: 'TRENDS', cat: 'TRENDS'})
+      this.$store.commit('populatePostsCat', 'TRENDS')
     },
     getProfile () {
       this.$router.push('/profile')

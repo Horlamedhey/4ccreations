@@ -77,8 +77,8 @@
             <v-layout wrap row justify-space-between>
 							<v-flex xs12 md6>
 								<v-text-field autocomplete hint="HINT: Variable1@" color="secondary" type="password" prepend-icon="mdi-lock" label="Password" v-model.trim="user.password" :error-messages="passwordErrors"
-								              :counter="8" @blur="$v.user.password.$touch()" @input="$v.user.password.$touch()"
-                               :append-icon="passIcon ? 'mdi-eye' : 'mdi-eye-off'" :append-icon-cb="() => {if (user.password !== ''){passIcon = !passIcon}}" :type="passIcon ? 'password' : 'text'"/>
+                :counter="8" @blur="$v.user.password.$touch()" @input="$v.user.password.$touch()"
+                :append-icon="passIcon ? 'mdi-eye' : 'mdi-eye-off'" :append-icon-cb="() => {if (user.password !== ''){passIcon = !passIcon}}" :type="passIcon ? 'password' : 'text'"/>
 							</v-flex>
 							<v-flex xs12 md5>
 								<v-text-field autocomplete prepend-icon="mdi-lock-question" color="secondary" type="password"
@@ -256,6 +256,8 @@ export default {
           .post('/register', user)
           .then((res) => {
             if (res.data.color === 'success') {
+              let data = JSON.stringify(res.data.info)
+              this.$cookie.set('userInfo', data, {path: '/', maxAge: 14400000})
               this.$v.$reset()
               this.user.name = ''
               this.user.email = ''

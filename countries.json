@@ -7548,7 +7548,9 @@
           "StateName": "Manitoba"
         },
         {
-          "Cities": [],
+          "Cities": [
+            "Others"
+          ],
           "StateName": "New Brunswick"
         },
         {
@@ -10392,7 +10394,9 @@
     {
       "States": [
         {
-          "Cities": [],
+          "Cities": [
+            "Others"
+          ],
           "StateName": "Christmas Island"
         }
       ],

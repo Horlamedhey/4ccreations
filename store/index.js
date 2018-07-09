@@ -21,8 +21,8 @@ export const state = () => ({
     description: '',
     img: [],
     category: [],
-    uploader: null,
-    uploaderImg: null
+    uploader: '???',
+    uploaderImg: '???'
   },
   post: null,
   id: null,
@@ -48,6 +48,18 @@ export const state = () => ({
 export const mutations = {
   dump (state, payload) {
     state.dump = payload
+  },
+  //  receives the logged in user information and the status of the postBox
+  postBox (state, payload) {
+    state.postBox = payload.status
+    state.newPost.title = ''
+    state.newPost.description = ''
+    state.newPost.img = []
+    state.newPost.category = []
+    if (payload.user) {
+      state.newPost.uploader = payload.user.username
+      state.newPost.uploaderImg = payload.user.picture
+    }
   },
   userIn (state, payload) {
     state.userIn = payload
@@ -124,9 +136,6 @@ export const mutations = {
   hover (state, i) {
     state.posts[i].hover = !state.posts[i].hover
   },
-  emptyPic (state) {
-    state.newPost.img = []
-  },
   submitEmail (state, payload) {
     state.newsletterSubscribers.push(payload)
     setTimeout(() => {
@@ -134,15 +143,6 @@ export const mutations = {
         console.log('email added')
       })
     }, 200)
-  },
-  postBox (state, payload) {
-    state.postBox = payload
-    state.newPost.title = ''
-    state.newPost.description = ''
-    state.newPost.img = []
-    state.newPost.category = []
-    state.newPost.uploader = 'AbdulGafar Olamide Ajao'
-    state.newPost.uploaderImg = require('~/assets/webi.png')
   },
   title (state, payload) {
     state.newPost.title = payload
@@ -181,17 +181,14 @@ export const mutations = {
       likes: []
     }
     state.posts.unshift(state.post)
-    if (state.post.category.includes(state.postsCat.category)) {
-      state.postsCat.posts.unshift(state.post)
-    }
     state.postBox = false
     state.postsLoading = false
   },
   populatePostsCat (state, payload) {
     state.postsCat.posts = []
-    state.postsCat.category = payload.cat
+    state.postsCat.category = payload
     state.posts.forEach(v => {
-      if (v.category.includes(payload.cat) || payload.cat === 'TRENDS') {
+      if (v.category.includes(payload) || payload === 'TRENDS') {
         state.postsCat.posts.push(v)
       }
     })

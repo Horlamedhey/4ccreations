@@ -77,7 +77,9 @@ export default {
             this.dialog.icon = 'mdi-account-alert'
             this.dialog.status = true
           } else {
-            this.dialog.content = 'User Successfully Authenticated. Logging In...'
+            let data = JSON.stringify(res.data.info)
+            this.$cookie.set('userInfo', data, {path: '/', maxAge: 14400000})
+            this.dialog.content = res.data.message
             this.dialog.color = 'success'
             this.dialog.icon = 'mdi-account-check'
             this.dialog.status = true

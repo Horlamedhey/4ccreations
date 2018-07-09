@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     slide () {
-      this.$store.commit('populatePostsCat', {link: 'TRENDS', cat: 'TRENDS'})
+      this.$store.commit('populatePostsCat', 'TRENDS')
       let elem = document.querySelector('#slider')
       elem.style.opacity = '0'
       elem.style.height = '0vh'
