@@ -4,7 +4,7 @@ var confi = require('../conf')
 export default session({
   name: 'user',
   secret: confi.secret,
-  resave: false,
+  resave: true,
   saveUninitialized: false,
   cookie: { maxAge: 14400000 }
 })

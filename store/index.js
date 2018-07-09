@@ -12,10 +12,24 @@ export const state = () => ({
   // post
   postsLoading: true,
   postBox: false,
-  bigPost: { image: [], title: null, desc: null, comments: null, likes: null, category: null, uploader: null, uploaderImg: null, time: null, activeImg: null },
+  bigPost: {
+    image: [],
+    title: null,
+    desc: null,
+    comments: null,
+    likes: null,
+    category: null,
+    uploader: null,
+    uploaderImg: null,
+    time: null,
+    activeImg: null
+  },
   enlargeImg: false,
   enlargePost: false,
-  postsCat: { posts: [], category: '' },
+  postsCat: {
+    posts: [],
+    category: ''
+  },
   newPost: {
     title: '',
     description: '',
@@ -157,7 +171,6 @@ export const mutations = {
     state.newPost.category = payload
   },
   pushPost (state) {
-    let num = state.posts.length + 1
     let now = new Date()
     let moment = now.toDateString() + ', ' + now.toLocaleTimeString()
     let {
@@ -169,7 +182,6 @@ export const mutations = {
       uploaderImg
     } = state.newPost
     state.post = {
-      id: num,
       time: moment,
       uploaderImg,
       uploader,
@@ -195,22 +207,13 @@ export const mutations = {
   },
   populatePosts (state, data) {
     state.postsLoading = false
-    function compare (a, b) {
-      if (a.id < b.id) {
-        return 1
-      }
-      if (a.id > b.id) {
-        return -1
-      }
-      return 0
-    }
     data.forEach(v => {
       v.descriptionStatus = false
       v.commentStatus = false
       v.hover = false
       v.activeImg = 0
     })
-    state.posts = data.sort(compare)
+    state.posts = data.reverse()
   },
   comment (state, i) {
     state.posts.forEach(v => {
@@ -276,8 +279,7 @@ export const mutations = {
     if (state.state !== null) {
       state.city = data
     }
-    if (
-      !state.cities.includes(state.city) &&
+    if (!state.cities.includes(state.city) &&
       state.state !== null &&
       state.city !== null
     ) {
@@ -313,7 +315,7 @@ export const actions = {
   async pushPost (context) {
     context.commit('pushPost')
     await axios
-      .post('http://localhost:3001/posts', context.state.post)
+      .post('/newPost', context.state.post)
       .then(() => {
         console.log('posts updated')
       })
@@ -321,9 +323,11 @@ export const actions = {
         console.log(err)
       })
   },
-  async fetchPosts ({ commit }) {
+  async fetchPosts ({
+    commit
+  }) {
     await axios
-      .get('http://localhost:3001/posts')
+      .get('/fetchPosts')
       .then(result => {
         let data = result.data
         commit('populatePosts', data)
@@ -335,7 +339,9 @@ export const actions = {
         console.log(err)
       })
   },
-  async fetchLocation ({ commit }) {
+  async fetchLocation ({
+    commit
+  }) {
     await axios
       .get('http://localhost:3002/Countries')
       .then(result => {

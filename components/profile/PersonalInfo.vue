@@ -31,7 +31,7 @@
           </v-flex>
           <v-slide-y-transition>
         <v-card-title primary-title class="pt-2">
-          <div :style="expand ? 'height: fit-content;width:100%;' : 'height: 180px; overflow: hidden; width:100%;'">
+          <div style="height: fit-content; width:100%;">
             <!-- //Title -->
               <div class="title infos">
                   <v-layout class="justify-space-between">
@@ -84,123 +84,125 @@
                   </v-layout>
                   <v-spacer></v-spacer>
               </div>
-              <!-- //Username -->
-              <div class="title infos">
-                  <v-layout class="justify-space-between">
-                      <span>
-                      Username: 
-                      <span class="grey--texts subheading">{{user.username}}</span>
-                      </span>
-                  </v-layout>
-                  <v-spacer></v-spacer>
-              </div>
-              <!-- //Gender -->
-              <div class="title infos">
-                  <v-layout class="justify-space-between">
-                      <span>
-                      Gender: 
-                      <span class="grey--texts subheading">{{user.gender}}</span>
-                      </span>
-                      <v-btn v-if="user.gender === ''" class="pencil" icon flat color="primary">
-                          <v-icon>mdi-pencil</v-icon>
-                      </v-btn>
-                  </v-layout>
-                  <v-spacer></v-spacer>
-              </div>
-              <!-- //Dob -->
-              <div class="title infos">
-                  <v-layout class="justify-space-between">
-                      <span>
-                      DoB: 
-                      <span class="grey--texts subheading">{{user.dob}}</span>
-                      </span>
-                      <v-btn class="pencil" icon flat color="primary">
-                          <v-icon>mdi-pencil</v-icon>
-                      </v-btn>
-                  </v-layout>
-                  <v-spacer></v-spacer>
-              </div>
-              <!-- //Nationality -->
-              <div class="title infos">
-                  <v-layout class="justify-space-between">
-                      <span>
-                      Nationality: 
-                      <span class="grey--texts subheading">{{user.nationality}}</span>
-                      </span>
-                  </v-layout>
-                  <v-spacer></v-spacer>
-              </div>
-              <!-- //State -->
-              <div class="title infos">
-                  <v-layout class="justify-space-between">
-                      <span>
-                      State: 
-                      <span class="grey--texts subheading">{{user.state}}</span>
-                      </span>
-                  </v-layout>
-                  <v-spacer></v-spacer>
-              </div>
-              <!-- //City -->
-              <div class="title infos">
-                  <v-layout class="justify-space-between">
-                      <span>
-                      City: 
-                      <span class="grey--texts subheading">{{user.city}}</span>
-                      </span>
-                  </v-layout>
-                  <v-spacer></v-spacer>
-              </div>
-              <!-- //Status -->
-              <div class="title infos">
-                  <v-layout class="justify-space-between">
-                      <span>
-                      Status: 
-                      <span class="grey--texts subheading">{{user.status}}</span>
-                      </span>
-                  </v-layout>
-                  <v-spacer></v-spacer>
-              </div>
-              <!-- //Company/Institution -->
-              <div class="title infos">
-                  <v-layout class="justify-space-between">
-                      <span v-if="user.status === 'Professional'">
-                      Company: 
-                      <span class="grey--texts subheading">{{user.company}}</span>
-                      </span>
-                      <span v-if="user.status === 'Student'">
-                      Institution: 
-                      <span class="grey--texts subheading">{{user.institution}}</span>
-                      </span>
-                      <v-btn class="pencil" icon flat color="primary">
-                          <v-icon>mdi-pencil</v-icon>
-                      </v-btn>
-                  </v-layout>
-                  <v-spacer></v-spacer>
-              </div>
-              <!-- //Position/Level -->
-              <div class="title infos">
-                  <v-layout class="justify-space-between">
-                      <span v-if="user.status === 'Professional'">
-                      Position: 
-                      <span class="grey--texts subheading">{{user.position}}</span>
-                      </span>
-                      <span v-if="user.status === 'Student'">
-                      Level: 
-                      <span class="grey--texts subheading">{{user.level}}</span>
-                      </span>
-                      <v-btn class="pencil" icon flat color="primary">
-                          <v-icon>mdi-pencil</v-icon>
-                      </v-btn>
-                  </v-layout>
-                  <v-spacer></v-spacer>
-              </div>
+              <span v-if="expand">
+                <!-- //Username -->
+                <div class="title infos">
+                    <v-layout class="justify-space-between">
+                        <span>
+                        Username: 
+                        <span class="grey--texts subheading">{{user.username}}</span>
+                        </span>
+                    </v-layout>
+                    <v-spacer></v-spacer>
+                </div>
+                <!-- //Gender -->
+                <div class="title infos">
+                    <v-layout class="justify-space-between">
+                        <span>
+                        Gender: 
+                        <span class="grey--texts subheading">{{user.gender}}</span>
+                        </span>
+                        <v-btn v-if="user.gender === ''" class="pencil" icon flat color="primary">
+                            <v-icon>mdi-pencil</v-icon>
+                        </v-btn>
+                    </v-layout>
+                    <v-spacer></v-spacer>
+                </div>
+                <!-- //Dob -->
+                <div class="title infos">
+                    <v-layout class="justify-space-between">
+                        <span>
+                        DoB: 
+                        <span class="grey--texts subheading">{{user.dob}}</span>
+                        </span>
+                        <v-btn class="pencil" icon flat color="primary">
+                            <v-icon>mdi-pencil</v-icon>
+                        </v-btn>
+                    </v-layout>
+                    <v-spacer></v-spacer>
+                </div>
+                <!-- //Nationality -->
+                <div class="title infos">
+                    <v-layout class="justify-space-between">
+                        <span>
+                        Nationality: 
+                        <span class="grey--texts subheading">{{user.nationality}}</span>
+                        </span>
+                    </v-layout>
+                    <v-spacer></v-spacer>
+                </div>
+                <!-- //State -->
+                <div class="title infos">
+                    <v-layout class="justify-space-between">
+                        <span>
+                        State: 
+                        <span class="grey--texts subheading">{{user.state}}</span>
+                        </span>
+                    </v-layout>
+                    <v-spacer></v-spacer>
+                </div>
+                <!-- //City -->
+                <div class="title infos">
+                    <v-layout class="justify-space-between">
+                        <span>
+                        City: 
+                        <span class="grey--texts subheading">{{user.city}}</span>
+                        </span>
+                    </v-layout>
+                    <v-spacer></v-spacer>
+                </div>
+                <!-- //Status -->
+                <div class="title infos">
+                    <v-layout class="justify-space-between">
+                        <span>
+                        Status: 
+                        <span class="grey--texts subheading">{{user.status}}</span>
+                        </span>
+                    </v-layout>
+                    <v-spacer></v-spacer>
+                </div>
+                <!-- //Company/Institution -->
+                <div class="title infos">
+                    <v-layout class="justify-space-between">
+                        <span v-if="user.status === 'Professional'">
+                        Company: 
+                        <span class="grey--texts subheading">{{user.company}}</span>
+                        </span>
+                        <span v-if="user.status === 'Student'">
+                        Institution: 
+                        <span class="grey--texts subheading">{{user.institution}}</span>
+                        </span>
+                        <v-btn class="pencil" icon flat color="primary">
+                            <v-icon>mdi-pencil</v-icon>
+                        </v-btn>
+                    </v-layout>
+                    <v-spacer></v-spacer>
+                </div>
+                <!-- //Position/Level -->
+                <div class="title infos">
+                    <v-layout class="justify-space-between">
+                        <span v-if="user.status === 'Professional'">
+                        Position: 
+                        <span class="grey--texts subheading">{{user.position}}</span>
+                        </span>
+                        <span v-if="user.status === 'Student'">
+                        Level: 
+                        <span class="grey--texts subheading">{{user.level}}</span>
+                        </span>
+                        <v-btn class="pencil" icon flat color="primary">
+                            <v-icon>mdi-pencil</v-icon>
+                        </v-btn>
+                    </v-layout>
+                    <v-spacer></v-spacer>
+                </div>
+            </span>
           </div>
         </v-card-title>
           </v-slide-y-transition>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn icon @click.native="expand = !expand">
-            <v-icon>{{ expand ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
+            <v-icon>{{ expand ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</v-icon>
           </v-btn>
         </v-card-actions>
       </v-card>

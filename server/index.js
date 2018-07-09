@@ -1,24 +1,29 @@
 import express from 'express'
 import { Nuxt, Builder } from 'nuxt'
-import routes from './routes/userRoutes'
+import userRoutes from './routes/userRoutes'
+import postRoutes from './routes/postRoutes'
 import session from './session/session'
 
 const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
+const helmet = require('helmet')
 const host = process.env.HOST || '127.0.0.1'
 const port = process.env.PORT || 3000
 const mongodb = require('./mongodb')
 
+app.use(helmet())
+app.disable('x-powered-by')
 app.use(cors())
-app.use(morgan('combined'))
-app.use(bodyParser.json())
+app.use(morgan('dev'))
+app.use(bodyParser.json({limit: '50mb'}))
 // connecting to database
 mongodb.connect()
 app.use(session)
 // Import API Routes
-app.use('/', routes)
+app.use('/', userRoutes)
+app.use('/', postRoutes)
 // Import and Set Nuxt.js options
 let config = require('../nuxt.config.js')
 config.dev = !(process.env.NODE_ENV === 'production')
