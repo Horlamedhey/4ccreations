@@ -14,7 +14,10 @@ $ npm run dev
 # build for production and launch server
 $ npm start
 ```
-
+## Serve json files
+```
+Serve countries.json with json-server on port: 3002.
+```
 For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
 
 ## Backpack
