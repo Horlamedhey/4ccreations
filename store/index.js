@@ -1,7 +1,11 @@
 import axios from '~/plugins/axios'
+// import io from 'socket.io-client'
+let now = new Date()
+let moment = now.toDateString() + ', ' + now.toLocaleTimeString()
 export const state = () => ({
   // userData
   userIn: {},
+  userIsLogged: false,
   // page loader
   loader: true,
   // slider
@@ -18,6 +22,7 @@ export const state = () => ({
     desc: null,
     comments: null,
     likes: null,
+    views: null,
     category: null,
     uploader: null,
     uploaderImg: null,
@@ -50,7 +55,7 @@ export const state = () => ({
   countries: [],
   nationality: null,
   staleStates: null,
-  states: [],
+  stats: [],
   state: null,
   cities: [],
   city: null,
@@ -62,6 +67,10 @@ export const state = () => ({
 export const mutations = {
   dump (state, payload) {
     state.dump = payload
+  },
+  //  checks if usser is logged in
+  userIsLogged (state, payload) {
+    state.userIsLogged = payload
   },
   //  receives the logged in user information and the status of the postBox
   postBox (state, payload) {
@@ -134,6 +143,7 @@ export const mutations = {
       category,
       comments,
       likes,
+      views,
       activeImg
     } = payload
     state.bigPost.time = time
@@ -142,6 +152,7 @@ export const mutations = {
     state.bigPost.desc = description
     state.bigPost.comments = comments
     state.bigPost.likes = likes
+    state.bigPost.views = views
     state.bigPost.category = category
     state.bigPost.uploader = uploader
     state.bigPost.uploaderImg = uploaderImg
@@ -171,8 +182,6 @@ export const mutations = {
     state.newPost.category = payload
   },
   pushPost (state) {
-    let now = new Date()
-    let moment = now.toDateString() + ', ' + now.toLocaleTimeString()
     let {
       title,
       description,
@@ -190,11 +199,45 @@ export const mutations = {
       img,
       category,
       comments: [],
-      likes: []
+      likes: [],
+      views: 0
     }
-    state.posts.unshift(state.post)
     state.postBox = false
     state.postsLoading = false
+  },
+  updatePosts (state, post) {
+    state.posts.unshift(post)
+    if (post.category.includes(state.postsCat.category) || state.postsCat.category === 'TRENDS') {
+      state.postsCat.posts.unshift(post)
+    }
+  },
+  populatePosts (state, data) {
+    state.postsLoading = false
+    let full = []
+    let half = []
+    let dislike = []
+    data.forEach(v => {
+      v.descriptionStatus = false
+      v.commentStatus = false
+      v.hover = false
+      v.activeImg = 0
+      if (v.likes.length > 0) {
+        v.likes.forEach(u => {
+          if (u.mode === 'half') {
+            half.push(u)
+          } else if (u.mode === 'full') {
+            full.push(u)
+          } else if (u.mode === 'dislike') {
+            dislike.push(u)
+          }
+        })
+      }
+      v.commentsCount = v.comments.length
+      v.likesCount = {
+        half: half.length, full: full.length, dislike: dislike.length, total: full.length + half.length + dislike.length
+      }
+    })
+    state.posts = data.reverse()
   },
   populatePostsCat (state, payload) {
     state.postsCat.posts = []
@@ -205,29 +248,64 @@ export const mutations = {
       }
     })
   },
-  populatePosts (state, data) {
-    state.postsLoading = false
-    data.forEach(v => {
-      v.descriptionStatus = false
-      v.commentStatus = false
-      v.hover = false
-      v.activeImg = 0
-    })
-    state.posts = data.reverse()
-  },
   comment (state, i) {
     state.posts.forEach(v => {
       v.commentStatus = false
       v.descriptionStatus = false
     })
-    state.posts[i].commentStatus = true
-    state.posts[i].descriptionStatus = false
+    let post = state.posts[i]
+    post.commentStatus = true
+    post.descriptionStatus = false
+    state.postsCat.posts.forEach(v => {
+      if (v._id === post._id) {
+        v.commentStatus = true
+        v.descriptionStatus = false
+      }
+    })
   },
   unComment (state, i) {
     state.posts[i].commentStatus = false
+    state.postsCat.posts.forEach(v => {
+      if (v._id === state.posts[i]._id) {
+        v.commentStatus = false
+      }
+    })
   },
-  submitComment (state, payload) {
-    state.posts[payload.id].comments.push(payload.data)
+  async submitComment (state, payload) {
+    // state.posts[payload.id].comments.push(payload.data)
+    let data = payload.data
+    let post = state.posts[payload.id]
+    let id = post._id
+    let comment = { comment: data.text, commentor: data.name, commentorImg: data.image, time: moment }
+    await axios.patch('/comment', {comment: comment, id: id})
+      .then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err)
+      })
+  },
+  async likePost (state, payload) {
+    let data = payload.data
+    let post = state.posts[payload.id]
+    let id = post._id
+    let postLike = { mode: data.mode, liker: data.name, likerImg: data.image }
+    await axios.patch('/likePost', {postLike: postLike, id: id})
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  },
+  async postViews (state, payload) {
+    let id = state.posts[payload]._id
+    await axios.post('/postViews', {id: id})
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   },
   toggleDescription (state, post) {
     state.posts.forEach(v => {
@@ -256,9 +334,9 @@ export const mutations = {
       if (v.CountryName === state.nationality) {
         state.id = v.id
         state.staleStates = v.States
-        state.states = []
+        state.stats = []
         state.staleStates.forEach(w => {
-          state.states.push(w.StateName)
+          state.stats.push(w.StateName)
         })
       }
     })
@@ -314,9 +392,42 @@ export const mutations = {
 export const actions = {
   async pushPost (context) {
     context.commit('pushPost')
+    let postdata = new FormData()
+    for (let i = 0; i < context.state.post.img.length; i++) {
+      let image = context.state.post.img[i]
+      postdata.append('images', image)
+    }
+    let {
+      time,
+      uploaderImg,
+      uploader,
+      title,
+      description,
+      category,
+      comments,
+      likes,
+      views
+    } = context.state.post
+    let newPost = JSON.stringify(
+      {
+        time,
+        uploaderImg,
+        uploader,
+        title,
+        description,
+        category,
+        comments,
+        likes,
+        views
+      }
+    )
+    postdata.append('newPost', newPost)
+    // console.log(postdata.values())
     await axios
-      .post('/newPost', context.state.post)
-      .then(() => {
+      .post('/newPost', postdata)
+      .then((res) => {
+        // context.state.posts.unshift(state.post)
+        console.log(res)
         console.log('posts updated')
       })
       .catch(err => {
@@ -334,22 +445,6 @@ export const actions = {
       })
       .then(() => {
         console.log('fetch ok!')
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  },
-  async fetchLocation ({
-    commit
-  }) {
-    await axios
-      .get('http://localhost:3002/Countries')
-      .then(result => {
-        let data = result.data
-        commit('fetchLocation', data)
-      })
-      .then(() => {
-        console.log('country')
       })
       .catch(err => {
         console.log(err)

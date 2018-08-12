@@ -1,10 +1,12 @@
 import session from 'express-session'
+var mongoose = require('mongoose')
+const MongoStore = require('connect-mongo')(session)
 var confi = require('../conf')
 
 export default session({
   name: 'user',
   secret: confi.secret,
-  resave: true,
+  resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 14400000 }
+  store: new MongoStore({ mongooseConnection: mongoose.connection, ttl: 60 * 60 * 4 })
 })

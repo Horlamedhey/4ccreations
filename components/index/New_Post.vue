@@ -1,7 +1,7 @@
 <template>
 	<v-layout row justify-center>
 		<v-dialog class="newPost" v-model="postBox" persistent max-width="500px">
-			<v-btn id="newPost" style="opacity: 0;" class="newPost" fab slot="activator"/>
+			<v-btn id="newPost" style="display: none;" class="newPost" fab slot="activator"/>
 			<v-card>
 				<v-card-actions style="position: absolute;z-index: 99;right: 0;">
 				<v-btn @click.native="isPost(false)" right icon color="primary">
@@ -28,8 +28,8 @@
 								<v-divider></v-divider>
 								<v-text-field
 										v-model="title"
-										label="Title"
-										single-line
+										placeholder="Title"
+                    autogrow
 										full-width
 										@blur="checkTitle()"
 										@input="checkTitle()"
@@ -40,30 +40,30 @@
 							</v-flex>
 							<v-flex xs12>
 								<v-divider></v-divider>
-								<v-text-field
+								<v-textarea
 										v-model="description"
-										label="Description"
+										placeholder="Description"
 										clearable
 										counter="1500"
 										@blur="checkDesc()"
 										@input="checkDesc()"
 										:error-messages="descErrors"
-										no-resize
+                    auto-grow
 										full-width
-										multi-line
-										single-line
-								></v-text-field>
+								></v-textarea>
 								<v-divider></v-divider>
 							</v-flex>
 							<v-flex xs12>
-								<v-text-field
+								<input
+                    @change="handleImgs()"
+                    ref="images"
 										id="pickPic"
 										style="position:absolute; visibility: hidden"
 										:error-messages="imgErrors"
 										type="file"
                     accept="image/*"
                     multiple
-								></v-text-field>
+								/>
 								<v-tooltip right color="primary">
 								<v-btn @click="pickPic()" slot="activator" style="margin-left: auto; margin-right: auto; display: block;" fab color="accent">
 									<v-icon>mdi-camera-enhance</v-icon>
@@ -73,12 +73,12 @@
 								<v-flex v-if="imgErrors.length !== 0" class="caption ml-3" style="color:red;">{{ imgErrors[0] }}</v-flex>
 								<v-divider></v-divider>
 							</v-flex>
-							<v-flex xs12 v-if="img !== null">
+							<v-flex xs12 v-if="images !== null">
 								<v-expansion-panel inset>
 									<v-expansion-panel-content>
-										<div v-for="(imgNam, i) in imgName" :key="i" slot="header">Preview: {{ imgNam }}</div>
+										<div v-for="(image, i) in images" :key="i" slot="header">Preview: {{ image.name }}</div>
 										<v-card>
-											<v-card-media v-for="(im, i) in img" :key="i" :src="im" height="200">
+											<v-card-media v-for="(image, i) in imagesPreview" :key="i" :src="image" height="200">
                         <v-btn @click.native="rmvPic(i)" icon color="accent">
                           <v-icon>mdi-close</v-icon>
                         </v-btn>
@@ -88,7 +88,7 @@
 								</v-expansion-panel>
 							</v-flex>
 							<v-flex xs12 class="pa-1">
-								<v-select color="secondary" open-on-clear autocomplete deletable-chips dense
+								<v-combobox solo-inverted cache-items color="secondary" open-on-clear deletable-chips dense
 								          chips no-data-text="Invalid selection" v-model="category" @input="checkCat()"
 								          label="Category(ies)" :items="categories" multiple @blur="checkCat()"
 								          :error-messages="catErrors" append-icon="mdi-chevron-down"/>
@@ -107,13 +107,14 @@
 </template>
 
 <script>
+import axios from '~/plugins/axios'
 export default {
   name: 'New_Post',
   data () {
     return {
       uploadTip: 'Upload Image',
-      img: [],
-      imgName: [],
+      images: [],
+      imagesPreview: [],
       categories: [
         'Urban Design',
         'Interior Design',
@@ -138,60 +139,40 @@ export default {
       this.$store.commit('postBox', value)
     },
     pickPic () {
-      let imgPicker = document.getElementById('pickPic')
-      if (this.img.length < 2) {
-        if (imgPicker.files.length === 0) {
-          imgPicker.click()
-          imgPicker.addEventListener('change', () => {
-            let file1 = imgPicker.files[0]
-            if (file1) {
-              this.imgName.push(file1.name)
-            }
-            let reader = new FileReader()
-            reader.onloadend = () => {
-              let img1 = reader.result
-              this.img.push(img1)
-            }
-            if (file1) {
-              this.imgErrors = []
-              reader.readAsDataURL(file1)
-            }
-          })
-        }
-        if (imgPicker.files.length > 0) {
-          imgPicker.click()
-          imgPicker.addEventListener('change', () => {
-            let file2 = imgPicker.files[1]
-            if (file2) {
-              this.imgName.push(file2.name)
-            }
-            let reader = new FileReader()
-            reader.onloadend = () => {
-              let img2 = reader.result
-              this.img.push(img2)
-            }
-            if (file2) {
-              this.imgErrors = []
-              reader.readAsDataURL(file2)
-            }
-          })
-        }
-      } if (this.img.length === 2) {
+      if (this.images.length === 2) {
         this.uploadTip = 'Max exceeded!'
+        // e.preventDefault()
         setTimeout(() => {
           this.uploadTip = 'Upload Image'
-        }, 1000)
+        }, 2000)
+      } else {
+        this.$refs.images.click()
+      }
+    },
+    handleImgs (e) {
+      let uploadedImages = this.$refs.images.files
+      for (var i = 0; i < uploadedImages.length; i++) {
+        this.images.push(uploadedImages[i])
+        this.imgErrors = []
+        let reader = new FileReader()
+        reader.onloadend = () => {
+          let image = reader.result
+          this.imagesPreview.push(image)
+        }
+        if (uploadedImages[i]) {
+          reader.readAsDataURL(uploadedImages[i])
+        }
       }
     },
     rmvPic (i) {
-      this.img.splice(i, 1)
-      this.imgName.splice(i, 1)
+      this.images.splice(i, 1)
+      this.imagesPreview.splice(i, 1)
     },
     checkTitle () {
-      if (this.title.length < 3) {
+      if (this.title && this.title.length < 3) {
         this.titleErrors.splice('Title cannot exceed 50 characters')
         this.titleErrors.push('Title must be minimum of 3 characters')
-      } else if (this.title.length > 50) {
+      } else if (this.title && this.title.length > 50) {
         this.titleErrors.splice('Title must be minimum of 3 characters')
         this.titleErrors.push('Title cannot exceed 50 characters')
       } else {
@@ -199,10 +180,10 @@ export default {
       }
     },
     checkDesc () {
-      if (this.description.length < 20) {
+      if (this.description && this.description.length < 20) {
         this.descErrors.splice('Title cannot exceed 1500 characters')
         this.descErrors.push('Title must be minimum of 20 characters')
-      } else if (this.description.length > 1500) {
+      } else if (this.description && this.description.length > 1500) {
         this.descErrors.splice('Title must be minimum of 20 characters')
         this.descErrors.push('Title cannot exceed 1500 characters')
       } else {
@@ -210,21 +191,34 @@ export default {
       }
     },
     checkImg () {
-      if (this.img.length === 0) {
+      if (this.images && this.images.length === 0) {
         this.imgErrors.push('Please upload an image!')
-      } else if (this.img.length !== 0) {
+      } else if (this.images && this.images.length !== 0) {
         this.imgErrors = []
       }
     },
     checkCat () {
-      if (this.category.length === 0) {
+      if (this.category && this.category.length === 0) {
         this.catErrors.push('Please select at least one category!')
-      } else if (this.category.length > 0) {
+      } else if (this.category && this.category.length > 0) {
         this.catErrors = []
       }
     },
+    async submite () {
+      var data = new FormData()
+      data.append('image', this.images[0])
+      await axios.post('/image', data)
+        .then(res => {
+          console.log(res)
+          this.imagesPreview = []
+          this.imagesPreview.push(res.data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     submit () {
-      this.$store.commit('image', this.img)
+      this.$store.commit('image', this.images)
       this.checkTitle()
       this.checkDesc()
       this.checkImg()
@@ -236,8 +230,8 @@ export default {
         this.catErrors.length === 0
       ) {
         this.$store.dispatch('pushPost')
-        this.img = []
-        this.imgName = []
+        this.images = []
+        this.imagesPreview = []
       }
     }
   },

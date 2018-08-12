@@ -1,5 +1,5 @@
 <template>
-<div class="loader" v-if="loader">
+<div class="loader">
 	<v-layout justify-center align-center>
 		<v-progress-circular
 				indeterminate
@@ -19,11 +19,11 @@ export default {
   beforeDestroy () {},
   mounted () {},
   computed: {
-    loader: {
-      get () {
-        return this.$store.state.loader
-      }
-    }
+    // loader: {
+    //   get () {
+    //     return this.$store.state.loader
+    //   }
+    // }
   }
 }
 </script>

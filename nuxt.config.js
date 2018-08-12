@@ -1,13 +1,8 @@
-const imagemin = require('imagemin')
-const imageminWebp = require('imagemin-webp')
 module.exports = {
-  // serverMiddleware: [
-  //   // Will register redirect-ssl npm package
-  //   'redirect-ssl'
-  // ],
+  serverMiddleware: [
+  ],
   modules: [
     '@nuxtjs/pwa',
-    'nuxt-imagemin',
     ['cookie-universal-nuxt', {alias: 'cookie'}]
     // 'nuxt-babel'
   ],
@@ -72,36 +67,50 @@ module.exports = {
      ** Add axios globally
      */
   build: {
-    vendor: ['axios', 'vuetify'],
+    vendor: ['axios', 'vuetify', 'socket.io-client'],
     performance: {
       hints: process.env.NODE_ENV === 'production' ? 'warning' : false
     },
     /*
-		   ** Run ESLINT on save
-		   */
+   ** Run ESLINT on save   */
     extend (config, ctx) {
-      if (ctx.isClient) {
+      if (ctx.isClient || ctx.isServer) {
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
           exclude: /(node_modules)/
         })
-        // config.module.rules.push({
-        //   test: /\.js?$/,
-        //   exclude: [/.nuxt/, /node_modules/],
-        //   include: [/node_modules\/vue-particles/],
-        //   use: [{
-        //     loader: 'babel-loader',
-        //     options: {
-        //       presets: ['env']
-        //     }
-        //   }]
-        // })
-        imagemin(['images/*.{jpg,png}'], '~/assets', {
-          plugins: [imageminWebp({ lossless: true })]
-        }).then(() => {
-          console.log('Images optimized')
+        config.module.rules.push({
+          test: /\.(gif|png|jpe?g|svg|webp)$/i,
+          use: [
+            'file-loader',
+            {
+              loader: 'image-webpack-loader',
+              options: {
+                disable: false, // webpack@2.x and newer
+                mozjpeg: {
+                  progressive: true,
+                  quality: 65
+                },
+                // optipng.enabled: false will disable optipng
+                optipng: {
+                  enabled: true
+                },
+                pngquant: {
+                  quality: '65-90',
+                  speed: 4
+                },
+                gifsicle: {
+                  interlaced: false
+                },
+                // the webp option will enable WEBP
+                webp: {
+                  quality: 75
+                }
+              }
+            }
+          ]
         })
       }
     }

@@ -6,7 +6,6 @@
       hide-overlay
       v-model="drawer"
       fixed
-      app
       class="hidden-md-and-up"
     >
       <v-list>
@@ -59,11 +58,13 @@
 <script>
 import axios from '~/plugins/axios'
 import PersonalInfo from '~/components/profile/PersonalInfo'
+import mixin from '~/mixins/userislogged'
 export default {
   name: 'profile',
   components: {
     PersonalInfo
   },
+  mixins: [mixin],
   data () {
     return {
       dialog: {status: false, color: 'error', icon: 'mdi-account-alert', content: 'User not logged in.'},

@@ -1,7 +1,7 @@
 <template>
 	<v-layout row justify-center>
 		<v-dialog v-model="newsletter" persistent max-width="500px">
-			<v-btn @click="clear()" id="newsletter" style="opacity: 0;" class="newsletter" fab slot="activator"/>
+			<v-btn @click="clear()" id="newsletter" style="display: none;" class="newsletter" fab slot="activator"/>
 			<v-card>
 				<v-card-actions style="position: absolute;z-index: 99;right: 0;">
 				<v-btn @click.native="newsletter = false" right icon color="primary">

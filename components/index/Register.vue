@@ -1,5 +1,6 @@
 <template>
 	<v-layout style="height: unset;" align-center justify-center wrap class="pb-3">
+    <loader v-if="loader"/>
     <v-dialog persistent v-model="dialog.status" max-width="300">
       <v-card>
         <v-icon class="pa-3" :color="dialog.color" style="font-size:80px;margin-left:35%;">{{dialog.icon}}</v-icon>
@@ -24,7 +25,7 @@
 			</v-alert>
 		</v-flex>
 		<v-flex class="primary white--text" xs12 sm10>
-			<v-card dark class="elevation-12" :img="require('~/assets/welcome.png')">
+			<v-card dark class="elevation-12" :img="require('~/assets/welcome.webp')">
 				<v-toolbar color="primary">
 					<v-toolbar-title class="white--text headline">REGISTERATION FORM</v-toolbar-title>
 				</v-toolbar>
@@ -33,14 +34,14 @@
 					<v-form ref="form" class="pa-4">
 						<v-layout wrap row justify-space-between>
 							<v-flex xs12 md4>
-								<v-select hint="HINT: Mr, Dr" color="secondary" tags open-on-clear autocomplete deletable-chips dense editable clearable
-								          chips no-data-text="Invalid selection"
+								<v-combobox solo-inverted hint="HINT: Mr, Dr" color="secondary" small-chips dark open-on-hover open-on-clear browser-autocomplete deletable-chips dense clearable
+								          no-data-text="Invalid selection"
 								           label="Title" v-model="user.title" :items="titles" multiple
 								            :error-messages="titleErrors" @change="$v.user.title.$touch()"
 								            @blur="$v.user.title.$touch()" append-icon="mdi-chevron-down"/>
 							</v-flex>
 							<v-flex xs12 md8>
-								<v-text-field autocomplete hint="HINT: Gafar Olamide Ajao" color="secondary" prepend-icon="mdi-account" clearable
+								<v-text-field solo-inverted autocomplete hint="HINT: Gafar Olamide Ajao" color="secondary" prepend-icon="mdi-account" clearable
 								               label="Name" v-model.trim="user.name" :error-messages="nameErrors"
 								               @input="$v.user.name.$touch()"
 								              @blur="$v.user.name.$touch()"
@@ -49,20 +50,20 @@
 						</v-layout>
 						<v-layout wrap row justify-space-between>
 							<v-flex xs12 md6>
-								<v-text-field autocomplete hint="HINT: Variable1" color="secondary" prepend-icon="mdi-account-key" clearable label="Username" v-model.trim="user.username" :error-messages="usernameErrors"
+								<v-text-field solo-inverted autocomplete hint="HINT: Variable1" color="secondary" prepend-icon="mdi-account-key" clearable label="Username" v-model.trim="user.username" :error-messages="usernameErrors"
 								               :counter="12" @input="$v.user.username.$touch()"
 								              @blur="$v.user.username.$touch()"
 								             />
 							</v-flex>
 							<v-flex xs12 md5>
-								<v-text-field autocomplete hint="HINT: 08134549552, +2348134549552" color="secondary" type="tel" prepend-icon="mdi-phone" clearable
+								<v-text-field solo-inverted autocomplete hint="HINT: 08134549552, +2348134549552" color="secondary" type="tel" prepend-icon="mdi-phone" clearable
                               label="Phone" v-model.trim="user.phone" :error-messages="phoneErrors"
                               :counter="14" @blur="$v.user.phone.$touch()"/>
 							</v-flex>
 						</v-layout>
             <v-layout row wrap justify-space-between>
               <v-flex xs12 md7>
-						<v-text-field autocomplete hint="HINT: Horlasco34@gmail.com" prepend-icon="mdi-email" color="secondary" 
+						<v-text-field solo-inverted autocomplete hint="HINT: Horlasco34@gmail.com" prepend-icon="mdi-email" color="secondary" 
                           clearable label="E-mail" v-model.trim="user.email"
 						              :error-messages="emailErrors" @blur="$v.user.email.$touch()"
 						             />
@@ -76,40 +77,58 @@
             </v-layout>
             <v-layout wrap row justify-space-between>
 							<v-flex xs12 md6>
-								<v-text-field autocomplete hint="HINT: Variable1@" color="secondary" type="password" prepend-icon="mdi-lock" label="Password" v-model.trim="user.password" :error-messages="passwordErrors"
+								<v-text-field solo-inverted autocomplete hint="HINT: Variable1@" color="secondary" type="password" prepend-icon="mdi-lock" label="Password" v-model.trim="user.password" :error-messages="passwordErrors"
                 :counter="8" @blur="$v.user.password.$touch()" @input="$v.user.password.$touch()"
                 :append-icon="passIcon ? 'mdi-eye' : 'mdi-eye-off'" :append-icon-cb="() => {if (user.password !== ''){passIcon = !passIcon}}" :type="passIcon ? 'password' : 'text'"/>
 							</v-flex>
 							<v-flex xs12 md5>
-								<v-text-field autocomplete prepend-icon="mdi-lock-question" color="secondary" type="password"
-                              label="Confirm password" v-model.trim="user.confirmPassword" :error-messages="confirmPasswordErrors"
-                               @input="$v.user.confirmPassword.$touch()" @blur="$v.user.confirmPassword.$touch()"
+								<v-text-field solo-inverted autocomplete
+                              prepend-icon="mdi-lock-question" color="secondary" type="password" label="Confirm password"
+                              v-model.trim="user.confirmPassword"
+                              :error-messages="confirmPasswordErrors"
+                              @input="$v.user.confirmPassword.$touch()"
+                              @blur="$v.user.confirmPassword.$touch()"
                               :append-icon="cpassIcon ? 'mdi-eye' : 'mdi-eye-off'"
-                              :append-icon-cb="() => {if (user.confirmPassword !== ''){cpassIcon = !cpassIcon}}" :type="cpassIcon ? 'password' : 'text'"/>
+                              :append-icon-cb="() =>
+                              {if (user.confirmPassword !== ''){cpassIcon = !cpassIcon}}" :type="cpassIcon ? 'password' :
+                              'text'"/>
 							</v-flex>
 						</v-layout>
 						<v-layout wrap row justify-space-between>
 							<v-flex xs12 md3 class="pt-3 pb-4">
-								<v-select prepend-icon="mdi-flag-variant" color="secondary" solo-inverted open-on-clear autocomplete dense clearable
-								          no-data-text="Invalid selection"
-								          label="Nationality" v-model.trim="user.nationality" :items="countries"
-								          :error-messages="nationalityErrors" @change="reactivity"
-								          @blur="$v.user.nationality.$touch()" append-icon="mdi-chevron-down"
-								          @input="$store.commit('nationalit', user.nationality)"/>
+								<v-combobox open-on-hover browser-autocomplete
+                            prepend-icon="mdi-flag-variant" color="secondary"
+                            solo-inverted open-on-clear dense
+                            clearable no-data-text="Invalid selection"
+                            label="Nationality" v-model.trim="user.nationality"
+                            :items="countries" :error-messages="nationalityErrors"
+                            @change="reactivity"
+                            @blur="$v.user.nationality.$touch()"
+                            append-icon="mdi-chevron-down"
+                            @input="$store.commit('nationalit', user.nationality)"/>
 							</v-flex>
 							<v-flex xs12 md3 class="pt-3 pb-4">
-								<v-select solo-inverted prepend-icon="mdi-map" color="secondary" open-on-clear autocomplete dense clearable
-								          no-data-text="Invalid selection" @input="$store.commit('stat', user.state)"
-								          label="State" v-model.trim="user.state" :items="states" item-text="StateName"
-								          :error-messages="stateErrors" @change="$v.user.state.$touch()"
-								          @blur="$v.user.state.$touch()" append-icon="mdi-chevron-down"/>
+								<v-combobox open-on-hover browser-autocomplete solo-inverted
+                            prepend-icon="mdi-map" color="secondary" open-on-clear
+                            dense clearable no-data-text="Invalid selection"
+                            @input="$store.commit('stat', user.state)"
+                            label="State" v-model.trim="user.state"
+                            :items="states" item-text="StateName"
+                            :error-messages="stateErrors"
+                            @change="$v.user.state.$touch()"
+                            @blur="$v.user.state.$touch()"
+                            append-icon="mdi-chevron-down"/>
 							</v-flex>
 							<v-flex xs12 md3 class="pt-3 pb-4">
-								<v-select solo-inverted prepend-icon="mdi-map-marker" color="secondary" open-on-clear autocomplete 
-								          dense clearable editable chips deletable-chips combobox no-data-text="Invalid selection"
-								          label="City" v-model.trim="user.city" :items="cities" 
-								          :error-messages="cityErrors" @input="$store.commit('cit', user.city)"
-								          @blur="$v.user.city.$touch()" append-icon="mdi-chevron-down"/>
+								<v-combobox open-on-hover browser-autocomplete solo-inverted
+                            messages="TYPE IN YOUR CITY IF ITS NOT ON THE LIST."
+                            prepend-icon="mdi-map-marker" color="secondary"
+                            open-on-clear dense clearable editable combobox no-data-text="Invalid selection" label="City"
+                            v-model.trim="user.city" :items="cities"
+                            :error-messages="cityErrors"
+                            @input="$store.commit('cit', user.city)"
+                            @blur="$v.user.city.$touch()"
+                            append-icon="mdi-chevron-down"/>
 							</v-flex>
 						</v-layout>
 						<v-layout>
@@ -134,6 +153,7 @@
 </template>
 countries
 <script>
+import Loader from '~/components/Loader.vue'
 import axios from '~/plugins/axios'
 import { validationMixin } from 'vuelidate'
 import {
@@ -172,9 +192,13 @@ export default {
       city: { required }
     }
   },
+  components: {
+    Loader
+  },
   name: 'Register',
   data () {
     return {
+      loader: true,
       passIcon: true,
       cpassIcon: true,
       alert: false,
@@ -197,6 +221,21 @@ export default {
     }
   },
   methods: {
+    async fetchLocation () {
+      await axios
+        .get('http://localhost:3002/Countries')
+        .then(result => {
+          let data = result.data
+          this.$store.commit('fetchLocation', data)
+        })
+        .then(() => {
+          console.log('country')
+          this.loader = false
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     reactivity () {
       this.$v.user.nationality.$touch()
       this.user.state = null
@@ -236,7 +275,7 @@ export default {
         let user = {
           title,
           name,
-          username,
+          username: username.toLowerCase(),
           phone,
           email,
           status,
@@ -257,7 +296,7 @@ export default {
           .then((res) => {
             if (res.data.color === 'success') {
               let data = JSON.stringify(res.data.info)
-              this.$cookie.set('userInfo', data, {path: '/', maxAge: 14400000})
+              this.$cookie.set('userInfo', data, {path: '/', maxAge: 14400})
               this.$v.$reset()
               this.user.name = ''
               this.user.email = ''
@@ -294,7 +333,7 @@ export default {
     fill () {
       this.user.title = ['Mr', 'Dr', 'Engr']
       this.user.name = 'AbdulGafar Olamide Ajao'
-      this.user.username = 'variabl'
+      this.user.username = 'Horlamedhey'
       this.user.phone = '08134549552'
       this.user.email = 'Horlasco34@gmail.com'
       this.user.status = 'Professional'
@@ -414,7 +453,7 @@ export default {
     },
     states: {
       get () {
-        return this.$store.state.states
+        return this.$store.state.stats
       }
     },
     cities: {
@@ -427,6 +466,9 @@ export default {
     setTimeout(() => {
       this.alert = true
     }, 500)
+  },
+  beforeMount () {
+    this.fetchLocation()
   }
 }
 </script>

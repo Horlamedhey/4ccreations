@@ -1,12 +1,19 @@
 <template>
 <v-layout style="height: unset;" align-center justify-center wrap class="pb-3">
-	<v-dialog persistent v-model="dialog.status" max-width="300">
+  <v-dialog persistent v-model="dialog.status" max-width="400">
       <v-card>
         <v-icon class="pa-3" :color="dialog.color" style="font-size:80px;margin-left:35%;">{{dialog.icon}}</v-icon>
-        <v-btn v-if="dialog.color === 'error'" @click="closeDialog()" icon flat class="right">
+        <v-btn @click="dialog.status = false" icon flat class="right">
           <v-icon color="black">mdi-close</v-icon>
         </v-btn>
         <v-card-text class="headline text-xs-center">{{dialog.content}}</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" flat @click="$store.commit('index', 'Home')">BACK TO HOME?</v-btn>
+          <v-btn v-if="dialog.color !== 'error'" color="green darken-1" flat
+                 @click="$router.push('/profile')">PROCEED TO PROFILE?
+          </v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
 	<v-flex xs12 sm8>
@@ -19,7 +26,7 @@
 			</v-alert>
 		</v-flex>
 		<v-flex class="primary white--text" xs12 sm6>
-			<v-card dark class="elevation-12" :img="require('~/assets/login.png')">
+			<v-card dark class="elevation-12" :img="require('~/assets/login.webp')">
 				<v-toolbar color="primary">
 					<v-toolbar-title class="white--text headline">LOGIN FORM</v-toolbar-title>
 				</v-toolbar>
@@ -28,13 +35,13 @@
 						<v-form ref="form" class="pa-4">
 							<v-layout row justify-space-around>
 								<v-flex>
-									<v-text-field hint="HINT: Variable1" color="secondary" prepend-icon="mdi-account-key" clearable
+									<v-text-field solo-inverted hint="HINT: Variable1" color="secondary" prepend-icon="mdi-account-key" clearable
 									              label="Username" v-model="user.username"/>
 								</v-flex>
 							</v-layout>
 							<v-layout wrap justify-space-around>
 								<v-flex>
-									<v-text-field hint="HINT: Variable1@" color="secondary" type="password" prepend-icon="mdi-key" clearable
+									<v-text-field solo-inverted hint="HINT: Variable1@" color="secondary" type="password" prepend-icon="mdi-key" clearable
 									              label="Password" v-model="user.password"/>
 								</v-flex>
 							</v-layout>
@@ -53,6 +60,7 @@
 
 <script>
 import axios from '~/plugins/axios'
+// import io from 'socket.io-client'
 export default {
   name: 'Login',
   data () {
@@ -68,7 +76,7 @@ export default {
   methods: {
     async submit () {
       let {username, password} = this.user
-      let user = {username, password}
+      let user = {username: username.toLowerCase(), password}
       await axios.post('/login', user)
         .then(res => {
           if (res.data.status === 'error') {
@@ -78,15 +86,15 @@ export default {
             this.dialog.status = true
           } else {
             let data = JSON.stringify(res.data.info)
-            this.$cookie.set('userInfo', data, {path: '/', maxAge: 14400000})
+            this.$cookie.set('userInfo', data, {path: '/', maxAge: 14400})
             this.dialog.content = res.data.message
             this.dialog.color = 'success'
             this.dialog.icon = 'mdi-account-check'
             this.dialog.status = true
+            this.$store.commit('userIsLogged', true)
             setTimeout(() => {
-              this.dialog.status = false
-              this.$router.push('/profile')
-            }, 2000)
+              this.user = {}
+            }, 20)
           }
         })
         .catch(err => {

@@ -5,7 +5,6 @@
       hide-overlay
       v-model="drawer"
       fixed
-      app
       class="hidden-md-and-up"
     >
       <v-list>
@@ -32,7 +31,7 @@
         </v-list-group>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar id="top" fixed app clipped-left class="primary white--text">
+    <v-toolbar fixed app clipped-left class="primary white--text">
 	    <div>
         <no-ssr>
 	    <vue-particles style=" width: 100%; height: 100%; position: absolute; top:0;left: 0;"
@@ -56,7 +55,7 @@
       </no-ssr>
 	    </div>
       <v-btn @click="draw()" class="hidden-md-and-up" icon><v-icon class="white--text">mdi-menu</v-icon></v-btn>
-      <v-toolbar-title class="ml-5 logo" @click="homeFn(Home)">{{ title }}</v-toolbar-title>
+      <v-toolbar-title class="logo" @click="homeFn(Home)">{{ title }}</v-toolbar-title>
 	    <v-tooltip bottom class="ml-3 mr-2 hidden-sm-and-down">
 	    <span slot="activator" class="searchCont">
 	<form class="search-input" action="/static/search.html" method="GET" @click="search1">
@@ -105,11 +104,9 @@
 	    <v-btn @click="registerFn(Register)" flat class="white--text log hidden-sm-and-down">
 		    REGISTER
 	    </v-btn>
-	    <v-btn v-if="$route.path !== '/profile'" @click="loginFn(Login)" flat class="white--text mr-5 log hidden-sm-and-down">
-		    LOGIN
-	    </v-btn>
-	    <v-btn v-if="$route.path === '/profile'" @click="logoutFn(Login)" flat class="white--text mr-5 log hidden-sm-and-down">
-		    LOGOUT
+	    <v-btn @click="logFn()" flat class="white--text log hidden-sm-and-down">
+        <span v-if="logStat === false">LOGIN</span>
+        <span v-if="logStat === true">LOGOUT</span>
 	    </v-btn>
 	    <v-tooltip bottom>
 		    <v-btn slot="activator" @click="registerFn(Register)" icon flat class="white--text hidden-md-and-up">
@@ -119,24 +116,21 @@
 		    </v-btn>
 		    <span>Register</span>
 	    </v-tooltip>
-	    <v-tooltip v-show="$route.path !== '/profile'" bottom>
-		    <v-btn slot="activator" @click="loginFn(Login)" icon flat class="white--text hidden-md-and-up">
-			    <v-icon>
+	    <v-tooltip bottom>
+		    <v-btn slot="activator" @click="logFn()" icon flat class="white--text hidden-md-and-up">
+			    <v-icon v-if="logStat === false">
 				    mdi-login
 			    </v-icon>
-		    </v-btn>
-		    <span>Login</span>
-	    </v-tooltip>
-	    <v-tooltip v-show="$route.path === '/profile'" bottom>
-		    <v-btn slot="activator" @click="logoutFn(Login)" icon flat class="white--text hidden-md-and-up">
-			    <v-icon>
+			    <v-icon v-if="logStat === true">
 				    mdi-logout
 			    </v-icon>
 		    </v-btn>
-		    <span>Logout</span>
+		    <span v-if="logStat === false">Login</span>
+		    <span v-if="logStat === true">Logout</span>
 	    </v-tooltip>
 	    <v-tooltip bottom>
-		    <v-btn slot="activator" @click="getProfile()" icon flat class="white--text">
+		    <v-btn slot="activator" @click="getProfile()" icon flat
+               class="white--text">
 			    <v-icon>
 				    mdi-account-circle
 			    </v-icon>
@@ -148,7 +142,7 @@
     <v-content>
         <nuxt/>
     </v-content>
-    <v-footer fixed app class="primary white--text" style="z-index: 9">
+    <v-footer fixed app height="auto" class="primary white--text" style="z-index: 999999">
       <span style="display: block; margin: auto; cursor:pointer;" class="align-center" @click="homeFn(Home)">4C-CREATIONS &copy; 2017</span>
     </v-footer>
   </v-app>
@@ -238,22 +232,25 @@ export default {
       this.$store.commit('index', Register)
       this.$router.push('/')
     },
-    loginFn (Login) {
-      this.$store.commit('index', Login)
-      if (this.$route.path !== '/') {
-        this.$router.push('/')
+    async logFn () {
+      if (this.logStat === false) {
+        this.$store.commit('index', 'Login')
+        if (this.$route.path !== '/') {
+          this.$router.push('/')
+        }
+      } else if (this.logStat === true) {
+        await axios.get('/logout')
+          .then(res => {
+            this.$cookie.remove('userInfo')
+            this.$store.commit('userIn', {})
+            if (this.$route.path !== '/') {
+              this.$router.push('/')
+            }
+          }).then(() => {
+            this.$store.commit('userIsLogged', false)
+            this.$store.commit('index', 'Login')
+          })
       }
-    },
-    async logoutFn (Login) {
-      await axios.get('/logout')
-        .then(res => {
-          this.$cookie.remove('userInfo')
-          this.$store.commit('userIn', {})
-          this.$store.commit('index', Login)
-          if (this.$route.path !== '/') {
-            this.$router.push('/')
-          }
-        })
     },
     homeFn (Home) {
       this.$store.commit('index', Home)
@@ -268,6 +265,13 @@ export default {
     },
     search2 () {
       document.getElementById('search2').focus()
+    }
+  },
+  computed: {
+    logStat: {
+      get () {
+        return this.$store.state.userIsLogged
+      }
     }
   }
 }
@@ -335,7 +339,7 @@ input:focus {
   transition: 0.2s;
 }
 .logo {
-  font-size: 1.7rem;
+  font-size: 22px;
   cursor: pointer;
   z-index: 99;
 }

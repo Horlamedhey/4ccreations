@@ -1,1 +1,1 @@
-module.exports = {'secret': 'qwertium'}
+module.exports = {'secret': 'MmPJKYlVS46aQZHvjRISZ8yeCRg'}

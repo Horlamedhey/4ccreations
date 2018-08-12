@@ -7,7 +7,7 @@
           <v-container fill-height fluid>
             <v-layout fill-height wrap>
               <v-flex xs12 align-end flexbox>
-                <span class="headline">{{bigImage.title}}</span>
+                <v-card-text class="headline white--text" style="width: fit-content; position: fixed;background: rgba(0,0,0,0.5)">{{bigImage.title}}</v-card-text>
               </v-flex>
             <v-layout justify-space-between align-center v-if="bigImage.image.length > 1">
               <v-btn @click.stop="$store.commit('prevBigImg')" icon color="accent"><v-icon>mdi-chevron-left</v-icon></v-btn>
