@@ -24,6 +24,7 @@
         "cookie-universal-nuxt": "^2.0.5",
         "cors": "^2.8.4",
         "cross-env": "^5.2.0",
+        "date-fns": "^1.29.0",
         "emoji-mart-vue": "^2.6.4",
         "esm": "^3.0.74",
         "express": "^4.15.3",
@@ -31,6 +32,7 @@
         "helmet": "^3.13.0",
         "imagemin-webp": "^4.1.0",
         "jsonwebtoken": "^8.3.0",
+        "moment": "^2.22.2",
         "mongoose": "^5.2.7",
         "mongoose-timestamp": "^0.6.0",
         "morgan": "^1.9.0",
@@ -44,10 +46,11 @@
         "socket.io-client": "^2.1.1",
         "source-map-support": "^0.4.15",
         "vue": "^2.5.17",
+        "vue-cropper": "^0.3.6",
         "vue-particles": "^1.0.9",
         "vue-typer": "^1.2.0",
         "vuelidate": "^0.6.2",
-        "vuetify": "^1.1.10"
+        "vuetify": "^1.1.14"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",

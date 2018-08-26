@@ -1,6 +1,6 @@
 <template>
 	<v-layout style="height: unset;" align-center justify-center wrap class="pb-3">
-    <loader v-if="loader"/>
+    <loader message="Loading Locations..." v-if="loader"/>
     <v-dialog persistent v-model="dialog.status" max-width="300">
       <v-card>
         <v-icon class="pa-3" :color="dialog.color" style="font-size:80px;margin-left:35%;">{{dialog.icon}}</v-icon>
@@ -10,7 +10,7 @@
         <v-card-text class="headline text-xs-center">{{dialog.message}}</v-card-text>
         <v-card-actions v-if="dialog.color === 'success'">
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" flat @click="$store.commit('index', 'Home')">BACK TO HOME</v-btn>
+          <v-btn color="green darken-1" flat @click="$store.commit('default/index', 'Home')">BACK TO HOME</v-btn>
           <v-btn color="green darken-1" flat @click="directLogin()">PROCEED TO PROFILE</v-btn>
         </v-card-actions>
       </v-card>
@@ -105,13 +105,13 @@
                             @change="reactivity"
                             @blur="$v.user.nationality.$touch()"
                             append-icon="mdi-chevron-down"
-                            @input="$store.commit('nationalit', user.nationality)"/>
+                            @input="$store.commit('register/nationalit', user.nationality)"/>
 							</v-flex>
 							<v-flex xs12 md3 class="pt-3 pb-4">
 								<v-combobox open-on-hover browser-autocomplete solo-inverted
                             prepend-icon="mdi-map" color="secondary" open-on-clear
                             dense clearable no-data-text="Invalid selection"
-                            @input="$store.commit('stat', user.state)"
+                            @input="$store.commit('register/stat', user.state)"
                             label="State" v-model.trim="user.state"
                             :items="states" item-text="StateName"
                             :error-messages="stateErrors"
@@ -123,10 +123,10 @@
 								<v-combobox open-on-hover browser-autocomplete solo-inverted
                             messages="TYPE IN YOUR CITY IF ITS NOT ON THE LIST."
                             prepend-icon="mdi-map-marker" color="secondary"
-                            open-on-clear dense clearable editable combobox no-data-text="Invalid selection" label="City"
+                             dense clearable editable combobox no-data-text="Invalid selection" label="City"
                             v-model.trim="user.city" :items="cities"
                             :error-messages="cityErrors"
-                            @input="$store.commit('cit', user.city)"
+                            @input="$store.commit('register/cit', user.city)"
                             @blur="$v.user.city.$touch()"
                             append-icon="mdi-chevron-down"/>
 							</v-flex>
@@ -151,7 +151,6 @@
 		</v-flex>
 	</v-layout>
 </template>
-countries
 <script>
 import Loader from '~/components/Loader.vue'
 import axios from '~/plugins/axios'
@@ -223,13 +222,11 @@ export default {
   methods: {
     async fetchLocation () {
       await axios
-        .get('http://localhost:3002/Countries')
+        .get('/location')
         .then(result => {
-          let data = result.data
-          this.$store.commit('fetchLocation', data)
+          this.$store.commit('register/fetchLocation', result.data)
         })
         .then(() => {
-          console.log('country')
           this.loader = false
         })
         .catch(err => {
@@ -240,7 +237,7 @@ export default {
       this.$v.user.nationality.$touch()
       this.user.state = null
       this.user.city = null
-      this.$store.commit('empty')
+      // this.$store.commit('register/empty')
     },
     async submit () {
       this.$v.$touch()
@@ -448,17 +445,17 @@ export default {
     },
     countries: {
       get () {
-        return this.$store.state.countries
+        return this.$store.state.register.countries
       }
     },
     states: {
       get () {
-        return this.$store.state.stats
+        return this.$store.state.register.states
       }
     },
     cities: {
       get () {
-        return this.$store.state.cities
+        return this.$store.state.register.cities
       }
     }
   },

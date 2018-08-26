@@ -2,28 +2,28 @@
     <v-layout row justify-center>
     <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
       <v-btn id="comments" absolute style="display:none;" slot="activator" color="primary" dark/>
-      <v-layout wrap row class="pb-5 white">
+      <v-layout wrap row class="pb-5 white" style=" height: 100%;">
         <v-card class="pb-1" style="width: 100%;">
           <v-toolbar fixed dark color="primary">
-            <v-avatar>
+            <v-avatar size="40">
               <img :src="post.uploaderImg"/>
             </v-avatar>
             <v-toolbar-title>{{post.uploader}}</v-toolbar-title>
             <v-spacer/>
             <v-toolbar-title>{{post.title}}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn icon dark @click.native="dialog = false">
+            <v-btn icon dark @click.native="closeComments()">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-toolbar>
           <v-layout class="pa-1" style="margin-top: 64px;" row wrap justify-space-between>
             <v-flex xs12 sm7 md6 lg4 xl3>
-              <v-card-media height="400px">
-                  <v-layout style="position:absolute;top:45%;width:100%;" justify-space-between align-center v-if="post.image.length > 1">
+              <v-card-media :src="post.image[post.activeImg]" height="300px">
+                  <v-layout style="position:absolute;top:45%;width:100%;" justify-space-between align-center v-if="post && post.image && post.image.length > 1">
                   <v-btn @click.stop="$store.commit('prevBigImg')" icon color="accent"><v-icon>mdi-chevron-left</v-icon></v-btn>
                   <v-btn @click.stop="$store.commit('nextBigImg')" icon color="accent"><v-icon>mdi-chevron-right</v-icon></v-btn>
                 </v-layout>
-                <img style="max-width:100%;height:auto;" :src="post.image[post.activeImg]" alt="postImage">
+                <!-- <img style="max-width:100%;height:auto;" :src="post.image[post.activeImg]" alt="postImage"> -->
               </v-card-media>
             </v-flex>
             <v-flex xs12 sm5 md6 lg7 wrap>
@@ -77,7 +77,7 @@
             </v-flex>
           </v-layout>
         </v-card>
-        <v-flex class="white mt-5"
+        <v-flex class="white mt-5 pb-4"
                 style="width: 100%; border-bottom: 1px solid #E80CE8" raised hover>
           <v-toolbar class="mb-2" color="primary">
             <v-toolbar-title class="white--text display-1">Comments</v-toolbar-title>
@@ -91,7 +91,10 @@
             </v-layout>
             <v-card-text class="mb-3">
               <p>{{comment.comment}}</p>
-              <p class="grey--text right mt-3">{{comment.time}}</p>
+              <p class="grey--text right mt-3">
+                {{comment.time | timeago}}
+                <!-- <timeago :datetime="comment.time" :auto-update="60"></timeago> -->
+              </p>
             </v-card-text>
             <!-- <v-card-actions></v-card-actions> -->
           </v-card>
@@ -107,6 +110,12 @@ export default {
   data () {
     return {
       dialog: false
+    }
+  },
+  methods: {
+    closeComments () {
+      this.dialog = false
+      this.$store.commit('closeComments')
     }
   },
   computed: {

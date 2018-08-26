@@ -114,7 +114,7 @@ export default {
           v.active = false
         }
       })
-      this.$store.commit('mobileProf', true)
+      // this.$store.commit('default/mobileProf', true)
     },
     async profileAuth () {
       await axios.get('/profileAuth')
@@ -123,7 +123,7 @@ export default {
             this.dialog.content = res.data.message
             this.dialog.status = true
           } else {
-            this.$store.commit('userIn', res.data)
+            this.$store.commit('profile/userIn', res.data)
           }
         // this.infos.forEach((u, i) => {
         //   res.data.forEach((v, j) => {
@@ -136,9 +136,9 @@ export default {
     gotoLogIn () {
       this.dialog.status = false
       if (this.dialog.content === 'User not found, please register.') {
-        this.$store.commit('index', 'Register')
+        this.$store.commit('default/index', 'Register')
       } else {
-        this.$store.commit('index', 'Login')
+        this.$store.commit('default/index', 'Login')
       }
       this.$router.push('/')
     }
@@ -151,9 +151,11 @@ export default {
   computed: {
     drawer: {
       get () {
-        return this.$store.state.mobileProf
+        return this.$store.state.default.mobileProf
       },
-      set () {}
+      set (val) {
+        this.$store.commit('default/mobileProf', val)
+      }
     }
   }
 }

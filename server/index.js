@@ -5,6 +5,12 @@ import userRoutes from './routes/userRoutes'
 import postRoutes from './routes/postRoutes'
 import session from './session/session'
 import cookieParser from 'cookie-parser'
+var http = require('http')
+var https = require('https')
+
+http.globalAgent.maxSockets = 10000
+
+https.globalAgent.maxSockets = 10000
 const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')

@@ -30,7 +30,7 @@ export default {
       images: [
         'download.webp',
         'High-Quality-Website2.webp',
-        'Night.webp',
+        'login.webp',
         'web-design-glasgow-lanarkshire-edinburgh-cj-designs.webp',
         'webi.webp',
         'Woo.webp'
@@ -43,9 +43,9 @@ export default {
       let elem = document.querySelector('#slider')
       elem.style.opacity = '0'
       elem.style.height = '0vh'
-      this.$store.commit('content')
+      this.$store.commit('home/content')
       setTimeout(() => {
-        this.$store.commit('sliderHeight')
+        this.$store.commit('slider/sliderHeight')
         elem.style.display = 'none'
       }, 2005)
     }
@@ -53,12 +53,12 @@ export default {
   computed: {
     component: {
       get () {
-        return this.$store.state.index
+        return this.$store.state.default.index
       }
     },
     sliderHeight: {
       get () {
-        return this.$store.state.sliderHeight
+        return this.$store.state.slider.sliderHeight
       }
     }
   }

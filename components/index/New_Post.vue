@@ -1,5 +1,6 @@
 <template>
 	<v-layout row justify-center>
+    <loader message="Creating New Post..." v-if="loader"/>
 		<v-dialog class="newPost" v-model="postBox" persistent max-width="500px">
 			<v-btn id="newPost" style="display: none;" class="newPost" fab slot="activator"/>
 			<v-card>
@@ -107,9 +108,13 @@
 </template>
 
 <script>
-import axios from '~/plugins/axios'
+// import axios from '~/plugins/axios'
+import Loader from '~/components/Loader'
 export default {
   name: 'New_Post',
+  components: {
+    Loader
+  },
   data () {
     return {
       uploadTip: 'Upload Image',
@@ -204,19 +209,6 @@ export default {
         this.catErrors = []
       }
     },
-    async submite () {
-      var data = new FormData()
-      data.append('image', this.images[0])
-      await axios.post('/image', data)
-        .then(res => {
-          console.log(res)
-          this.imagesPreview = []
-          this.imagesPreview.push(res.data)
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    },
     submit () {
       this.$store.commit('image', this.images)
       this.checkTitle()
@@ -236,6 +228,11 @@ export default {
     }
   },
   computed: {
+    loader: {
+      get () {
+        return this.$store.state.newPostLoader
+      }
+    },
     //  sets and gets the status of the post box and also sends the logged in user information with it
     postBox: {
       get () {

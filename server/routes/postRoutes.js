@@ -67,65 +67,17 @@ router.post('/newPost', upload.array('images', 2), (req, res) => {
             likes: newPost.likes,
             views: newPost.views,
             uploader: newPost.uploader,
-            uploaderImg: newPost.uploaderImg,
-            time: newPost.time
+            uploaderImg: newPost.uploaderImg
           }
   // console.log(post)
   Post.create(post, function (err, data) {
     if (err) {
-      console.log(err)
+      // console.log(err)
       res.send('Unable to create post at this moment, please try again.')
     } else {
-      let {
-        _id,
-        time,
-        uploaderImg,
-        uploader,
-        title,
-        description,
-        img,
-        category,
-        comments,
-        likes,
-        views
-      } = data
-      let full = []
-      let half = []
-      let dislike = []
-      let post = {
-        _id,
-        time,
-        uploaderImg,
-        uploader,
-        title,
-        description,
-        img,
-        category,
-        comments,
-        likes,
-        views,
-        descriptionStatus: false,
-        commentStatus: false,
-        hover: false,
-        activeImg: 0,
-        commentsCount: comments.length
-      }
-      if (post.likes.length > 0) {
-        post.likes.forEach(u => {
-          if (u.mode === 'half') {
-            half.push(u)
-          } else if (u.mode === 'full') {
-            full.push(u)
-          } else if (u.mode === 'dislike') {
-            dislike.push(u)
-          }
-        })
-      }
-      post.likesCount = {
-        full: full.length, half: half.length, dislike: dislike.length, total: full.length + half.length + dislike.length
-      }
       // console.log(post)
-      io.emit('post', post)
+      io.emit('post', data)
+      res.sendStatus(200)
       // res.send(post)
     }
   })
@@ -135,9 +87,10 @@ router.post('/newPost', upload.array('images', 2), (req, res) => {
 router.get('/fetchPosts', (req, res) => {
   Post.find(function (err, posts) {
     if (err) {
-      console.log(err)
+      // console.log(err)
       res.send('Unable to fetch posts at this moment, please try again.')
     } else {
+      // console.log(posts)
       res.send(posts)
     }
   })
@@ -148,11 +101,12 @@ router.patch('/comment', (req, res) => {
   let comment = req.body.comment
   Post.findByIdAndUpdate(id, {$push: {comments: comment}}, {new: true}, (error, result) => {
     if (error) {
-      console.log(error)
-      res.send(error)
+      // console.log(error)
+      res.sendStatus(500)
     } else if (result) {
-      console.log(result)
-      res.send(result)
+      // console.log(result)
+      res.sendStatus(200)
+      io.emit('comment', {id: result._id, comments: result.comments})
     }
   })
 })
@@ -160,28 +114,50 @@ router.patch('/comment', (req, res) => {
 router.patch('/likePost', (req, res) => {
   let id = req.body.id
   let like = req.body.postLike
-  Post.findByIdAndUpdate(id, {$push: {likes: like}}, {new: true}, (error, result) => {
-    if (error) {
-      console.log(error)
-      res.send(error)
-    } else if (result) {
-      console.log(result)
-      res.send(result)
-    }
-  })
+  let type = req.body.type
+  if (type === 'existing') {
+    Post.findOneAndUpdate({'_id': id, 'likes.liker': like.liker}, {'$set': {'likes.$.mode': like.mode}}, {new: true}, (error, result) => {
+      if (error) {
+        // console.log(error)
+        // res.send(error)
+        res.sendStatus(500)
+      } else if (result) {
+        // console.log(result)
+        // res.send(result)
+        res.sendStatus(200)
+        io.emit('like', {id: result._id, likes: result.likes})
+      }
+    })
+  } else if (type === 'new') {
+    Post.findByIdAndUpdate(id, {$push: {likes: like}}, {new: true}, (err, doc) => {
+      if (err) {
+        // console.log(err)
+        // res.send(err)
+        res.sendStatus(500)
+      } else if (doc) {
+        // console.log(doc)
+        // res.send(doc)
+        res.sendStatus(200)
+        io.emit('like', {id: doc._id, likes: doc.likes})
+      }
+    })
+  }
 })
 router.post('/postViews', (req, res) => {
-  console.log(req.body)
   let id = req.body.id
   Post.findById(id, function (error, post) {
     if (error) {
-      console.log(error)
+      // console.log(error)
+      res.sendStatus(500)
     } else {
       Post.findByIdAndUpdate(id, {views: post.views + 1}, {new: true}, (er, result) => {
         if (er) {
-          console.log(er)
+          res.sendStatus(500)
+          // console.log(er)
         } else {
-          console.log(result)
+          // res.send(result)
+          res.sendStatus(200)
+          io.emit('view', {id: result._id, views: result.views})
         }
       })
     }

@@ -10,8 +10,8 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="green darken-1" flat @click="dialog.status = false">STAY HERE?</v-btn>
-          <v-btn color="green darken-1" flat @click="$store.commit('index', 'Login')">PROCEED TO LOGIN?</v-btn>
-          <v-btn color="green darken-1" flat @click="$store.commit('index', 'Register')">REGISTER</v-btn>
+          <v-btn color="green darken-1" flat @click="$store.commit('default/index', 'Login')">PROCEED TO LOGIN?</v-btn>
+          <v-btn color="green darken-1" flat @click="$store.commit('default/index', 'Register')">REGISTER</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -68,7 +68,7 @@
           <post-comments/>
           <post-image/>
           <v-card-media @mouseover="$store.commit('hover', i)"
-                        @mouseout="$store.commit('hover', i)" @click="bigImg({data:post, index: i})"
+                        @mouseout="$store.commit('hover', i)" @click="bigImg({data:post._id, index: i})"
                         :src="post.img[post.activeImg]" height="200px">
             <div style="width:100%;height:100%;background: rgba(0,0,0,0.2)">
               <v-card-text class="white--text">{{post.title}}</v-card-text>
@@ -84,7 +84,7 @@
               </v-layout>
             </div>
           </v-card-media>
-          <v-card-title primary-title @click="comments({data:post, index: i})">
+          <v-card-title primary-title @click.stop="comments({data:post._id, index: i})">
             <v-layout wrap row>
               <v-avatar size="36px">
                 <img :src="post.uploaderImg">
@@ -94,7 +94,7 @@
           </v-card-title>
           <v-layout wrap>
             <v-flex>
-              <v-card-actions @click="comments({data:post, index: i})">
+              <v-card-actions @click="comments({data:post._id, index: i})">
                 <v-tooltip top color="accent" lazy>
                   <v-btn slot="activator" color="secondary" flat icon @click.stop="toggleDescription({data:post, index: i})">
                     <v-icon>{{ post.descriptionStatus ? 'mdi-chevron-double-down' : 'mdi-chevron-double-up' }}</v-icon>
@@ -185,13 +185,12 @@
                   <v-layout row>
                     <v-flex xs12>
                       <v-textarea
+                        id="commentInput" @mouseover="focusComment()"
                         v-model="comment" @focus="isEmoji = false" name="input-7-1"
                         box append-icon="mdi-emoticon" @click:append="()=>{
                           isEmoji = !isEmoji
                         }" label="Express yourself..." auto-grow
-                        autofocus
-                        browser-autocomplete clearable counter
-                    ></v-textarea>
+                        autofocus browser-autocomplete clearable counter/>
                       <picker v-show="isEmoji" @select="insert" :infiniteScroll="off" color="#FF9A0D" title="Pick your emoji…" emoji="point_up" :perLine="7" />
                     </v-flex>
                   </v-layout>
@@ -234,9 +233,13 @@ export default {
     comment: '',
     offset: 0,
     off: false,
-    on: true
+    on: true,
+    likedPosts: []
   }),
   methods: {
+    focusComment () {
+      document.getElementById('commentInput').click()
+    },
     scroll () {
       this.offset = window.pageYOffset
     },
@@ -256,8 +259,7 @@ export default {
       this.comment += emoji.native
     },
     toggleDescription (payload) {
-      this.$store.commit('toggleDescription', payload.data)
-      this.postViews(payload.index)
+      this.$store.dispatch('toggleDescription', payload.data)
     },
     openComment (i) {
       if (this.$cookie.get('userInfo')) {
@@ -283,6 +285,7 @@ export default {
     },
     async likePost (like) {
       if (this.$cookie.get('userInfo')) {
+        this.likedPosts.push(like)
         let liker = this.$cookie.get('userInfo')
         let postLike = { id: like.index, data: { mode: like.mode, name: liker.username, image: liker.picture } }
         this.$store.commit('likePost', postLike)
@@ -290,30 +293,23 @@ export default {
         this.isNotLoggedIn()
       }
     },
-    postViews (i) {
-      this.$store.commit('postViews', i)
-    },
     prevImg (i) {
-      this.$store.commit('prevImg', i)
-      this.postViews(i)
+      this.$store.dispatch('prevImg', i)
     },
     nextImg (i) {
-      this.$store.commit('nextImg', i)
-      this.postViews(i)
+      this.$store.dispatch('nextImg', i)
     },
     bigImg (payload) {
       if (window.screen.width >= 600) {
         document.querySelector('#postImage').click()
-        this.$store.commit('bigPost', payload.data)
-        this.postViews(payload.index)
+        this.$store.dispatch('bigPost', payload.data)
       } else if (window.screen.width < 600) {
         this.snackbar = true
       }
     },
     comments (payload) {
       document.querySelector('#comments').click()
-      this.$store.commit('bigPost', payload.data)
-      this.postViews(payload.index)
+      this.$store.dispatch('bigPost', payload.data)
     },
     isNotLoggedIn () {
       this.dialog.icon = 'mdi-account-alert'
@@ -325,16 +321,35 @@ export default {
       io().on('post', post => {
         this.$store.commit('updatePosts', post)
       })
+    },
+    realtimeLikes () {
+      io().on('like', like => {
+        this.$store.commit('updateLikes', like)
+        // console.log(like)
+      })
+    },
+    realtimeViews () {
+      io().on('view', view => {
+        this.$store.commit('updateViews', view)
+      })
+    },
+    realtimeComments () {
+      io().on('comment', comment => {
+        this.$store.commit('updateComments', comment)
+      })
     }
   },
   mounted () {
     this.realtimePosts()
+    this.realtimeLikes()
+    this.realtimeViews()
+    this.realtimeComments()
     window.addEventListener('scroll', this.scroll)
   },
   computed: {
     content: {
       get () {
-        return this.$store.state.content
+        return this.$store.state.home.content
       }
     },
     postsLoading: {
@@ -360,7 +375,7 @@ export default {
     },
     sliderHeight: {
       get () {
-        return this.$store.state.sliderHeight
+        return this.$store.state.slider.sliderHeight
       }
     }
   }

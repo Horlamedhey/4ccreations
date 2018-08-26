@@ -1,13 +1,29 @@
 <template>
     <v-layout row>
-    <v-flex xs12 sm6 offset-sm3>
+      <loader v-if="loading"/>
+  <v-flex xs12 sm6 offset-sm3>
+    <v-dialog v-model="dialog" persistent max-width="300">
+      <v-btn id="diagBtn" style="display: none;" slot="activator" color="primary" dark>Open Dialog</v-btn>
+      <v-card>
+        <v-card-title class="subheading">Are you sure you want to remove this profile picture?</v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" flat @click.native="dialog = false">No</v-btn>
+          <v-btn color="green darken-1" flat
+                 @click.native="confirmRemoveProfilePic()">
+            Yes
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
       <v-card v-if="user">
           <v-flex
           style="margin:0 auto;"
             xs12 sm8 lg6>
+            <input @change="processProfilePic()" ref="pickProfilePic" id="changeProfilePic" style="display: none;" type="file" accept="image/*">
             <v-card-media
             :src="user.picture"
-            height="200px"
+            height="300px"
             >
               <div style="height: 100%;width: 100%;background: rgba(0,0,0,0.2)">
                 <v-speed-dial
@@ -19,10 +35,10 @@
                   <v-btn @click.stop slot="activator" color="white" flat icon hover>
                     <v-icon>mdi-dots-vertical</v-icon>
                   </v-btn>
-                  <v-btn icon flat color="warning">
+                  <v-btn @click="changeProfilePic()" icon flat color="warning">
                     <v-icon>mdi-pencil</v-icon>
                   </v-btn>
-                  <v-btn icon flat color="error">
+                  <v-btn @click="removeProfilePic()" icon flat color="error">
                     <v-icon>mdi-delete-forever</v-icon>
                   </v-btn>
                 </v-speed-dial>
@@ -39,7 +55,7 @@
                       Title(s): 
                       <span v-for="title in user.title" :key="title" class="grey--texts subheading">{{title}} </span>
                       </span>
-                      <v-btn class="pencil" icon flat color="primary">
+                      <v-btn icon flat>
                           <v-icon>mdi-pencil</v-icon>
                       </v-btn>
                   </v-layout>
@@ -50,9 +66,9 @@
                   <v-layout class="justify-space-between">
                       <span>
                       Name: 
-                      <span class="grey--texts subheading">{{user.name}}</span>
+                      <v-text-field class="d-inline-block" :value="user.name" full-width :disabled="edit ? false : true"></v-text-field>
                       </span>
-                      <v-btn class="pencil" icon flat color="primary">
+                      <v-btn icon flat>
                           <v-icon>mdi-pencil</v-icon>
                       </v-btn>
                   </v-layout>
@@ -63,9 +79,9 @@
                   <v-layout class="justify-space-between">
                       <span>
                       Email: 
-                      <span class="grey--texts subheading">{{user.email}}</span>
+                      <v-text-field class="d-inline-block" :value="user.email" full-width :disabled="edit ? false : true"></v-text-field>
                       </span>
-                      <v-btn class="pencil" icon flat color="primary">
+                      <v-btn icon flat>
                           <v-icon>mdi-pencil</v-icon>
                       </v-btn>
                   </v-layout>
@@ -76,9 +92,9 @@
                   <v-layout class="justify-space-between">
                       <span>
                       Phone: 
-                      <span class="grey--texts subheading">{{user.phone}}</span>
+                      <v-text-field class="d-inline-block" :value="user.phone" full-width :disabled="edit ? false : true"></v-text-field>
                       </span>
-                      <v-btn class="pencil" icon flat color="primary">
+                      <v-btn icon flat>
                           <v-icon>mdi-pencil</v-icon>
                       </v-btn>
                   </v-layout>
@@ -90,7 +106,7 @@
                     <v-layout class="justify-space-between">
                         <span>
                         Username: 
-                        <span class="grey--texts subheading">{{user.username}}</span>
+                        <v-text-field class="d-inline-block" :value="user.username" full-width :disabled="edit ? false : true"></v-text-field>
                         </span>
                     </v-layout>
                     <v-spacer></v-spacer>
@@ -100,9 +116,9 @@
                     <v-layout class="justify-space-between">
                         <span>
                         Gender: 
-                        <span class="grey--texts subheading">{{user.gender}}</span>
+                        <v-text-field class="d-inline-block" :value="user.gender" full-width :disabled="edit ? false : true"></v-text-field>
                         </span>
-                        <v-btn v-if="user.gender === ''" class="pencil" icon flat color="primary">
+                        <v-btn v-if="user.gender === ''" icon flat>
                             <v-icon>mdi-pencil</v-icon>
                         </v-btn>
                     </v-layout>
@@ -113,9 +129,9 @@
                     <v-layout class="justify-space-between">
                         <span>
                         DoB: 
-                        <span class="grey--texts subheading">{{user.dob}}</span>
+                        <v-text-field class="d-inline-block" :value="user.dob" full-width :disabled="edit ? false : true"></v-text-field>
                         </span>
-                        <v-btn class="pencil" icon flat color="primary">
+                        <v-btn icon flat>
                             <v-icon>mdi-pencil</v-icon>
                         </v-btn>
                     </v-layout>
@@ -126,7 +142,7 @@
                     <v-layout class="justify-space-between">
                         <span>
                         Nationality: 
-                        <span class="grey--texts subheading">{{user.nationality}}</span>
+                        <v-text-field class="d-inline-block" :value="user.nationality" full-width :disabled="edit ? false : true"></v-text-field>
                         </span>
                     </v-layout>
                     <v-spacer></v-spacer>
@@ -136,7 +152,7 @@
                     <v-layout class="justify-space-between">
                         <span>
                         State: 
-                        <span class="grey--texts subheading">{{user.state}}</span>
+                        <v-text-field class="d-inline-block" :value="user.state" full-width :disabled="edit ? false : true"></v-text-field>
                         </span>
                     </v-layout>
                     <v-spacer></v-spacer>
@@ -146,7 +162,7 @@
                     <v-layout class="justify-space-between">
                         <span>
                         City: 
-                        <span class="grey--texts subheading">{{user.city}}</span>
+                        <v-text-field class="d-inline-block" :value="user.city" full-width :disabled="edit ? false : true"></v-text-field>
                         </span>
                     </v-layout>
                     <v-spacer></v-spacer>
@@ -156,7 +172,7 @@
                     <v-layout class="justify-space-between">
                         <span>
                         Status: 
-                        <span class="grey--texts subheading">{{user.status}}</span>
+                        <v-text-field class="d-inline-block" :value="user.status" full-width :disabled="edit ? false : true"></v-text-field>
                         </span>
                     </v-layout>
                     <v-spacer></v-spacer>
@@ -166,13 +182,13 @@
                     <v-layout class="justify-space-between">
                         <span v-if="user.status === 'Professional'">
                         Company: 
-                        <span class="grey--texts subheading">{{user.company}}</span>
+                        <v-text-field class="d-inline-block" :value="user.company" full-width :disabled="edit ? false : true"></v-text-field>
                         </span>
                         <span v-if="user.status === 'Student'">
                         Institution: 
-                        <span class="grey--texts subheading">{{user.institution}}</span>
+                        <v-text-field class="d-inline-block" :value="user.institution" full-width :disabled="edit ? false : true"></v-text-field>
                         </span>
-                        <v-btn class="pencil" icon flat color="primary">
+                        <v-btn icon flat>
                             <v-icon>mdi-pencil</v-icon>
                         </v-btn>
                     </v-layout>
@@ -183,13 +199,13 @@
                     <v-layout class="justify-space-between">
                         <span v-if="user.status === 'Professional'">
                         Position: 
-                        <span class="grey--texts subheading">{{user.position}}</span>
+                        <v-text-field class="d-inline-block" :value="user.position" full-width :disabled="edit ? false : true"></v-text-field>
                         </span>
                         <span v-if="user.status === 'Student'">
                         Level: 
-                        <span class="grey--texts subheading">{{user.level}}</span>
+                        <v-text-field class="d-inline-block" :value="user.level" full-width :disabled="edit ? false : true"></v-text-field>
                         </span>
-                        <v-btn class="pencil" icon flat color="primary">
+                        <v-btn icon flat>
                             <v-icon>mdi-pencil</v-icon>
                         </v-btn>
                     </v-layout>
@@ -211,24 +227,59 @@
 </template>
 
 <script>
-    // axios.defaults.headers.common['rt'] = 6
+import io from 'socket.io-client'
+import Loader from '~/components/Loader2'
 export default {
-      name: 'PersonalInfo',
-      data () {
-        return {
-          expand: false
-        }
-      },
-      mounted () {
-      },
-      methods: {
-      },
-      computed: {
-        user: {
-          get () {
-            return this.$store.state.userIn.personalInfo
-          }
-        }
+  name: 'PersonalInfo',
+  components: {
+    Loader
+  },
+  data () {
+    return {
+      expand: false,
+      dialog: false,
+      edit: true
+    }
+  },
+  methods: {
+    changeProfilePic () {
+      document.getElementById('changeProfilePic').click()
+    },
+    removeProfilePic () {
+      if (this.user.picture !== 'http://byronbayphotographer.com/wp-content/uploads/2017/11/pleasing-mystery-clipart-person-pencil-and-in-color.jpg') {
+        document.getElementById('diagBtn').click()
       }
+    },
+    confirmRemoveProfilePic () {
+      this.dialog = false
+      this.$store.dispatch('profile/removeProfilePic')
+    },
+    processProfilePic () {
+      this.$store.dispatch('profile/changeProfilePic', this.$refs.pickProfilePic.files[0])
+    },
+    updateProfilePic () {
+      io().on('profilePic', data => {
+        this.$store.commit('profile/updateProfilePic', data.profilePic)
+        let {profilePic, username} = data
+        let user = {picture: profilePic, username: username}
+        this.$cookie.set('userInfo', user, {path: '/', maxAge: 14400})
+      })
+    }
+  },
+  mounted () {
+    this.updateProfilePic()
+  },
+  computed: {
+    user: {
+      get () {
+        return this.$store.state.profile.userIn.personalInfo
+      }
+    },
+    loading: {
+      get () {
+        return this.$store.state.profile.dialog
+      }
+    }
+  }
 }
 </script>

@@ -20,7 +20,6 @@ var PostSchema = new Schema({
   category: [],
   uploader: String,
   uploaderImg: String,
-  time: String,
   views: {
     type: Number,
     default: 0

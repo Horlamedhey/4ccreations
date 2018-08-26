@@ -17,7 +17,7 @@ module.exports = {
       { hid: 'description', name: 'description', content: 'Community webapp' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       // {
       //   rel: 'stylesheet',
       //   href:
@@ -27,9 +27,14 @@ module.exports = {
       //   rel: 'stylesheet',
       //   href:
       //     'https://cdn.materialdesignicons.com/2.3.54/css/materialdesignicons.min.css'
-      // }
+      // },
+      {
+        href: 'https://cdn.jsdelivr.net/embed.js/4.0.0/embed.min.css', media: 'all', rel: 'stylesheet'
+      }
     ],
-    script: []
+    script: [
+      {src: '/js/webpjs-0.0.2.min.js'}
+    ]
   },
   loading: { color: '#ffffff' },
   manifest: {
@@ -61,6 +66,9 @@ module.exports = {
     },
     {
       src: '~/plugins/vue-lazyload.js'
+    },
+    {
+      src: '~/plugins/timeago'
     }
   ],
   /*

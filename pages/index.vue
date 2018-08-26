@@ -25,7 +25,7 @@ export default {
   computed: {
     component: {
       get () {
-        return this.$store.state.index
+        return this.$store.state.default.index
       }
     }
   },

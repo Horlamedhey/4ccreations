@@ -9,7 +9,7 @@
         <v-card-text class="headline text-xs-center">{{dialog.content}}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" flat @click="$store.commit('index', 'Home')">BACK TO HOME?</v-btn>
+          <v-btn color="green darken-1" flat @click="$store.commit('default/index', 'Home')">BACK TO HOME?</v-btn>
           <v-btn v-if="dialog.color !== 'error'" color="green darken-1" flat
                  @click="$router.push('/profile')">PROCEED TO PROFILE?
           </v-btn>
@@ -91,7 +91,7 @@ export default {
             this.dialog.color = 'success'
             this.dialog.icon = 'mdi-account-check'
             this.dialog.status = true
-            this.$store.commit('userIsLogged', true)
+            this.$store.commit('profile/userIsLogged', true)
             setTimeout(() => {
               this.user = {}
             }, 20)
@@ -104,7 +104,7 @@ export default {
     closeDialog () {
       this.dialog.status = false
       if (this.dialog.content === 'Login failed. User not found.') {
-        this.$store.commit('index', 'Register')
+        this.$store.commit('default/index', 'Register')
       }
     }
   },
