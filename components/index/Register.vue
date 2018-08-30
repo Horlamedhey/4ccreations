@@ -1,17 +1,18 @@
 <template>
 	<v-layout style="height: unset;" align-center justify-center wrap class="pb-3">
     <loader message="Loading Locations..." v-if="loader"/>
-    <v-dialog persistent v-model="dialog.status" max-width="300">
+    <v-dialog persistent v-model="dialog.status" max-width="400">
       <v-card>
         <v-icon class="pa-3" :color="dialog.color" style="font-size:80px;margin-left:35%;">{{dialog.icon}}</v-icon>
         <v-btn @click="dialog.status = false" icon flat class="right">
           <v-icon color="black">mdi-close</v-icon>
         </v-btn>
         <v-card-text class="headline text-xs-center">{{dialog.message}}</v-card-text>
-        <v-card-actions v-if="dialog.color === 'success'">
-          <v-spacer></v-spacer>
-          <v-btn color="green darken-1" flat @click="$store.commit('default/index', 'Home')">BACK TO HOME</v-btn>
-          <v-btn color="green darken-1" flat @click="directLogin()">PROCEED TO PROFILE</v-btn>
+        <v-card-actions>
+          <v-layout justify-center>
+          <v-btn color="green darken-1" flat @click="$store.commit('default/index', 'Home')">BACK TO HOME?</v-btn>
+          <v-btn color="green darken-1" flat @click="directLogin()">PROCEED TO PROFILE?</v-btn>
+          </v-layout>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -469,3 +470,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.v-btn{
+  font-size: 12px!important;
+}
+</style>
+

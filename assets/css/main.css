@@ -122,6 +122,6 @@ div[data-v-0074b8b7] .v-dialog .v-card{
     height: 100%;
 }
 
-/* .confirm{
-    font: initial!important;
-} */
+.white--text input, .white--text textarea {
+    caret-color: #000 !important;
+  }

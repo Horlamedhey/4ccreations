@@ -8,11 +8,12 @@
         </v-btn>
         <v-card-text class="headline text-xs-center">{{dialog.content}}</v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="green darken-1" flat @click="$store.commit('default/index', 'Home')">BACK TO HOME?</v-btn>
-          <v-btn v-if="dialog.color !== 'error'" color="green darken-1" flat
-                 @click="$router.push('/profile')">PROCEED TO PROFILE?
-          </v-btn>
+          <v-layout justify-space-around>
+            <v-btn color="green darken-1" flat @click="$store.commit('default/index', 'Home')">BACK TO HOME?</v-btn>
+            <v-btn v-if="dialog.color !== 'error'" color="green darken-1" flat
+                   @click="$router.push('/profile')">PROCEED TO PROFILE?
+            </v-btn>
+          </v-layout>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -35,13 +36,13 @@
 						<v-form ref="form" class="pa-4">
 							<v-layout row justify-space-around>
 								<v-flex>
-									<v-text-field solo-inverted hint="HINT: Variable1" color="secondary" prepend-icon="mdi-account-key" clearable
+									<v-text-field id="username" solo-inverted hint="HINT: Variable1" color="secondary" prepend-icon="mdi-account-key" clearable
 									              label="Username" v-model="user.username"/>
 								</v-flex>
 							</v-layout>
 							<v-layout wrap justify-space-around>
 								<v-flex>
-									<v-text-field solo-inverted hint="HINT: Variable1@" color="secondary" type="password" prepend-icon="mdi-key" clearable
+									<v-text-field id="password" solo-inverted hint="HINT: Variable1@" color="secondary" type="password" prepend-icon="mdi-key" clearable
 									              label="Password" v-model="user.password"/>
 								</v-flex>
 							</v-layout>
@@ -49,7 +50,7 @@
 					</v-card-text>
 					<v-card-actions>
 						<v-spacer></v-spacer>
-						<v-btn color="secondary" @click="submit">submit</v-btn>
+						<v-btn id="submit" color="secondary" @click="submit">submit</v-btn>
 						<!-- <v-btn color="secondary" @click="recover">recover password</v-btn> -->
 					</v-card-actions>
 				</div>
@@ -74,6 +75,22 @@ export default {
     }
   },
   methods: {
+    navigate () {
+      document.getElementById('username').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          document.getElementById('password').focus()
+        }
+      })
+      document.getElementById('password').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          if (document.getElementById('username').value !== '') {
+            document.getElementById('submit').click()
+          } else {
+            document.getElementById('username').focus()
+          }
+        }
+      })
+    },
     async submit () {
       let {username, password} = this.user
       let user = {username: username.toLowerCase(), password}
@@ -110,6 +127,7 @@ export default {
   },
   computed: {},
   mounted () {
+    this.navigate()
     setTimeout(() => {
       this.alert = true
     }, 500)

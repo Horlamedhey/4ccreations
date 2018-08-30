@@ -8,10 +8,11 @@
         </v-btn>
         <v-card-text class="headline text-xs-center">{{dialog.message}}</v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="green darken-1" flat @click="dialog.status = false">STAY HERE?</v-btn>
-          <v-btn color="green darken-1" flat @click="$store.commit('default/index', 'Login')">PROCEED TO LOGIN?</v-btn>
-          <v-btn color="green darken-1" flat @click="$store.commit('default/index', 'Register')">REGISTER</v-btn>
+          <v-layout justify-center>
+            <v-btn color="green darken-1" flat @click="dialog.status = false">STAY HERE?</v-btn>
+            <v-btn color="green darken-1" flat @click="$store.commit('default/index', 'Login')">PROCEED TO LOGIN?</v-btn>
+            <v-btn color="green darken-1" flat @click="$store.commit('default/index', 'Register')">REGISTER</v-btn>
+          </v-layout>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -385,5 +386,10 @@ export default {
 <style scoped>
 #commentBox {
   transition: 0.4s all ease-in-out;
+}
+@media (max-width: 415px) {
+.v-btn{
+  font-size: 2.7vw;
+}
 }
 </style>

@@ -43,7 +43,8 @@
                 <v-flex xs12>
                   <v-card-actions>
                     <v-speed-dial
-                      direction="left"
+                      style="z-index: 2"
+                      direction="top"
                       open-on-hover
                       transition="slide-x-reverse-transition">
                       <v-btn @click.stop slot="activator" color="secondary" flat icon hover>
