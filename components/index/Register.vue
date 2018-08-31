@@ -472,8 +472,5 @@ export default {
 </script>
 
 <style scoped>
-.v-btn{
-  font-size: 12px!important;
-}
 </style>
 

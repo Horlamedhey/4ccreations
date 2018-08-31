@@ -125,3 +125,11 @@ div[data-v-0074b8b7] .v-dialog .v-card{
 .white--text input, .white--text textarea {
     caret-color: #000 !important;
   }
+
+.v-btn{
+    font-size: 12px!important;
+  }
+
+.unchanged{
+    height: 80px;
+}
