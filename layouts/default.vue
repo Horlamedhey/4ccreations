@@ -246,7 +246,7 @@
           await axios.get('/logout')
             .then(res => {
               this.$cookie.remove('userInfo')
-              this.$store.commit('profile/userIn', {})
+              this.$store.commit('profile/personalInfo')
               if (this.$route.path !== '/') {
                 this.$router.push('/')
               }

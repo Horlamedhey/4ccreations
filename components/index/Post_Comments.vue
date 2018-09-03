@@ -6,7 +6,7 @@
         <v-card class="pb-1" style="width: 100%;">
           <v-toolbar fixed dark color="primary">
             <v-avatar size="40">
-              <img :src="post.uploaderImg"/>
+              <img alt="uploader's image" lazy-src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf-qKxv_sDOMxYNz_-yYrwElcOVIyj9qusYZ0Nd-4y6QSVMkpi&reload=on" :src="post.uploaderImg"/>
             </v-avatar>
             <v-toolbar-title>{{post.uploader}}</v-toolbar-title>
             <v-spacer/>
@@ -18,13 +18,17 @@
           </v-toolbar>
           <v-layout class="pa-1" style="margin-top: 64px;" row wrap justify-space-between>
             <v-flex xs12 sm7 md6 lg4 xl3>
-              <v-card-media :src="post.image[post.activeImg]" height="300px">
-                  <v-layout style="position:absolute;top:45%;width:100%;" justify-space-between align-center v-if="post && post.image && post.image.length > 1">
+              <v-img :alt="'image for post with description: ' + post.desc" lazy-src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf-qKxv_sDOMxYNz_-yYrwElcOVIyj9qusYZ0Nd-4y6QSVMkpi&reload=on" :src="post.image[post.activeImg]" height="300px">
+                <v-layout slot="placeholder" fill-height align-center justify-center
+                      ma-0>
+                  <v-progress-circular indeterminate color="grey lighten-5">
+                  </v-progress-circular>
+                </v-layout>
+                <v-layout style="position:absolute;top:45%;width:100%;" justify-space-between align-center v-if="post && post.image && post.image.length > 1">
                   <v-btn @click.stop="$store.commit('prevBigImg')" icon color="accent"><v-icon>mdi-chevron-left</v-icon></v-btn>
                   <v-btn @click.stop="$store.commit('nextBigImg')" icon color="accent"><v-icon>mdi-chevron-right</v-icon></v-btn>
                 </v-layout>
-                <!-- <img style="max-width:100%;height:auto;" :src="post.image[post.activeImg]" alt="postImage"> -->
-              </v-card-media>
+              </v-img>
             </v-flex>
             <v-flex xs12 sm5 md6 lg7 wrap>
               <v-flex xs12 class="mt-5" style="max-height: 24.5vh; overflow-y: scroll;margin-bottom: 195px">
@@ -86,7 +90,7 @@
           <v-card raised hover color="grey lighten-3" class="pa-3 mb-2" v-for="(comment, i) in post.comments" :key="i"> 
             <v-layout wrap row>
               <v-avatar style="border: 1px solid #E80CE8" size="50px" color="red">
-                <img :src="comment.commentorImg" alt="commentorImg">
+                <v-img :src="comment.commentorImg" alt="commentorImg"></v-img>
               </v-avatar>
               <v-card-title class="headline">{{comment.commentor}}</v-card-title>
             </v-layout>

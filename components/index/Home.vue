@@ -68,9 +68,14 @@
         <v-card hover class="pa-1 ma-1" id="card">
           <post-comments/>
           <post-image/>
-          <v-card-media @mouseover="$store.commit('hover', i)"
+          <v-img :alt="'image for post with description: ' + post.desc" lazy-src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf-qKxv_sDOMxYNz_-yYrwElcOVIyj9qusYZ0Nd-4y6QSVMkpi&reload=on" @mouseover="$store.commit('hover', i)"
                         @mouseout="$store.commit('hover', i)" @click="bigImg({data:post._id, index: i})"
                         :src="post.img[post.activeImg]" height="200px">
+            <v-layout slot="placeholder" fill-height align-center justify-center
+                      ma-0>
+              <v-progress-circular indeterminate color="grey lighten-5">
+              </v-progress-circular>
+            </v-layout>
             <div style="width:100%;height:100%;background: rgba(0,0,0,0.2)">
               <v-card-text class="white--text">{{post.title}}</v-card-text>
               <v-layout v-if="post.hover && post.img.length > 1"
@@ -84,11 +89,11 @@
                 </v-btn>
               </v-layout>
             </div>
-          </v-card-media>
+          </v-img>
           <v-card-title primary-title @click.stop="comments({data:post._id, index: i})">
             <v-layout wrap row>
               <v-avatar size="36px">
-                <img :src="post.uploaderImg">
+                <v-img :src="post.uploaderImg"></v-img>
               </v-avatar>
               <v-card-title class="grey--texts ml-1">{{post.uploader}}</v-card-title>
             </v-layout>

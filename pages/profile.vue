@@ -1,5 +1,6 @@
 <template>
 <v-layout>
+    <loader v-if="loading"/>
   <v-navigation-drawer
       right
       clipped
@@ -9,7 +10,7 @@
       class="hidden-md-and-up"
     >
       <v-list>
-        <v-list-tile :style="item.active ? 'background:#4e008c; color:white;' : ''" class="drawNavItems items" @click="navigate(item)" ripple v-for="item in profileItems" :key="item.id">
+        <v-list-tile :style="item.active ? 'background:#4e008c; color:white;' : ''" class="drawNavItems items" @click="navigate(item)" ripple v-for="(item, i) in profileItems" :key="i">
           <v-list-tile-action>
             <v-icon :style="item.active ? 'color:white;' : ''" class="drawNavIcons">{{item.icon}}</v-icon>
           </v-list-tile-action>
@@ -29,20 +30,15 @@
       </v-card>
     </v-dialog>
 	<v-flex class="tabCont hidden-sm-and-down">
-		<v-tabs fixed-tabs value="tab-1" grow icons-and-text dark color="primary">
+		<v-tabs centered grow icons-and-text dark color="primary">
     <v-tabs-slider color="accent"></v-tabs-slider>
-    <v-tab v-for="item in profileItems" :key="item.href" :href="item.href">
+    <v-tab v-for="(item, i) in profileItems" :key="i" :href="item.href">
       {{item.name}}
       <v-icon>{{item.icon}}</v-icon>
     </v-tab>
-    <v-tab-item
-      lazy
-      v-for="item in profileItems"
-      :key="item.id"
-      :id="item.ID"
-    >
-      <v-card flat>
-        <v-card-text><personal-info/></v-card-text>
+    <v-tab-item lazy v-for="(item, i) in profileItems" :key="i" :id="item.ID">
+      <v-card class="mt-5 pt-5" flat>
+        <v-card-text><component :is="item.component"></component></v-card-text>
       </v-card>
     </v-tab-item>
   </v-tabs>
@@ -56,18 +52,19 @@
 </template>
 
 <script>
-import axios from '~/plugins/axios'
+// import axios from '~/plugins/axios'
+import Loader from '~/components/Loader2'
 import PersonalInfo from '~/components/profile/PersonalInfo'
 import mixin from '~/mixins/userislogged'
 export default {
   name: 'profile',
   components: {
+    Loader,
     PersonalInfo
   },
   mixins: [mixin],
   data () {
     return {
-      dialog: {status: false, color: 'error', icon: 'mdi-account-alert', content: 'User not logged in.'},
       active: 'PersonalInfo',
       profileItems: [
         {
@@ -76,7 +73,7 @@ export default {
           href: '#tab-1',
           ID: 'tab-1',
           name: 'Personal Information',
-          component: 'PersonalInfo'
+          component: PersonalInfo
         },
         {
           icon: 'mdi-book-open-variant',
@@ -84,7 +81,7 @@ export default {
           href: '#tab-2',
           ID: 'tab-2',
           name: 'Portfolio',
-          content: 'hello'
+          component: 'hello'
         },
         {
           icon: 'mdi-view-dashboard',
@@ -92,7 +89,7 @@ export default {
           href: '#tab-3',
           ID: 'tab-3',
           name: 'Dashboard',
-          content: 'hello'
+          component: 'hello'
         },
         {
           icon: 'mdi-account-settings-variant',
@@ -100,7 +97,7 @@ export default {
           href: '#tab-4',
           ID: 'tab-4',
           name: 'Account Settings',
-          content: 'hello'
+          component: 'hello'
         }
       ]
     }
@@ -116,23 +113,6 @@ export default {
       })
       // this.$store.commit('default/mobileProf', true)
     },
-    async profileAuth () {
-      await axios.get('/profileAuth')
-        .then(res => {
-          if (res.data.auth === false) {
-            this.dialog.content = res.data.message
-            this.dialog.status = true
-          } else {
-            this.$store.commit('profile/userIn', res.data)
-          }
-        // this.infos.forEach((u, i) => {
-        //   res.data.forEach((v, j) => {
-        //     if (i === j) {
-        //       u.content = v
-        //     }
-        //   })
-        })
-    },
     gotoLogIn () {
       this.dialog.status = false
       if (this.dialog.content === 'User not found, please register.') {
@@ -145,10 +125,17 @@ export default {
   },
   mounted () {
   },
-  beforeMount () {
-    this.profileAuth()
-  },
   computed: {
+    loading: {
+      get () {
+        return this.$store.state.profile.loader
+      }
+    },
+    dialog: {
+      get () {
+        return this.$store.state.profile.dialog
+      }
+    },
     drawer: {
       get () {
         return this.$store.state.default.mobileProf

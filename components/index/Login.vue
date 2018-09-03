@@ -37,13 +37,13 @@
 							<v-layout row justify-space-around>
 								<v-flex>
 									<v-text-field id="username" solo-inverted hint="HINT: Variable1" color="secondary" prepend-icon="mdi-account-key" clearable
-									              label="Username" v-model="user.username"/>
+									              placeholder="Username" v-model="user.username"/>
 								</v-flex>
 							</v-layout>
 							<v-layout wrap justify-space-around>
 								<v-flex>
 									<v-text-field id="password" solo-inverted hint="HINT: Variable1@" color="secondary" type="password" prepend-icon="mdi-key" clearable
-									              label="Password" v-model="user.password"/>
+									              placeholder="Password" v-model="user.password"/>
 								</v-flex>
 							</v-layout>
 						</v-form>

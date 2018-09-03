@@ -1,6 +1,6 @@
 <template>
 	<v-layout style="height: unset;" align-center justify-center wrap class="pb-3">
-    <loader message="Loading Locations..." v-if="loader"/>
+    <loader :message="loaderMessage" v-if="loader"/>
     <v-dialog persistent v-model="dialog.status" max-width="400">
       <v-card>
         <v-icon class="pa-3" :color="dialog.color" style="font-size:80px;margin-left:35%;">{{dialog.icon}}</v-icon>
@@ -35,7 +35,7 @@
 					<v-form ref="form" class="pa-4">
 						<v-layout wrap row justify-space-between>
 							<v-flex xs12 md4>
-								<v-combobox solo-inverted hint="HINT: Mr, Dr" color="secondary" small-chips dark open-on-hover open-on-clear browser-autocomplete deletable-chips dense clearable
+								<v-combobox cache-items solo-inverted hint="HINT: Mr, Dr" color="secondary" small-chips dark menu-props="openOnHover" open-on-clear browser-autocomplete="on" deletable-chips dense clearable
 								          no-data-text="Invalid selection"
 								           label="Title" v-model="user.title" :items="titles" multiple
 								            :error-messages="titleErrors" @change="$v.user.title.$touch()"
@@ -59,7 +59,7 @@
 							<v-flex xs12 md5>
 								<v-text-field solo-inverted autocomplete hint="HINT: 08134549552, +2348134549552" color="secondary" type="tel" prepend-icon="mdi-phone" clearable
                               label="Phone" v-model.trim="user.phone" :error-messages="phoneErrors"
-                              :counter="14" @blur="$v.user.phone.$touch()"/>
+                               @blur="$v.user.phone.$touch()"/>
 							</v-flex>
 						</v-layout>
             <v-layout row wrap justify-space-between>
@@ -78,26 +78,25 @@
             </v-layout>
             <v-layout wrap row justify-space-between>
 							<v-flex xs12 md6>
-								<v-text-field solo-inverted autocomplete hint="HINT: Variable1@" color="secondary" type="password" prepend-icon="mdi-lock" label="Password" v-model.trim="user.password" :error-messages="passwordErrors"
-                :counter="8" @blur="$v.user.password.$touch()" @input="$v.user.password.$touch()"
-                :append-icon="passIcon ? 'mdi-eye' : 'mdi-eye-off'" :append-icon-cb="() => {if (user.password !== ''){passIcon = !passIcon}}" :type="passIcon ? 'password' : 'text'"/>
+								<v-text-field solo-inverted autocomplete hint="Supported special characters: @#$&.=?" color="secondary" prepend-icon="mdi-lock" label="Password" v-model.trim="user.password" :error-messages="passwordErrors"
+                :counter="20" @blur="$v.user.password.$touch()" @input="$v.user.password.$touch()"
+                :append-icon="passIcon ? 'mdi-eye' : 'mdi-eye-off'" @click:append="passIcon = !passIcon" :type="passIcon ? 'password' : 'text'"/>
 							</v-flex>
 							<v-flex xs12 md5>
 								<v-text-field solo-inverted autocomplete
-                              prepend-icon="mdi-lock-question" color="secondary" type="password" label="Confirm password"
+                              prepend-icon="mdi-lock-question" color="secondary" label="Confirm password"
                               v-model.trim="user.confirmPassword"
                               :error-messages="confirmPasswordErrors"
                               @input="$v.user.confirmPassword.$touch()"
                               @blur="$v.user.confirmPassword.$touch()"
                               :append-icon="cpassIcon ? 'mdi-eye' : 'mdi-eye-off'"
-                              :append-icon-cb="() =>
-                              {if (user.confirmPassword !== ''){cpassIcon = !cpassIcon}}" :type="cpassIcon ? 'password' :
+                              @click:append="cpassIcon = !cpassIcon" :type="cpassIcon ? 'password' :
                               'text'"/>
 							</v-flex>
 						</v-layout>
 						<v-layout wrap row justify-space-between>
 							<v-flex xs12 md3 class="pt-3 pb-4">
-								<v-combobox open-on-hover browser-autocomplete
+								<v-combobox cache-items menu-props="openOnHover" browser-autocomplete="on"
                             prepend-icon="mdi-flag-variant" color="secondary"
                             solo-inverted open-on-clear dense
                             clearable no-data-text="Invalid selection"
@@ -109,7 +108,7 @@
                             @input="$store.commit('register/nationalit', user.nationality)"/>
 							</v-flex>
 							<v-flex xs12 md3 class="pt-3 pb-4">
-								<v-combobox open-on-hover browser-autocomplete solo-inverted
+								<v-combobox cache-items menu-props="openOnHover" browser-autocomplete="on" solo-inverted
                             prepend-icon="mdi-map" color="secondary" open-on-clear
                             dense clearable no-data-text="Invalid selection"
                             @input="$store.commit('register/stat', user.state)"
@@ -121,7 +120,7 @@
                             append-icon="mdi-chevron-down"/>
 							</v-flex>
 							<v-flex xs12 md3 class="pt-3 pb-4">
-								<v-combobox open-on-hover browser-autocomplete solo-inverted
+								<v-combobox cache-items menu-props="openOnHover" browser-autocomplete="on" solo-inverted
                             messages="TYPE IN YOUR CITY IF ITS NOT ON THE LIST."
                             prepend-icon="mdi-map-marker" color="secondary"
                              dense clearable editable combobox no-data-text="Invalid selection" label="City"
@@ -144,7 +143,6 @@
 				<v-card-actions>
 					<v-spacer></v-spacer>
 					<v-btn color="secondary" @click="submit">submit</v-btn>
-					<v-btn color="secondary" @click="fill">fill</v-btn>
 					<v-btn color="secondary" @click="clear">clear</v-btn>
 				</v-card-actions>
 				</div>
@@ -161,10 +159,8 @@ import {
   maxLength,
   minLength,
   email,
-  numeric,
   alpha,
-  sameAs,
-  alphaNum
+  sameAs
 } from 'vuelidate/lib/validators'
 export default {
   mixins: [validationMixin],
@@ -174,17 +170,14 @@ export default {
       name: { required, alpha },
       username: { required, maxLength: maxLength(12) },
       phone: {
-        required,
-        maxLength: maxLength(14),
-        minLength: minLength(11),
-        numeric
+        required
       },
       email: { required, email },
       status: { required },
       password: {
         required,
-        minLength: minLength(8),
-        alphaNum
+        minLength: minLength(6),
+        maxLength: maxLength(20)
       },
       confirmPassword: { required, sameAsPassword: sameAs('password') },
       nationality: { required },
@@ -199,6 +192,7 @@ export default {
   data () {
     return {
       loader: true,
+      loaderMessage: 'Loading Locations...',
       passIcon: true,
       cpassIcon: true,
       alert: false,
@@ -257,6 +251,8 @@ export default {
       ) {
         console.log('error')
       } else {
+        this.loaderMessage = 'Registering New Account...'
+        this.loader = true
         let {
           title,
           name,
@@ -310,6 +306,8 @@ export default {
               this.user.newsletter = false
               this.passIcon = true
               this.cpassIcon = true
+              this.loader = false
+              this.loaderMessage = 'Loading Locations...'
             }
             this.dialog.message = res.data.message
             this.dialog.icon = res.data.icon
@@ -327,16 +325,6 @@ export default {
     },
     directLogin () {
       this.$router.push('/profile')
-    },
-    fill () {
-      this.user.title = ['Mr', 'Dr', 'Engr']
-      this.user.name = 'AbdulGafar Olamide Ajao'
-      this.user.username = 'Horlamedhey'
-      this.user.phone = '08134549552'
-      this.user.email = 'Horlasco34@gmail.com'
-      this.user.status = 'Professional'
-      this.user.password = 'Horlasco34@yahoo.com'
-      this.user.confirmPassword = 'Horlasco34@yahoo.com'
     },
     clear () {
       this.$v.$reset()
@@ -384,12 +372,10 @@ export default {
     phoneErrors () {
       const errors = []
       if (!this.$v.user.phone.$dirty) return errors
-      !this.$v.user.phone.maxLength &&
-        errors.push('Name must be at most 14 characters long')
-      !this.$v.user.phone.minLength &&
-        errors.push('Name must be at least 11 characters long')
       !this.$v.user.phone.required && errors.push('Phone is required.')
-      !this.$v.user.phone.numeric && errors.push('Must be valid phone')
+      if (/[a-z]/.test(this.user.phone) || /[A-Z]/.test(this.user.phone)) {
+        errors.push('Must be valid phone')
+      }
       return errors
     },
     emailErrors () {
@@ -407,13 +393,19 @@ export default {
     },
     passwordErrors () {
       const errors = []
+      let numbers = /[0-9]/
+      let lowercase = /[a-z]/
+      let uppercase = /[A-Z]/
+      let specialcase = /[@#$&.=?]/
       if (!this.$v.user.password.$dirty) return errors
-      !this.$v.user.password.minLength && errors.push('Password is too short')
+      !this.$v.user.password.minLength && errors.push('Password should be minimum of 6 characters')
+      !this.$v.user.password.maxLength && errors.push('Password shouldn\'t exceed 20 characters')
       !this.$v.user.password.required && errors.push('Password is required')
-      !this.$v.user.password.alphaNum &&
+      if (!(numbers.test(this.user.password) && lowercase.test(this.user.password) && uppercase.test(this.user.password) && specialcase.test(this.user.password))) {
         errors.push(
           'Password must contain at least one UPPERCASE, lowercase and special character'
         )
+      }
       return errors
     },
     confirmPasswordErrors () {

@@ -43,18 +43,22 @@ body{
 }
 
 
-.scrollUp, .newsletter, .newPost {
+.scrollUp, .newsletter, .newPost, .save, .cancel {
     z-index: 99!important;
     position: fixed!important;
     right: 15px!important;
     top: 75%!important;
 }
 
-.newsletter {
+.save, .cancel{
+    right: 0px!important;
+}
+
+.newsletter, .cancel {
     top: 50%!important;
 }
 
-.newPost {
+.newPost, .save {
     top: 25%!important;
 }
 
@@ -133,3 +137,16 @@ div[data-v-0074b8b7] .v-dialog .v-card{
 .unchanged{
     height: 80px;
 }
+
+input{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}
+
+.v-tabs__bar{
+    position: fixed!important;
+    z-index: 1;
+    width: 100%;
+  }

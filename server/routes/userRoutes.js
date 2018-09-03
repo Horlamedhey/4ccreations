@@ -54,10 +54,8 @@ router.post('/register', (req, res) => {
     if (err) {
       if (/username/.test(err.message)) {
         res.send({message: 'Username already taken', icon: 'mdi-account-alert', color: 'error'})
-      } else if (/email/.test(err.message)) {
-        res.send({message: 'Email already taken', icon: 'mdi-account-alert', color: 'error'})
       }
-    } else {
+    } else if (user) {
       let {username, picture} = user.personalInfo
       let data = {username, picture}
       req.session.user = jwt.sign({id: user._id}, config.secret, {expiresIn: '4h'})
@@ -79,7 +77,7 @@ router.post('/login', (req, res) => {
       } else {
         let {username, picture} = user.personalInfo
         let data = {username, picture}
-        req.session.user = jwt.sign({id: user._id}, config.secret, {expiresIn: '4h'})
+        req.session.user = jwt.sign({id: user._id}, config.secret, {expiresIn: '1d'})
         res.status(200).send({message: 'User Successfully Authenticated. Logging In...', info: data})
       }
     }
@@ -102,7 +100,8 @@ router.get('/profileAuth', (req, res) => {
   if (req.session && req.session.user) {
     jwt.verify(req.session.user, config.secret, function (err, decoded) {
       if (err) {
-        return res.send({auth: false, message: 'Unable to verify user.'})
+        console.log(err)
+        return res.send({auth: false, message: 'Unable to verify user, please close this dialog to login again.'})
       }
       User.findById(decoded.id, function (err, user) {
         if (err) {
@@ -110,7 +109,7 @@ router.get('/profileAuth', (req, res) => {
         } else if (!user) {
           return res.send({auth: false, message: 'User not found, please register.'})
         } else {
-          res.status(200).send(user)
+          res.status(200).send({userId: user._id, userData: user.personalInfo})
         }
       })
     })
@@ -208,6 +207,19 @@ router.post('/changeProfilePic', upload.single('newPic'), (req, res) => {
               })
           }
         })
+    }
+  })
+})
+
+router.patch('/saveUserInfo', (req, res) => {
+  console.log(req.body)
+  let data = req.body
+  User.findByIdAndUpdate(data.id, {$set: {personalInfo: data.personalInfo}}, {new: true}, (error, result) => {
+    if (error) {
+      res.sendStatus(500)
+    } else if (result) {
+      res.sendStatus(200)
+      console.log(result)
     }
   })
 })
