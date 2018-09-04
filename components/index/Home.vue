@@ -346,6 +346,7 @@ export default {
     }
   },
   mounted () {
+    this.$store.dispatch('fetchPosts')
     this.realtimePosts()
     this.realtimeLikes()
     this.realtimeViews()

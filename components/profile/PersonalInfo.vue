@@ -66,7 +66,7 @@
             <span>Cancel</span>
           </v-tooltip>
         </div>
-        <v-snackbar class="mt-5" v-model="snackbar.status" top vertical :timeout="4000">
+        <v-snackbar class="mt-5" v-model="snackbar.status" top vertical :timeout="5000">
           {{ snackbar.text }}
           <v-btn color="pink" flat @click="snackbar.status = false">Close</v-btn>
         </v-snackbar>
@@ -328,7 +328,7 @@ export default {
   },
   data () {
     return {
-      snackbar: {status: false, text: ''},
+      snackbar: {status: true, text: 'All non-editable details can be edited by contacting the support team through the "Account Settings" section.'},
       expand: false,
       dialog: {status: false, message: 'Are you sure you want to remove this profile picture?'},
       dialog2: {status: false, message: 'Are you sure you want to cancel all edits?'},

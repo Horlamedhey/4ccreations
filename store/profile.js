@@ -8,6 +8,7 @@ export const state = () => ({
   userIsLogged: false,
   editing: [],
   userInfo: {}
+  //  user's portfolio
 })
 
 export const mutations = {
@@ -126,6 +127,14 @@ export const actions = {
         setTimeout(() => {
           commit('loading', false)
         }, 1500)
+      })
+  },
+  async fetchPosts ({state, commit}) {
+    await axios.get('/fetchPosts', {params: {user: state.personalInfo.username}})
+      .then(res => {
+        commit('populatePosts', res.data, {root: true})
+      }).then(() => {
+        commit('populatePostsCat', 'ALL', {root: true})
       })
   }
 }

@@ -85,15 +85,28 @@ router.post('/newPost', upload.array('images', 2), (req, res) => {
 })
 
 router.get('/fetchPosts', (req, res) => {
-  Post.find(function (err, posts) {
-    if (err) {
-      // console.log(err)
-      res.send('Unable to fetch posts at this moment, please try again.')
-    } else {
-      // console.log(posts)
-      res.send(posts)
-    }
-  })
+  if (req.url.split('=', 2)[1]) {
+    let username = req.url.split('=', 2)[1]
+    Post.find({uploader: username}, (error, posts) => {
+      if (error) {
+        res.sendStatus(404)
+        // console.log(error)
+      } else if (posts) {
+        res.status(200).send(posts)
+        // console.log(posts)
+      }
+    })
+  } else if (req.url.split('=', 2)[1] === undefined) {
+    Post.find(function (err, posts) {
+      if (err) {
+        // console.log(err)
+        res.send('Unable to fetch posts at this moment, please try again.')
+      } else {
+        // console.log(posts)
+        res.send(posts)
+      }
+    })
+  }
 })
 
 router.patch('/comment', (req, res) => {

@@ -239,7 +239,7 @@ export const mutations = {
     state.postsCat.posts = []
     state.postsCat.category = payload
     state.posts.forEach(v => {
-      if (v.category.includes(payload) || payload === 'TRENDS') {
+      if (v.category.includes(payload) || payload === 'TRENDS' || payload === 'ALL') {
         state.postsCat.posts.push(v)
       }
     })

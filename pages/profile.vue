@@ -1,14 +1,8 @@
 <template>
 <v-layout>
     <loader v-if="loading"/>
-  <v-navigation-drawer
-      right
-      clipped
-      hide-overlay
-      v-model="drawer"
-      fixed
-      class="hidden-md-and-up"
-    >
+  <v-navigation-drawer width="240" right clipped hide-overlay v-model="drawer"
+                       fixed class="hidden-md-and-up">
       <v-list>
         <v-list-tile :style="item.active ? 'background:#4e008c; color:white;' : ''" class="drawNavItems items" @click="navigate(item)" ripple v-for="(item, i) in profileItems" :key="i">
           <v-list-tile-action>
@@ -55,12 +49,14 @@
 // import axios from '~/plugins/axios'
 import Loader from '~/components/Loader2'
 import PersonalInfo from '~/components/profile/PersonalInfo'
+import Portfolio from '~/components/profile/Portfolio'
 import mixin from '~/mixins/userislogged'
 export default {
   name: 'profile',
   components: {
     Loader,
-    PersonalInfo
+    PersonalInfo,
+    Portfolio
   },
   mixins: [mixin],
   data () {
@@ -81,7 +77,7 @@ export default {
           href: '#tab-2',
           ID: 'tab-2',
           name: 'Portfolio',
-          component: 'hello'
+          component: Portfolio
         },
         {
           icon: 'mdi-view-dashboard',
@@ -89,7 +85,7 @@ export default {
           href: '#tab-3',
           ID: 'tab-3',
           name: 'Dashboard',
-          component: 'hello'
+          component: null
         },
         {
           icon: 'mdi-account-settings-variant',
@@ -97,7 +93,7 @@ export default {
           href: '#tab-4',
           ID: 'tab-4',
           name: 'Account Settings',
-          component: 'hello'
+          component: null
         }
       ]
     }
@@ -111,7 +107,7 @@ export default {
           v.active = false
         }
       })
-      // this.$store.commit('default/mobileProf', true)
+      this.$store.commit('default/mobileProf', false)
     },
     gotoLogIn () {
       this.dialog.status = false

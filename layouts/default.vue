@@ -16,7 +16,12 @@
             <v-list-tile slot="activator">
               <v-list-tile-title class="black--text drawNavItem">{{ navItem.name }}</v-list-tile-title>
             </v-list-tile>
-            <v-list-tile @click="link(item)" ripple 
+            <v-list-tile @click="linkTrendAll()" ripple class="items">
+              <v-list-tile-content>
+                <v-list-tile-title v-text="$route.path === '/profile' ? 'All' : 'Trends'"></v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile v-if="(item.name !== 'Trends') && (item.name !== 'All')" @click="link(item)" ripple 
                         v-for="item in navItem.navSubItems" :key="item.id" class="items">
               <v-list-tile-content>
                 <v-list-tile-title>{{ item.name }}</v-list-tile-title>
@@ -224,6 +229,14 @@
         this.drawer = !this.drawer
         this.$store.commit('default/mobileProf', false)
       },
+      linkTrendAll () {
+        if (this.$route.path === '/profile') {
+          this.$store.commit('populatePostsCat', 'ALL')
+        } else {
+          this.$store.commit('populatePostsCat', 'TRENDS')
+        }
+        this.drawer = false
+      },
       link (item) {
         if (item.link) {
           this.$store.commit('populatePostsCat', item.name)
@@ -259,7 +272,6 @@
       homeFn (Home) {
         this.$store.commit('default/index', Home)
         this.$router.push('/')
-        this.$store.commit('populatePostsCat', 'TRENDS')
       },
       getProfile () {
         this.$router.push('/profile')

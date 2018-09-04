@@ -30,7 +30,6 @@ export default {
     }
   },
   beforeCreate () {
-    this.$store.dispatch('fetchPosts')
     // this.$store.dispatch('fetchLocation')
   }
 }
