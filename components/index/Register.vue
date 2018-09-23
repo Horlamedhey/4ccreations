@@ -11,7 +11,7 @@
         <v-card-actions>
           <v-layout justify-center>
           <v-btn color="green darken-1" flat @click="$store.commit('default/index', 'Home')">BACK TO HOME?</v-btn>
-          <v-btn color="green darken-1" flat @click="directLogin()">PROCEED TO PROFILE?</v-btn>
+          <v-btn v-if="dialog.color === 'success'" color="green darken-1" flat @click="directLogin()">PROCEED TO PROFILE?</v-btn>
           </v-layout>
         </v-card-actions>
       </v-card>
@@ -143,6 +143,7 @@
 				<v-card-actions>
 					<v-spacer></v-spacer>
 					<v-btn color="secondary" @click="submit">submit</v-btn>
+					<v-btn color="secondary" @click="fill">fill</v-btn>
 					<v-btn color="secondary" @click="clear">clear</v-btn>
 				</v-card-actions>
 				</div>
@@ -152,7 +153,7 @@
 </template>
 <script>
 import Loader from '~/components/Loader.vue'
-import axios from '~/plugins/axios'
+// import axios from '~/plugins/axios'
 import { validationMixin } from 'vuelidate'
 import {
   required,
@@ -216,17 +217,9 @@ export default {
   },
   methods: {
     async fetchLocation () {
-      await axios
-        .get('/location')
-        .then(result => {
-          this.$store.commit('register/fetchLocation', result.data)
-        })
-        .then(() => {
-          this.loader = false
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      const locations = await this.$axios.$get('/user/location')
+      this.$store.commit('register/fetchLocation', locations)
+      this.loader = false
     },
     reactivity () {
       this.$v.user.nationality.$touch()
@@ -285,46 +278,60 @@ export default {
           position: '',
           newsletter
         }
-        await axios
-          .post('/register', user)
-          .then((res) => {
-            if (res.data.color === 'success') {
-              let data = JSON.stringify(res.data.info)
-              this.$cookie.set('userInfo', data, {path: '/', maxAge: 14400})
-              this.$v.$reset()
-              this.user.name = ''
-              this.user.email = ''
-              this.user.title = []
-              this.user.username = ''
-              this.user.password = ''
-              this.user.confirmPassword = ''
-              this.user.phone = ''
-              this.user.status = null
-              this.user.nationality = null
-              this.user.state = null
-              this.user.city = null
-              this.user.newsletter = false
-              this.passIcon = true
-              this.cpassIcon = true
-              this.loader = false
-              this.loaderMessage = 'Loading Locations...'
+        try {
+          await this.$axios.post('/register', user)
+          await this.$auth.loginWith('local', {
+            data: {
+              username: user.username,
+              password: user.password
             }
-            this.dialog.message = res.data.message
-            this.dialog.icon = res.data.icon
-            this.dialog.color = res.data.color
-            this.dialog.status = true
           })
-          .catch(err => {
-            console.log(err)
-            this.dialog.icon = 'mdi-account-alert'
-            this.dialog.color = 'error'
-            this.dialog.message = 'Unable to register new User, please try again.'
-            this.dialog.status = true
-          })
+          // this.$router.push('/profile')
+          // let data = JSON.stringify(response.data)
+          // console.log(data)
+          // this.loader = false
+          // this.$v.$reset()
+          // this.user.name = ''
+          // this.user.email = ''
+          // this.user.title = []
+          // this.user.username = ''
+          // this.user.password = ''
+          // this.user.confirmPassword = ''
+          // this.user.phone = ''
+          // this.user.status = null
+          // this.user.nationality = null
+          // this.user.state = null
+          // this.user.city = null
+          // this.user.newsletter = false
+          // this.passIcon = true
+          // this.cpassIcon = true
+          // this.loader = false
+          // this.loaderMessage = 'Loading Locations...'
+          // this.dialog.message = 'Voila!!! Registered Successfully!!!'
+          // this.dialog.icon = 'mdi-account-check'
+          // this.dialog.color = 'success'
+          // this.dialog.status = true
+        } catch (e) {
+          this.loader = false
+          this.dialog.icon = 'mdi-account-alert'
+          this.dialog.color = 'error'
+          this.dialog.message = e.response.data
+          this.dialog.status = true
+        }
       }
     },
-    directLogin () {
-      this.$router.push('/profile')
+    async directLogin () {
+      // this.$router.push('/profile')
+    },
+    fill () {
+      this.user.title = ['Mr', 'Dr', 'Engr']
+      this.user.name = 'AbdulGafar Olamide Ajao'
+      this.user.username = 'variable'
+      this.user.phone = '08134549552'
+      this.user.email = 'Horlasco34@gmail.com'
+      this.user.status = 'Professional'
+      this.user.password = 'Horlasco34@yahoo.com'
+      this.user.confirmPassword = 'Horlasco34@yahoo.com'
     },
     clear () {
       this.$v.$reset()

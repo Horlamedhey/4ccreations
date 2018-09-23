@@ -27,6 +27,7 @@ export const state = () => ({
     category: ''
   },
   newPost: {
+    isPublic: null,
     title: '',
     description: '',
     img: [],
@@ -51,9 +52,9 @@ export const mutations = {
     state.newPost.description = ''
     state.newPost.img = []
     state.newPost.category = []
-    if (payload.user) {
-      state.newPost.uploader = payload.user.username
-      state.newPost.uploaderImg = payload.user.picture
+    if (this.$auth.loggedIn) {
+      state.newPost.uploader = this.$auth.user.userData.username
+      state.newPost.uploaderImg = this.$auth.user.userData.picture
     }
   },
   loader (state) {
@@ -132,6 +133,9 @@ export const mutations = {
       })
     }, 200)
   },
+  isPublic (state, payload) {
+    state.newPost.isPublic = payload
+  },
   title (state, payload) {
     state.newPost.title = payload
   },
@@ -147,6 +151,7 @@ export const mutations = {
   pushPost (state) {
     state.newPostLoader = true
     let {
+      isPublic,
       title,
       description,
       img,
@@ -155,12 +160,13 @@ export const mutations = {
       uploaderImg
     } = state.newPost
     state.post = {
-      uploaderImg,
-      uploader,
+      isPublic,
       title,
       description,
       img,
       category,
+      uploaderImg,
+      uploader,
       comments: [],
       likes: [],
       views: 0
@@ -196,12 +202,13 @@ export const mutations = {
       let {
         _id,
         createdAt,
-        uploaderImg,
-        uploader,
+        isPublic,
         title,
         description,
         img,
         category,
+        uploaderImg,
+        uploader,
         comments,
         likes,
         views,
@@ -215,12 +222,13 @@ export const mutations = {
       datas.push({
         _id,
         time: new Date(createdAt).toLocaleString(),
-        uploaderImg,
-        uploader,
+        isPublic,
         title,
         description,
         img,
         category,
+        uploaderImg,
+        uploader,
         comments,
         likes,
         views,
@@ -334,13 +342,14 @@ export const mutations = {
   updatePosts (state, data) {
     let {
       _id,
-      createdAt,
-      uploaderImg,
       uploader,
+      isPublic,
       title,
       description,
       img,
       category,
+      createdAt,
+      uploaderImg,
       comments,
       likes,
       views
@@ -351,12 +360,13 @@ export const mutations = {
     let post = {
       _id,
       time: new Date(createdAt).toLocaleString(),
-      uploaderImg,
-      uploader,
+      isPublic,
       title,
       description,
       img,
       category,
+      uploaderImg,
+      uploader,
       comments,
       likes,
       views,
@@ -381,7 +391,7 @@ export const mutations = {
       full: full.length, half: half.length, dislike: dislike.length, total: full.length + half.length + dislike.length
     }
     state.posts.unshift(post)
-    if (post.category.includes(state.postsCat.category) || state.postsCat.category === 'TRENDS') {
+    if (post.category.includes(state.postsCat.category) || state.postsCat.category === 'TRENDS' || state.postsCat.category === 'ALL') {
       state.postsCat.posts.unshift(post)
     }
   },
@@ -456,22 +466,24 @@ export const actions = {
       postdata.append('images', image)
     }
     let {
-      uploaderImg,
-      uploader,
+      isPublic,
       title,
       description,
       category,
+      uploaderImg,
+      uploader,
       comments,
       likes,
       views
     } = context.state.post
     let newPost = JSON.stringify(
       {
-        uploaderImg,
-        uploader,
+        isPublic,
         title,
         description,
         category,
+        uploaderImg,
+        uploader,
         comments,
         likes,
         views

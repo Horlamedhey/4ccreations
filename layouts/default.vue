@@ -158,7 +158,7 @@
   </template>
 
   <script>
-  import axios from '~/plugins/axios.js'
+  // import axios from '~/plugins/axios.js'
   import Loader from '~/components/Loader'
   export default {
     components: {
@@ -256,17 +256,11 @@
             this.$router.push('/')
           }
         } else if (this.logStat === true) {
-          await axios.get('/logout')
-            .then(res => {
-              this.$cookie.remove('userInfo')
-              this.$store.commit('profile/personalInfo')
-              if (this.$route.path !== '/') {
-                this.$router.push('/')
-              }
-            }).then(() => {
-              this.$store.commit('profile/userIsLogged', false)
-              this.$store.commit('default/index', 'Login')
-            })
+          await this.$auth.logout()
+          await this.$store.commit('default/index', 'Login')
+          if (this.$route.path !== '/') {
+            this.$router.push('/')
+          }
         }
       },
       homeFn (Home) {
@@ -286,7 +280,7 @@
     computed: {
       logStat: {
         get () {
-          return this.$store.state.profile.userIsLogged
+          return this.$auth.loggedIn
         }
       }
     }

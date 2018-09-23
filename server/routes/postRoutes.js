@@ -58,6 +58,7 @@ router.post('/newPost', upload.array('images', 2), (req, res) => {
   }
   let post =
           {
+            isPublic: newPost.isPublic,
             title: newPost.title,
             description: newPost.description,
             img: images,

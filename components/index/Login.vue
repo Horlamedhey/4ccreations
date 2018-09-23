@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import axios from '~/plugins/axios'
+// import axios from '~/plugins/axios'
 // import io from 'socket.io-client'
 export default {
   name: 'Login',
@@ -92,31 +92,29 @@ export default {
       })
     },
     async submit () {
-      let {username, password} = this.user
-      let user = {username: username.toLowerCase(), password}
-      await axios.post('/login', user)
-        .then(res => {
-          if (res.data.status === 'error') {
-            this.dialog.content = res.data.message
-            this.dialog.color = 'error'
-            this.dialog.icon = 'mdi-account-alert'
-            this.dialog.status = true
-          } else {
-            let data = JSON.stringify(res.data.info)
-            this.$cookie.set('userInfo', data, {path: '/', maxAge: 14400})
-            this.dialog.content = res.data.message
+      if (this.user.username === '' || this.user.username === null || this.user.password === '' || this.user.password === null) {
+        this.dialog.content = 'Please fill all fields!'
+        this.dialog.color = 'error'
+        this.dialog.icon = 'mdi-account-alert'
+        this.dialog.status = true
+      } else {
+        try {
+          await this.$auth.loginWith('local', { data: {
+            username: this.user.username.toLowerCase(),
+            password: this.user.password
+          } }).then(() => {
+            this.dialog.content = 'User Successfully Authenticated. Logging In...'
             this.dialog.color = 'success'
             this.dialog.icon = 'mdi-account-check'
             this.dialog.status = true
-            this.$store.commit('profile/userIsLogged', true)
-            setTimeout(() => {
-              this.user = {}
-            }, 20)
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
+          })
+        } catch (e) {
+          this.dialog.content = e.response.data
+          this.dialog.color = 'error'
+          this.dialog.icon = 'mdi-account-alert'
+          this.dialog.status = true
+        }
+      }
     },
     closeDialog () {
       this.dialog.status = false

@@ -32,7 +32,7 @@ app.use(cookieParser())
 mongodb.connect()
 app.use(session)
 // Import API Routes
-app.use('/', userRoutes)
+app.use('/user', userRoutes)
 app.use('/', postRoutes)
 // Import and Set Nuxt.js options
 let config = require('../nuxt.config.js')

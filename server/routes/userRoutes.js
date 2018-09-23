@@ -53,13 +53,15 @@ router.post('/register', (req, res) => {
   User.create(user, function (err, user) {
     if (err) {
       if (/username/.test(err.message)) {
-        res.send({message: 'Username already taken', icon: 'mdi-account-alert', color: 'error'})
+        res.status(406).send('Username already taken.')
+      } else {
+        res.status(500).send('Internal Server Error! Please try again.')
       }
     } else if (user) {
       let {username, picture} = user.personalInfo
       let data = {username, picture}
       req.session.user = jwt.sign({id: user._id}, config.secret, {expiresIn: '4h'})
-      return res.status(200).send({message: 'Voila!!! Registered Successfully!!!', icon: 'mdi-account-check', color: 'success', info: data})
+      return res.status(200).send(data)
     }
   })
 })
@@ -70,15 +72,13 @@ router.post('/login', (req, res) => {
   User.findOne({'personalInfo.username': req.body.username}, function (err, user) {
     if (err) { throw err }
     if (!user) {
-      res.send({status: 'error', message: 'Login failed. User not found.'})
+      res.status(404).send('Login failed. User not found.')
     } else if (user) {
       if (!user.comparePassword(req.body.password)) {
-        res.send({status: 'error', message: 'Login failed. Incorrect Password'})
+        res.status(404).send('Login failed. Incorrect Password')
       } else {
-        let {username, picture} = user.personalInfo
-        let data = {username, picture}
-        req.session.user = jwt.sign({id: user._id}, config.secret, {expiresIn: '1d'})
-        res.status(200).send({message: 'User Successfully Authenticated. Logging In...', info: data})
+        req.session.user = jwt.sign({id: user._id}, config.secret)
+        return res.send('success')
       }
     }
   })
@@ -87,7 +87,7 @@ router.post('/login', (req, res) => {
 router.get('/logout', (req, res) => {
   req.session.destroy(err => {
     if (err) {
-      res.send({success: false, message: 'Unable to log you out, please try again.'})
+      res.status(500).send('Unable to log you out, please try again.')
     } else {
       res.status(200).send('logging out...')
     }
@@ -100,21 +100,22 @@ router.get('/profileAuth', (req, res) => {
   if (req.session && req.session.user) {
     jwt.verify(req.session.user, config.secret, function (err, decoded) {
       if (err) {
-        console.log(err)
-        return res.send({auth: false, message: 'Unable to verify user, please close this dialog to login again.'})
+        return res.status(406).send('Unable to verify user, please close this dialog to login again.')
       }
       User.findById(decoded.id, function (err, user) {
         if (err) {
-          return res.send({auth: false, message: 'There was a problem finding user, please try again.'})
+          return res.status(406).send('There was a problem finding user, please try again.')
         } else if (!user) {
-          return res.send({auth: false, message: 'User not found, please register.'})
+          return res.status(406).send('User not found, please register.')
         } else {
-          res.status(200).send({userId: user._id, userData: user.personalInfo})
+          let userData = user.personalInfo
+          let id = user._id
+          res.json({user: {userData, id}})
         }
       })
     })
   } else {
-    res.send({auth: false, message: 'User not logged in.'})
+    res.status(406).send('User not logged in.')
   }
 })
 
@@ -219,7 +220,7 @@ router.patch('/saveUserInfo', (req, res) => {
       res.sendStatus(500)
     } else if (result) {
       res.sendStatus(200)
-      console.log(result)
+      // console.log(result)
     }
   })
 })

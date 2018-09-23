@@ -1,6 +1,6 @@
 <template>
 <v-layout row justify-center>
-    <v-dialog v-model="dialog" persistent max-width="900">
+    <v-dialog v-model="dialog" max-width="900">
       <v-btn absolute style="opacity:0;" id="postImage" slot="activator" color="primary" dark/>
       <v-card>
         <v-img lazy-src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf-qKxv_sDOMxYNz_-yYrwElcOVIyj9qusYZ0Nd-4y6QSVMkpi&reload=on" :alt="'image for post with description: ' + bigImage.desc" class="grey--text" :src="bigImage.image[bigImage.activeImg]" height="600px" contain>

@@ -1,8 +1,8 @@
 <template>
 	<v-layout row justify-center>
-    <loader message="Creating New Post..." v-if="loader"/>
+    <loader message="Creating New Post..." v-if="loader"></loader>
 		<v-dialog class="newPost" v-model="postBox" persistent max-width="500px">
-			<v-btn id="newPost" style="display: none;" class="newPost" fab slot="activator"/>
+			<v-btn id="newPost" style="display: none;" class="newPost" fab slot="activator"></v-btn>
 			<v-card>
 				<v-card-actions style="position: absolute;z-index: 99;right: 0;">
 				<v-btn @click.native="isPost(false)" right icon color="primary">
@@ -64,7 +64,7 @@
 										type="file"
                     accept="image/*"
                     multiple
-								/>
+								>
 								<v-tooltip right color="primary">
 								<v-btn @click="pickPic()" slot="activator" style="margin-left: auto; margin-right: auto; display: block;" fab color="accent">
 									<v-icon>mdi-camera-enhance</v-icon>
@@ -79,11 +79,11 @@
 									<v-expansion-panel-content>
 										<div v-for="(image, i) in images" :key="i" slot="header">Preview: {{ image.name }}</div>
 										<v-card>
-											<v-card-media v-for="(image, i) in imagesPreview" :key="i" :src="image" height="200">
+											<v-img v-for="(image, i) in imagesPreview" :key="i" :src="image" height="200">
                         <v-btn @click.native="rmvPic(i)" icon color="accent">
                           <v-icon>mdi-close</v-icon>
                         </v-btn>
-											</v-card-media>
+											</v-img>
 										</v-card>
 									</v-expansion-panel-content>
 								</v-expansion-panel>
@@ -92,13 +92,16 @@
 								<v-combobox solo-inverted cache-items color="secondary" open-on-clear deletable-chips dense
 								          chips no-data-text="Invalid selection" v-model="category" @input="checkCat()"
 								          label="Category(ies)" :items="categories" multiple @blur="checkCat()"
-								          :error-messages="catErrors" append-icon="mdi-chevron-down"/>
+								          :error-messages="catErrors" append-icon="mdi-chevron-down"></v-combobox>
 							</v-flex>
 						</v-layout>
 					</v-container>
 				<v-card-actions>
+          <v-switch :label="`Public: ${isPublic.toString()}`"
+                    v-model="isPublic"></v-switch>
+          
 					<v-spacer></v-spacer>
-					<v-btn @click="submit()" color="accent">
+					<v-btn @click.stop="submit()" color="accent">
 						Create Post
 					</v-btn>
 				</v-card-actions>
@@ -199,6 +202,7 @@ export default {
       if (this.images && this.images.length === 0) {
         this.imgErrors.push('Please upload an image!')
       } else if (this.images && this.images.length !== 0) {
+        this.$store.commit('image', this.images)
         this.imgErrors = []
       }
     },
@@ -210,7 +214,6 @@ export default {
       }
     },
     submit () {
-      this.$store.commit('image', this.images)
       this.checkTitle()
       this.checkDesc()
       this.checkImg()
@@ -239,7 +242,15 @@ export default {
         return this.$store.state.postBox
       },
       set (value) {
-        this.$store.commit('postBox', {status: value, user: this.$cookie.get('userInfo')})
+        this.$store.commit('postBox', {status: value})
+      }
+    },
+    isPublic: {
+      get () {
+        return this.$store.state.newPost.isPublic
+      },
+      set (value) {
+        this.$store.commit('isPublic', value)
       }
     },
     title: {

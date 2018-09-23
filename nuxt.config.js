@@ -2,10 +2,26 @@ module.exports = {
   serverMiddleware: [
   ],
   modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/auth',
     '@nuxtjs/pwa',
     ['cookie-universal-nuxt', {alias: 'cookie'}]
     // 'nuxt-babel'
   ],
+  axios: {
+    // baseURL: `http://${process.env.HOST || 'localhost'}:${process.env.PORT || 3000}`
+  },
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: '/user/login', method: 'post', propertyName: 'token' },
+          user: { url: '/user/profileAuth', method: 'get', propertyName: 'user' },
+          logout: { url: '/user/logout', method: 'get' }
+        }
+      }
+    }
+  },
   /*
      ** Headers of the page
      */

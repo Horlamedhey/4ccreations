@@ -3,6 +3,7 @@ var timestamps = require('mongoose-timestamp')
 var Schema = mongoose.Schema
 
 var PostSchema = new Schema({
+  isPublic: Boolean,
   title: String,
   description: String,
   img: [],

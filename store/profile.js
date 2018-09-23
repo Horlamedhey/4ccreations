@@ -1,11 +1,8 @@
-import axios from '~/plugins/axios'
+// import axios from '~/plugins/axios'
 export const state = () => ({
   loader: false,
   dialog: {status: false, color: 'error', icon: 'mdi-account-alert', content: 'User not logged in.'},
   // userData
-  id: '',
-  personalInfo: {},
-  userIsLogged: false,
   editing: [],
   userInfo: {}
   //  user's portfolio
@@ -15,31 +12,20 @@ export const mutations = {
   loading (state, payload) {
     state.loader = payload
   },
+  collectData (state) {
+    let {city, company, dob, email, gender, institution, level, name, nationality, newsletter, password, phone, picture, position, status, username} = this.$auth.user.userData
+    let title = []
+    this.$auth.user.userData.title.forEach(v => {
+      title.push(v)
+    })
+    state.userInfo = {city, company, dob, email, gender, institution, level, name, nationality, newsletter, password, phone, picture, position, state: this.$auth.user.userData.state, status, title: title, username}
+  },
   dialog (state, payload) {
     state.dialog.content = payload
     state.dialog.status = true
   },
-  personalInfo (state, payload) {
-    if (payload) {
-      state.personalInfo = payload
-      state.id = payload.id
-      let {city, company, dob, email, gender, institution, level, name, nationality, newsletter, password, phone, picture, position, status, username} = payload
-      let title = []
-      payload.title.forEach(v => {
-        title.push(v)
-      })
-      state.userInfo = {city, company, dob, email, gender, institution, level, name, nationality, newsletter, password, phone, picture, position, state: payload.state, status, title: title, username}
-    } else {
-      state.personalInfo = {}
-      state.userInfo = {}
-    }
-  },
-  //  checks if user is logged in
-  userIsLogged (state, payload) {
-    state.userIsLogged = payload
-  },
   updateProfilePic (state, payload) {
-    state.personalInfo.picture = payload
+    this.$auth.user.userData.picture = payload
     state.userInfo.picture = payload
   },
   editing (state, payload) {
@@ -80,12 +66,12 @@ export const mutations = {
   },
   cancelAllEdits (state) {
     state.editing = []
-    let {city, company, dob, email, gender, institution, level, name, nationality, newsletter, password, phone, picture, position, status, username} = state.personalInfo
+    let {city, company, dob, email, gender, institution, level, name, nationality, newsletter, password, phone, picture, position, status, username} = this.$auth.user.userData
     let title = []
-    state.personalInfo.title.forEach(v => {
+    this.$auth.user.userData.title.forEach(v => {
       title.push(v)
     })
-    let {stateOfOrigin} = state.personalInfo.state
+    let {stateOfOrigin} = this.$auth.user.userData.state
     state.userInfo = {city, company, dob, email, gender, institution, level, name, nationality, newsletter, password, phone, picture, position, state: stateOfOrigin, status, title: title, username}
   },
   changesSaved (state) {
@@ -98,43 +84,34 @@ export const actions = {
     commit('loading', true)
     let data = {}
     data.picture = payload
-    data.user = state.id
+    data.user = this.$auth.user.id
     let profilePic = new FormData()
     profilePic.append('newPic', data.picture)
     profilePic.append('user', data.user)
-    await axios.post('/changeProfilePic', profilePic)
-      .then(res => {
-        setTimeout(() => {
-          commit('loading', false)
-        }, 3000)
-      })
+    await this.$axios.post('/user/changeProfilePic', profilePic)
+    setTimeout(() => {
+      commit('loading', false)
+    }, 3000)
   },
-  async removeProfilePic ({state, commit}) {
+  async removeProfilePic ({commit}) {
     commit('loading', true)
-    let user = {user: state.id}
-    await axios.post('/changeProfilePic', user)
-      .then(res => {
-        setTimeout(() => {
-          commit('loading', false)
-        }, 3000)
-      })
+    let user = {user: this.$auth.user.id}
+    await this.$axios.post('user/changeProfilePic', user)
+    setTimeout(() => {
+      commit('loading', false)
+    }, 3000)
   },
   async saveChanges ({state, commit}) {
     commit('loading', true)
-    await axios.patch('/saveUserInfo', {id: state.id, personalInfo: state.userInfo})
-      .then(() => {
-        commit('changesSaved')
-        setTimeout(() => {
-          commit('loading', false)
-        }, 1500)
-      })
+    await this.$axios.patch('user/saveUserInfo', {id: this.$auth.user.id, personalInfo: state.userInfo})
+    commit('changesSaved')
+    setTimeout(() => {
+      commit('loading', false)
+    }, 1500)
   },
   async fetchPosts ({state, commit}) {
-    await axios.get('/fetchPosts', {params: {user: state.personalInfo.username}})
-      .then(res => {
-        commit('populatePosts', res.data, {root: true})
-      }).then(() => {
-        commit('populatePostsCat', 'ALL', {root: true})
-      })
+    let res = await this.$axios.$get('/fetchPosts', {params: {user: this.$auth.user.userData.username}})
+    await commit('populatePosts', res, {root: true})
+    await commit('populatePostsCat', 'ALL', {root: true})
   }
 }

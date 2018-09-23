@@ -66,7 +66,7 @@
             <span>Cancel</span>
           </v-tooltip>
         </div>
-        <v-snackbar class="mt-5" v-model="snackbar.status" top vertical :timeout="5000">
+        <v-snackbar class="mt-5" v-model="snackbar.status" top vertical :timeout="3000">
           {{ snackbar.text }}
           <v-btn color="pink" flat @click="snackbar.status = false">Close</v-btn>
         </v-snackbar>
@@ -76,7 +76,7 @@
                  accept="image/*">
           <v-img alt="profile picture" contain :src="picture"
                  height="300px"
-                 lazy-src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf-qKxv_sDOMxYNz_-yYrwElcOVIyj9qusYZ0Nd-4y6QSVMkpi&reload=on">
+                 :lazy-src="`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQf-qKxv_sDOMxYNz_-yYrwElcOVIyj9qusYZ0Nd-4y6QSVMkpi&reload=on`">
             <v-layout slot="placeholder" fill-height align-center justify-center
                       ma-0>
               <v-progress-circular indeterminate color="grey lighten-5">
@@ -126,7 +126,7 @@
                     </v-flex>
                   </v-layout>
                   <div style="position: relative;">
-                    <v-select v-model="titles" id="newTitle" style="width: 20%; display: inline-flex" :items="['Mr', 'Mrs', 'Miss', 'Dr', 'Engr']" label="Titles" outline/>
+                    <v-select v-model="titles" id="newTitle" style="width: 20%; display: inline-flex" :items="['Mr', 'Mrs', 'Miss', 'Dr', 'Engr']" label="Titles" outline></v-select>
                     <v-btn style="position:absolute; left: 50%;"
                             @click="addTitle()" flat fab color="primary">
                       <v-icon>mdi-plus-box</v-icon>
@@ -139,7 +139,7 @@
                         <span>
                         Name: 
                         <v-text-field :rules="[rules.required]" :outline="editing.includes('name')" class="d-inline-block" v-model="name" full-width
-                        :disabled="!editing.includes('name')"/>
+                        :disabled="!editing.includes('name')"></v-text-field>
                         </span>
                         <v-btn @click="edit('name')" icon flat>
                             <v-icon>mdi-pencil</v-icon>
@@ -152,7 +152,7 @@
                     <v-layout class="justify-space-between">
                         <span>
                         Email: 
-                        <v-text-field type="email" :rules="[rules.email, rules.required]" :outline="editing.includes('email')" class="d-inline-block" v-model="email" full-width :disabled="!editing.includes('email')"/>
+                        <v-text-field type="email" :rules="[rules.email, rules.required]" :outline="editing.includes('email')" class="d-inline-block" v-model="email" full-width :disabled="!editing.includes('email')"></v-text-field>
                         </span>
                         <v-btn @click="edit('email')" icon flat>
                             <v-icon>mdi-pencil</v-icon>
@@ -165,7 +165,7 @@
                     <v-layout class="justify-space-between">
                         <span>
                         Phone: 
-                        <v-text-field type="tel" :rules="[rules.required]" :outline="editing.includes('phone')" class="d-inline-block" v-model="phone" full-width :disabled="!editing.includes('phone')"/>
+                        <v-text-field type="tel" :rules="[rules.required]" :outline="editing.includes('phone')" class="d-inline-block" v-model="phone" full-width :disabled="!editing.includes('phone')"></v-text-field>
                         </span>
                         <v-btn @click="edit('phone')" icon flat>
                             <v-icon>mdi-pencil</v-icon>
@@ -275,11 +275,11 @@
                       <v-layout class="justify-space-between">
                           <span v-if="status === 'Professional'">
                           Company: 
-                          <v-text-field :rules="[rules.required]" :outline="editing.includes('company/institution')" class="d-inline-block" v-model="company" full-width :disabled="!editing.includes('company/institution')"/>
+                          <v-text-field :rules="[rules.required]" :outline="editing.includes('company/institution')" class="d-inline-block" v-model="company" full-width :disabled="!editing.includes('company/institution')"></v-text-field>
                           </span>
                           <span v-if="status === 'Student'">
                           Institution: 
-                          <v-text-field :rules="[rules.required]" :outline="editing.includes('company/institution')" class="d-inline-block" v-model="institution" full-width :disabled="!editing.includes('company/institution')"/>
+                          <v-text-field :rules="[rules.required]" :outline="editing.includes('company/institution')" class="d-inline-block" v-model="institution" full-width :disabled="!editing.includes('company/institution')"></v-text-field>
                           </span>
                           <v-btn @click="edit('company/institution')" icon flat>
                               <v-icon>mdi-pencil</v-icon>
@@ -292,11 +292,11 @@
                       <v-layout class="justify-space-between">
                           <span v-if="status === 'Professional'">
                           Position: 
-                          <v-text-field :rules="[rules.required]" :outline="editing.includes('position/level')" class="d-inline-block" v-model="position" full-width :disabled="!editing.includes('position/level')"/>
+                          <v-text-field :rules="[rules.required]" :outline="editing.includes('position/level')" class="d-inline-block" v-model="position" full-width :disabled="!editing.includes('position/level')"></v-text-field>
                           </span>
                           <span v-if="status === 'Student'">
                           Level: 
-                          <v-text-field :rules="[rules.required]" :outline="editing.includes('position/level')" class="d-inline-block" v-model="level" full-width :disabled="!editing.includes('position/level')"/>
+                          <v-text-field :rules="[rules.required]" :outline="editing.includes('position/level')" class="d-inline-block" v-model="level" full-width :disabled="!editing.includes('position/level')"></v-text-field>
                           </span>
                           <v-btn @click="edit('position/level')" icon flat>
                               <v-icon>mdi-pencil</v-icon>
@@ -320,7 +320,7 @@
 </template>
 
 <script>
-import axios from '~/plugins/axios'
+// import axios from '~/plugins/axios'
 import io from 'socket.io-client'
 export default {
   name: 'PersonalInfo',
@@ -343,16 +343,12 @@ export default {
     }
   },
   methods: {
-    async profileAuth () {
-      await axios.get('/profileAuth')
-        .then(res => {
-          if (res.data.auth === false) {
-            this.$store.commit('profile/dialog', res.data.message)
-          } else {
-            res.data.userData.id = res.data.userId
-            this.$store.commit('profile/personalInfo', res.data.userData)
-          }
-        })
+    profileAuth () {
+      if (this.$auth.loggedIn === false) {
+        this.$store.commit('profile/dialog', 'User not logged in')
+      } else {
+        this.$store.commit('profile/collectData')
+      }
     },
     changeProfilePic () {
       document.getElementById('changeProfilePic').click()
@@ -372,9 +368,6 @@ export default {
     updateProfilePic () {
       io().on('profilePic', data => {
         this.$store.commit('profile/updateProfilePic', data.profilePic)
-        let {profilePic, username} = data
-        let user = {picture: profilePic, username: username}
-        this.$cookie.set('userInfo', user, {path: '/', maxAge: 14400})
       })
     },
     edit (arg) {
@@ -403,8 +396,8 @@ export default {
       this.$store.commit('profile/cancelAllEdits')
     },
     saveChanges () {
-      let master = this.$store.state.profile.personalInfo
-      let slave = this.$store.state.profile.userInfo
+      let master = this.$store.state.profile.userInfo
+      let slave = this.$auth.user.userData
       let key, key1, element, element1
       let changesChecker = []
       let titleChecker = []

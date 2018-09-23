@@ -50,7 +50,6 @@
 import Loader from '~/components/Loader2'
 import PersonalInfo from '~/components/profile/PersonalInfo'
 import Portfolio from '~/components/profile/Portfolio'
-import mixin from '~/mixins/userislogged'
 export default {
   name: 'profile',
   components: {
@@ -58,7 +57,7 @@ export default {
     PersonalInfo,
     Portfolio
   },
-  mixins: [mixin],
+  mixins: [],
   data () {
     return {
       active: 'PersonalInfo',
@@ -120,6 +119,7 @@ export default {
     }
   },
   mounted () {
+    this.$store.commit('isPublic', false)
   },
   computed: {
     loading: {
