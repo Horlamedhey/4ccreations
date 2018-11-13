@@ -52,7 +52,11 @@
               <span>Back To Top</span>
           </v-tooltip>
       </v-fab-transition>
-      <posts-component/>
+      <v-layout id="top" class="pt-5 pb-5" justify-center>
+          <v-flex headline xs12 class="align-center">
+              Explore our constantly updated list of trending and fascinating architecture designs.
+          </v-flex>
+      </v-layout>
       <v-toolbar class="mb-1 accent white--text">
         <v-toolbar-title class="headline">{{posts.category}}</v-toolbar-title>
       </v-toolbar>

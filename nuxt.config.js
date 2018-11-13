@@ -5,7 +5,7 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     '@nuxtjs/pwa',
-    ['cookie-universal-nuxt', {alias: 'cookie'}]
+    ['cookie-universal-nuxt', { alias: 'cookie' }]
     // 'nuxt-babel'
   ],
   axios: {
@@ -49,7 +49,7 @@ module.exports = {
       }
     ],
     script: [
-      {src: '/js/webpjs-0.0.2.min.js'}
+      { src: '/js/webpjs-0.0.2.min.js' }
     ]
   },
   loading: { color: '#ffffff' },
@@ -62,7 +62,7 @@ module.exports = {
      */
   css: [
     '~/assets/css/fonts.css',
-    '@mdi/font/css/materialdesignicons.min.css',
+    // '@mdi/font/css/materialdesignicons.min.css',
     '~/assets/css/app.styl',
     '~/assets/css/main.css'
   ],

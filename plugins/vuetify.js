@@ -9,5 +9,6 @@ Vue.use(Vuetify, {
     warning: '#E84C0C',
     info: '#1485CC',
     success: '#00FF48'
-  }
+  },
+  iconfont: 'mdi'
 })

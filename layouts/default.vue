@@ -16,7 +16,7 @@
             <v-list-tile slot="activator">
               <v-list-tile-title class="black--text drawNavItem">{{ navItem.name }}</v-list-tile-title>
             </v-list-tile>
-            <v-list-tile @click="linkTrendAll()" ripple class="items">
+            <v-list-tile v-if="navItem.name === 'Collections'" @click="linkTrendAll()" ripple class="items">
               <v-list-tile-content>
                 <v-list-tile-title v-text="$route.path === '/profile' ? 'All' : 'Trends'"></v-list-tile-title>
               </v-list-tile-content>

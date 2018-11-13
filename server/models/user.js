@@ -1,6 +1,6 @@
 var mongoose = require('mongoose')
 var timestamps = require('mongoose-timestamp')
-var bcrypt = require('bcrypt')
+var bcrypt = require('bcryptjs')
 var Schema = mongoose.Schema
 
 var UserSchema = new Schema({
@@ -24,16 +24,16 @@ var UserSchema = new Schema({
       type: String,
       required: true
     },
-    picture: {type: String, default: 'http://byronbayphotographer.com/wp-content/uploads/2017/11/pleasing-mystery-clipart-person-pencil-and-in-color.jpg'},
+    picture: { type: String, default: 'http://byronbayphotographer.com/wp-content/uploads/2017/11/pleasing-mystery-clipart-person-pencil-and-in-color.jpg' },
     nationality: String,
     state: String,
     city: String,
-    dob: {type: String, default: ''},
-    gender: {type: String, default: ''},
-    company: {type: String, default: ''},
-    institution: {type: String, default: ''},
-    level: {type: String, default: ''},
-    position: {type: String, default: ''},
+    dob: { type: String, default: '' },
+    gender: { type: String, default: '' },
+    company: { type: String, default: '' },
+    institution: { type: String, default: '' },
+    level: { type: String, default: '' },
+    position: { type: String, default: '' },
     newsletter: Boolean
   },
   portfolio: [],

@@ -279,7 +279,7 @@ export default {
           newsletter
         }
         try {
-          await this.$axios.post('/register', user)
+          await this.$axios.post('/user/register', user)
           await this.$auth.loginWith('local', {
             data: {
               username: user.username,
