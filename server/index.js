@@ -16,7 +16,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
 const helmet = require('helmet')
-const host = process.env.HOST || '0.0.0.0'
+// const host = process.env.HOST || '127.0.0.1'
 const port = process.env.PORT || 3000
 const mongodb = require('./mongodb')
 
@@ -51,8 +51,8 @@ if (config.dev) {
 app.use(nuxt.render)
 
 // Listen the server
-let server = app.listen(port, host)
-console.log('Server listening on ' + host + ':' + port) // eslint-disable-line no-console
+let server = app.listen(port)
+console.log('Server listening on ' + 'localhost' + ':' + port) // eslint-disable-line no-console
 
 const io = require('socket.io').listen(server)
 

@@ -1,4 +1,4 @@
-import {Router} from 'express'
+import { Router } from 'express'
 import io from '../index'
 var config = require('../conf')
 const User = require('../models/user')
@@ -30,7 +30,7 @@ var storage = multer.diskStorage({
     cb(null, file.originalname)
   }
 })
-var upload = multer({storage: storage})
+var upload = multer({ storage: storage })
 
 //  Signing up
 
@@ -58,10 +58,10 @@ router.post('/register', (req, res) => {
         res.status(500).send('Internal Server Error! Please try again.')
       }
     } else if (user) {
-      let {username, picture} = user.personalInfo
-      let data = {username, picture}
-      req.session.user = jwt.sign({id: user._id}, config.secret, {expiresIn: '4h'})
-      return res.status(200).send(data)
+      // let { username, picture } = user.personalInfo
+      // let data = { username, picture }
+      req.session.user = jwt.sign({ id: user._id }, config.secret, { expiresIn: '4h' })
+      return res.status(200).send({ data: { token: req.session.user } })
     }
   })
 })
@@ -69,7 +69,7 @@ router.post('/register', (req, res) => {
 //  Logging in and out
 
 router.post('/login', (req, res) => {
-  User.findOne({'personalInfo.username': req.body.username}, function (err, user) {
+  User.findOne({ 'personalInfo.username': req.body.username }, function (err, user) {
     if (err) { throw err }
     if (!user) {
       res.status(404).send('Login failed. User not found.')
@@ -77,8 +77,8 @@ router.post('/login', (req, res) => {
       if (!user.comparePassword(req.body.password)) {
         res.status(404).send('Login failed. Incorrect Password')
       } else {
-        req.session.user = jwt.sign({id: user._id}, config.secret)
-        return res.send('success')
+        req.session.user = jwt.sign({ id: user._id }, config.secret)
+        return res.status(200).send({ user: req.session.user })
       }
     }
   })
@@ -110,7 +110,7 @@ router.get('/profileAuth', (req, res) => {
         } else {
           let userData = user.personalInfo
           let id = user._id
-          res.json({user: {userData, id}})
+          res.json({ user: { userData, id } })
         }
       })
     })
@@ -123,7 +123,7 @@ router.get('/profileAuth', (req, res) => {
 
 router.post('/newsletter', (req, res) => {
   let email = req.body.email
-  Newsletter.findByIdAndUpdate('5b724da695198a48632ba51b', {$push: {emails: email}}, {new: true}, (err, result) => {
+  Newsletter.findByIdAndUpdate('5b724da695198a48632ba51b', { $push: { emails: email } }, { new: true }, (err, result) => {
     if (err) {
       res.sendStatus(500)
     } else if (result) { res.sendStatus(200) }
@@ -145,7 +145,7 @@ router.get('/location', (req, res) => {
 router.patch('/location', (req, res) => {
   let data = req.body
   console.log(data)
-  Location.findByIdAndUpdate(data.id.country, {'States._id': data.id}, (error, result) => {
+  Location.findByIdAndUpdate(data.id.country, { 'States._id': data.id }, (error, result) => {
     if (error) {
       res.send(error)
     } else if (result) {
@@ -180,28 +180,28 @@ router.post('/changeProfilePic', upload.single('newPic'), (req, res) => {
   } else {
     picture = 'http://byronbayphotographer.com/wp-content/uploads/2017/11/pleasing-mystery-clipart-person-pencil-and-in-color.jpg'
   }
-  User.findByIdAndUpdate(user, {$set: {'personalInfo.picture': picture}}, {new: true}, (err, user) => {
+  User.findByIdAndUpdate(user, { $set: { 'personalInfo.picture': picture } }, { new: true }, (err, user) => {
     if (err) {
       res.sendStatus(500)
     } else if (user) {
       //  touching profilePic on all user's posts, comments and likes
-      Post.updateMany({uploader: user.personalInfo.username},
-        {$set: {uploaderImg: user.personalInfo.picture}}, (error, result) => {
+      Post.updateMany({ uploader: user.personalInfo.username },
+        { $set: { uploaderImg: user.personalInfo.picture } }, (error, result) => {
           if (error) {
             res.sendStatus(500)
           } else if (result) {
-            Post.updateMany({'comments.commentor': user.personalInfo.username},
-              {$set: {'comments.$.commentorImg': user.personalInfo.picture}}, (error, result) => {
+            Post.updateMany({ 'comments.commentor': user.personalInfo.username },
+              { $set: { 'comments.$.commentorImg': user.personalInfo.picture } }, (error, result) => {
                 if (error) {
                   res.sendStatus(500)
                 } else if (result) {
-                  Post.updateMany({'likes.liker': user.personalInfo.username},
-                    {$set: {'likes.$.likerImg': user.personalInfo.picture}}, (error, result) => {
+                  Post.updateMany({ 'likes.liker': user.personalInfo.username },
+                    { $set: { 'likes.$.likerImg': user.personalInfo.picture } }, (error, result) => {
                       if (error) {
                         res.sendStatus(500)
                       } else if (result) {
                         res.sendStatus(200)
-                        io.emit('profilePic', {id: user._id, profilePic: user.personalInfo.picture, username: user.personalInfo.username})
+                        io.emit('profilePic', { id: user._id, profilePic: user.personalInfo.picture, username: user.personalInfo.username })
                       }
                     })
                 }
@@ -215,7 +215,7 @@ router.post('/changeProfilePic', upload.single('newPic'), (req, res) => {
 router.patch('/saveUserInfo', (req, res) => {
   console.log(req.body)
   let data = req.body
-  User.findByIdAndUpdate(data.id, {$set: {personalInfo: data.personalInfo}}, {new: true}, (error, result) => {
+  User.findByIdAndUpdate(data.id, { $set: { personalInfo: data.personalInfo } }, { new: true }, (error, result) => {
     if (error) {
       res.sendStatus(500)
     } else if (result) {

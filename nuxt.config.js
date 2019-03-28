@@ -1,3 +1,8 @@
+const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
+  router: {
+    base: '/4ccreations/'
+  }
+} : {}
 module.exports = {
   serverMiddleware: [
   ],
@@ -9,13 +14,13 @@ module.exports = {
     // 'nuxt-babel'
   ],
   axios: {
-    // baseURL: `http://${process.env.HOST || 'localhost'}:${process.env.PORT || 3000}`
+    baseURL: `http://${process.env.HOST || 'localhost'}:${process.env.PORT || 3000}`
   },
   auth: {
     strategies: {
       local: {
         endpoints: {
-          login: { url: '/user/login', method: 'post', propertyName: 'token' },
+          login: { url: '/user/login', method: 'post', propertyName: 'data.token' },
           user: { url: '/user/profileAuth', method: 'get', propertyName: 'user' },
           logout: { url: '/user/logout', method: 'get' }
         }
@@ -87,6 +92,7 @@ module.exports = {
       src: '~/plugins/timeago'
     }
   ],
+  ...routerBase,
   /*
      ** Add axios globally
      */
@@ -97,7 +103,7 @@ module.exports = {
     },
     /*
    ** Run ESLINT on save   */
-    extend (config, ctx) {
+    extend(config, ctx) {
       if (ctx.isClient || ctx.isServer) {
         config.module.rules.push({
           enforce: 'pre',

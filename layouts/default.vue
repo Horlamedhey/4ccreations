@@ -49,7 +49,7 @@
         <v-toolbar-title class="logo" @click="homeFn(Home)">
           {{ title}}
         </v-toolbar-title>
-        <v-tooltip bottom class="ml-3 mr-2 hidden-sm-and-down">
+        <!-- <v-tooltip bottom class="ml-3 mr-2 hidden-sm-and-down">
           <span slot="activator" class="searchCont">
             <form class="search-input" action="/static/search.html" method="GET"
                   @click="search1">
@@ -71,7 +71,24 @@
             </form>
           </span>
           <span>Search</span>
-        </v-tooltip>
+        </v-tooltip> -->
+        <!-- <v-toolbar-items class="hidden-sm-and-down">
+          <v-menu transition="slide-x-transition" open-on-hover offset-y
+                  v-for="navItem in navItems" :key="navItem.id">
+            <v-btn flat slot="activator" class="white--text navItems">
+              {{ navItem.name }}
+            </v-btn>
+            <v-list>
+              <v-list-tile @click="link(item)" ripple
+                          v-for="item in navItem.navSubItems" :key="item.id" class="items">
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list>
+          </v-menu>
+        </v-toolbar-items> -->
+        <v-spacer class="ml-5"></v-spacer>
         <v-toolbar-items class="hidden-sm-and-down">
           <v-menu transition="slide-x-transition" open-on-hover offset-y
                   v-for="navItem in navItems" :key="navItem.id">
@@ -88,8 +105,8 @@
             </v-list>
           </v-menu>
         </v-toolbar-items>
-        <v-spacer class="ml-5"></v-spacer>
-        <v-tooltip bottom class="mr-1 hidden-md-and-up">
+        <!-- <v-tooltip bottom class="mr-1 hidden-md-and-up"> -->
+        <v-tooltip bottom class="mr-1">
         	<span class="searchCont" slot="activator">
     			<form class="search-input" action="/static/search.html"
 					  method="GET" @click="search2">
@@ -152,7 +169,7 @@
           <nuxt/>
       </v-content>
       <v-footer fixed app height="auto" class="primary white--text" style="z-index: 999999">
-        <span style="display: block; margin: auto; cursor:pointer;" class="align-center" @click="homeFn(Home)">4C-CREATIONS &copy; 2017</span>
+        <span style="display: block; margin: auto; cursor:pointer;" class="align-center" @click="homeFn(Home)">DROPLET &copy; 2017</span>
       </v-footer>
     </v-app>
   </template>
@@ -187,41 +204,41 @@
               },
               { name: 'Green/Sustainable Design', link: 'GREEN/SUSTAINABLE' }
             ]
-          },
-          {
-            icon: 'mdi-account-group',
-            active: false,
-            name: 'Community',
-            navSubItems: [
-              { name: 'General' },
-              { name: 'Scholars' },
-              { name: 'Professionals' }
-            ]
-          },
-          {
-            icon: 'mdi-lightbulb-on',
-            active: false,
-            name: 'Challenges',
-            navSubItems: [
-              { name: 'Quiz' },
-              { name: 'Tests' },
-              { name: 'Exams' },
-              { name: 'Games' }
-            ]
-          },
-          {
-            icon: 'mdi-briefcase',
-            active: false,
-            name: 'Chances',
-            navSubItems: [
-              { name: 'IT' },
-              { name: 'Jobs' },
-              { name: 'Placements' },
-              { name: 'Freelancing' }
-            ]
           }
+          // {
+          //   icon: 'mdi-account-group',
+          //   active: false,
+          //   name: 'Community',
+          //   navSubItems: [
+          //     { name: 'General' },
+          //     { name: 'Scholars' },
+          //     { name: 'Professionals' }
+          //   ]
+          // },
+          // {
+          //   icon: 'mdi-lightbulb-on',
+          //   active: false,
+          //   name: 'Challenges',
+          //   navSubItems: [
+          //     { name: 'Quiz' },
+          //     { name: 'Tests' },
+          //     { name: 'Exams' },
+          //     { name: 'Games' }
+          //   ]
+          // },
+          // {
+          //   icon: 'mdi-briefcase',
+          //   active: false,
+          //   name: 'Chances',
+          //   navSubItems: [
+          //     { name: 'IT' },
+          //     { name: 'Jobs' },
+          //     { name: 'Placements' },
+          //     { name: 'Freelancing' }
+          //   ]
+          // }
         ],
-        title: '4C-CREATIONS'
+        title: 'DROPLET'
       }
     },
     methods: {
@@ -288,75 +305,75 @@
   </script>
 
   <style scoped>
-  .searchCont {
-    font-weight: normal;
-    -webkit-font-smoothing: antialiased;
-    z-index: 99;
-  }
-  form {
-    height: 42px;
-    margin: 0;
-    padding: 0;
-    cursor: pointer;
-  }
-  form:hover input {
-    background: #ff9a0d;
-  }
-  svg {
-    stroke: #ffffff;
-  }
-  g {
-    pointer-events: none;
-    stroke-width: 1.2;
-    fill: none;
-  }
+.searchCont {
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  z-index: 99;
+}
+form {
+  height: 42px;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+form:hover input {
+  background: #ff9a0d;
+}
+svg {
+  stroke: #ffffff;
+}
+g {
+  pointer-events: none;
+  stroke-width: 1.2;
+  fill: none;
+}
 
-  input {
-    border: 1px solid rgba(202, 202, 202, 0.6);
-    outline: none;
-    margin-top: -47px;
-    padding: 9px 10px 9px 32px;
-    border-radius: 25pc;
-    transition: all 0.3s ease-in-out;
-    font-size: 16px;
-    background: transparent;
-    box-shadow: none;
-    width: 42px;
-    height: 42px;
-    color: transparent;
-    outline-offset: -2px;
-    display: block;
-    overflow: visible;
-  }
+input {
+  border: 1px solid rgba(202, 202, 202, 0.6);
+  outline: none;
+  margin-top: -47px;
+  padding: 9px 10px 9px 32px;
+  border-radius: 25pc;
+  transition: all 0.3s ease-in-out;
+  font-size: 16px;
+  background: transparent;
+  box-shadow: none;
+  width: 42px;
+  height: 42px;
+  color: transparent;
+  outline-offset: -2px;
+  display: block;
+  overflow: visible;
+}
 
-  input:focus {
-    width: 180px;
-  }
-  .log {
-    font-size: 0.93rem;
-  }
-  .navItems:hover {
-    border-bottom: 2px #fff solid;
-    margin-top: -5px;
-  }
-  .drawNavItems:hover :first-child {
-    color: #fff !important;
-  }
-  .drawNavItems:hover .drawItem {
-    background: #fff !important;
-  }
-  .drawNavItem {
-    transition: 0.2s;
-  }
-  .logo {
-    font-size: 22px;
-    cursor: pointer;
-    z-index: 99;
-  }
-  .logo:hover {
-    text-shadow: #ddd 2px 2px 4px;
-  }
-  .items:hover {
-    background: #ff9a0d;
-  }
-  </style>
+input:focus {
+  width: 180px;
+}
+.log {
+  font-size: 0.93rem;
+}
+.navItems:hover {
+  border-bottom: 2px #fff solid;
+  margin-top: -5px;
+}
+.drawNavItems:hover :first-child {
+  color: #fff !important;
+}
+.drawNavItems:hover .drawItem {
+  background: #fff !important;
+}
+.drawNavItem {
+  transition: 0.2s;
+}
+.logo {
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 99;
+}
+.logo:hover {
+  text-shadow: #ddd 2px 2px 4px;
+}
+.items:hover {
+  background: #ff9a0d;
+}
+</style>

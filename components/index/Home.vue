@@ -8,10 +8,10 @@
         </v-btn>
         <v-card-text class="headline text-xs-center">{{dialog.message}}</v-card-text>
         <v-card-actions>
-          <v-layout justify-center>
-            <v-btn color="green darken-1" flat @click="dialog.status = false">STAY HERE?</v-btn>
-            <v-btn color="green darken-1" flat @click="$store.commit('default/index', 'Login')">PROCEED TO LOGIN?</v-btn>
-            <v-btn color="green darken-1" flat @click="$store.commit('default/index', 'Register')">REGISTER</v-btn>
+          <v-layout justify-center style="width: 20%">
+            <v-btn class="ma-0" color="green darken-1" flat @click="dialog.status = false">STAY HERE?</v-btn>
+            <v-btn class="ma-0" color="green darken-1" flat @click="$store.commit('default/index', 'Login')">PROCEED TO LOGIN?</v-btn>
+            <v-btn class="ma-0" color="green darken-1" flat @click="$store.commit('default/index', 'Register')">REGISTER</v-btn>
           </v-layout>
         </v-card-actions>
       </v-card>

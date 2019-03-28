@@ -11,7 +11,7 @@
         <v-card-actions>
           <v-layout justify-center>
           <v-btn color="green darken-1" flat @click="$store.commit('default/index', 'Home')">BACK TO HOME?</v-btn>
-          <v-btn v-if="dialog.color === 'success'" color="green darken-1" flat @click="directLogin()">PROCEED TO PROFILE?</v-btn>
+          <v-btn v-if="dialog.color === 'success'" color="green darken-1" flat @click="$router.push('/profile')">PROCEED TO PROFILE?</v-btn>
           </v-layout>
         </v-card-actions>
       </v-card>
@@ -289,28 +289,28 @@ export default {
           // this.$router.push('/profile')
           // let data = JSON.stringify(response.data)
           // console.log(data)
-          // this.loader = false
-          // this.$v.$reset()
-          // this.user.name = ''
-          // this.user.email = ''
-          // this.user.title = []
-          // this.user.username = ''
-          // this.user.password = ''
-          // this.user.confirmPassword = ''
-          // this.user.phone = ''
-          // this.user.status = null
-          // this.user.nationality = null
-          // this.user.state = null
-          // this.user.city = null
-          // this.user.newsletter = false
-          // this.passIcon = true
-          // this.cpassIcon = true
-          // this.loader = false
-          // this.loaderMessage = 'Loading Locations...'
-          // this.dialog.message = 'Voila!!! Registered Successfully!!!'
-          // this.dialog.icon = 'mdi-account-check'
-          // this.dialog.color = 'success'
-          // this.dialog.status = true
+          this.loader = false
+          this.$v.$reset()
+          this.user.name = ''
+          this.user.email = ''
+          this.user.title = []
+          this.user.username = ''
+          this.user.password = ''
+          this.user.confirmPassword = ''
+          this.user.phone = ''
+          this.user.status = null
+          this.user.nationality = null
+          this.user.state = null
+          this.user.city = null
+          this.user.newsletter = false
+          this.passIcon = true
+          this.cpassIcon = true
+          this.loader = false
+          this.loaderMessage = 'Loading Locations...'
+          this.dialog.message = 'Voila!!! Registered Successfully!!!'
+          this.dialog.icon = 'mdi-account-check'
+          this.dialog.color = 'success'
+          this.dialog.status = true
         } catch (e) {
           this.loader = false
           this.dialog.icon = 'mdi-account-alert'
@@ -319,9 +319,6 @@ export default {
           this.dialog.status = true
         }
       }
-    },
-    async directLogin () {
-      // this.$router.push('/profile')
     },
     fill () {
       this.user.title = ['Mr', 'Dr', 'Engr']
