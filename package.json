@@ -32,7 +32,7 @@
         "date-fns": "^1.29.0",
         "emoji-mart-vue": "^2.6.4",
         "esm": "^3.0.81",
-        "express": "^4.15.3",
+        "express": "^4.17.3",
         "express-session": "^1.15.6",
         "helmet": "^3.13.0",
         "imagemin-webp": "^4.1.0",
